@@ -1,0 +1,66 @@
+<div class="modal-body">
+	<div class="form-area">
+		<div class="form-group">
+			<center><h3>{{formData.TeamName}}</h3></center>
+		</div>
+		<div class="form-group">
+			<form id="update_form" name="update_form" autocomplete="off" >
+				<div class="modal-body">
+					<div class="form-area">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="filter-col">Fantasy Pts</label>
+									<input type="text" class="form-control" ng-model="formData.FantasyPoints" name="TeamStats[]">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="filter-col">Total Points</label>
+									<input type="text" class="form-control" ng-model="formData.TeamStats.TotalPoints" name="TeamStats[]">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="filter-col">Wins</label>
+									<input type="text" class="form-control" ng-model="formData.TeamStats.Wins" name="TeamStats[]">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="filter-col">Games</label>
+									<input type="text" class="form-control" ng-model="formData.TeamStats.Games" name="TeamStats[]">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="filter-col">Point Difference</label>
+									<input type="text" class="form-control" ng-model="formData.TeamStats.PointDifference" name="TeamStats[]">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="filter-col">Total Offensive Yards</label>
+									<input type="text" class="form-control" ng-model="formData.TeamStats.TotalOffensiveYards" name="TeamStats[]">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="filter-col">Defensive Yards Allowed</label>
+									<input type="text" class="form-control" ng-model="formData.TeamStats.DefensiveYardsAllowed" name="TeamStats[]">
+								</div>
+							</div>
+							<input type="hidden" name="TeamGUID" value="{{formData.TeamGUID}}">   
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+
+	<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+	<button type="submit" class="btn btn-success btn-sm" ng-disabled="editDataLoading" ng-click="editData('Stats')">Save</button>
+</div>

@@ -1,0 +1,64 @@
+<div class="modal-body">
+	<div class="form-area">
+		<div class="form-group">
+			<center><h3>{{formData.TeamName}}</h3></center>
+		</div>
+		<div class="form-group">
+			<form id="edit_form" name="edit_form" autocomplete="off" >
+				<div class="row">
+					<!-- <div class="col-md-6">
+						<div class="form-group">
+							<label class="filter-col">Bye Week</label>
+							<select id="ByeWeek" name="ByeWeek[]" class="form-control chosen-select" multiple>
+								<option ng-repeat="row in Weeks" ng-selected="formData.ByeWeek.includes(row)" value="{{row}}">{{row}}</option>
+							</select>   
+						</div>
+					</div> -->
+					<!-- <div class="col-md-6" ng-if="formData.GameSportsType == 'Ncaaf'">
+						<div class="form-group">
+							<label class="filter-col">Power Team</label>
+							<select id="IsPowerTeam" name="IsPowerTeam" class="form-control chosen-select">
+								<option value="">Please Select</option>
+								<option value="Yes" ng-selected="formData.IsPowerTeam=='Yes'">Yes</option>
+								<option value="No" ng-selected="formData.IsPowerTeam=='No'">No</option>
+							</select>   
+						</div>
+					</div> -->
+				</div>
+				<!-- hidden parameters -->
+				<input type="hidden" class="MediaGUIDs" id="MediaGUIDs" name="MediaGUIDs" value=""> <!-- for banner -->
+				<input type="hidden" name="TeamGUID" value="{{formData.TeamGUID}}">   
+				<!-- hidden parameters /-->
+			</form>
+			<label>Team Logo</label>
+			<div id="picture-box" class="picture-box banner">
+				<!-- picture display -->
+				<img id="picture-box-picture" ng-if="!formData.TeamFlag" ng-src="./asset/img/default-category.png">
+				<img id="picture-box-picture" ng-if="formData.TeamFlag" ng-src="{{formData.TeamFlag}}">
+
+				<!-- picture upload form -->
+				<div class="picture-upload">
+					<img src="./asset/img/upload.svg" id="picture-uploadBtn">
+					<form enctype="multipart/form-data" action="../api/upload/image" method="post" name="picture_upload_form" id="picture_upload_form">
+						<input type="hidden" name="Section" value="TeamFlag">
+						<input type="file" accept="image/*" name="File" id="fileInput" data-target="#picture-box #picture-box-picture" data-targetinput="#MediaGUIDs">
+					</form>
+				</div>
+				<!-- progressbar -->
+				<div class="progressBar">
+					<div class="bar"></div>
+					<div class="percent">0%</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+
+	<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+	<button type="submit" class="btn btn-success btn-sm" ng-disabled="editDataLoading" ng-click="editData()">Save</button>
+</div>
+
+

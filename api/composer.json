@@ -1,0 +1,7 @@
+{
+    "require": {
+        "mpdf/mpdf": "^8.0",
+        "braintree/braintree_php" : "3.36.0",
+        "google/apiclient": "^2.0"
+    }
+}

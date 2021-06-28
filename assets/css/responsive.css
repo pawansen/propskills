@@ -1,0 +1,559 @@
+
+/* ----------------- Responsive CSS ------------------ */
+
+.navbar-toggler {
+    margin-left: 0 !important;
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    border: none;
+    padding: 10px 0;
+}
+.navbar-toggler .icon-bar {
+    background-color: #181818;
+    width: 100%;
+    height: 3px;
+    border-radius: 100px;
+    display: inherit; }
+    .navbar-toggler .icon-bar + .icon-bar {
+        margin-top: 5px;
+    }
+    .navbar-toggler:focus {
+        outline: none;
+    }
+
+    
+@media (max-width: 540px) {
+    .common-bg-n .d-flex{
+        flex-wrap: wrap;
+        padding-bottom: 0px;
+    }
+
+    .common-bg-n .d-flex .d-inblock {
+        margin-right: 0px;
+        order: 2;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+
+    .common-bg-n .d-flex .d-inblock a{
+        width: 100%;
+    }
+    .common-bg-n .d-flex div.search_form{
+        order: 1;
+        width: 100%;
+        margin-bottom: 16px
+    }
+    .draftTeamPage1 .draft_timer_wrapr{
+        padding: 6px;
+    }
+
+}
+
+@media (max-width: 767px) {
+    .createLeaguePage .totalPrize {
+        text-align: left;
+        padding-left: 14px;
+    }
+    .createLeaguePage .top_bar{
+        flex-direction: column;
+        text-align: center;
+    }
+    .tableResponsive table tbody{
+        display: table-row-group;
+    }
+    .tableResponsive table  tr th, .tableResponsive table  tr td{
+        vertical-align: top;
+    }
+    .tableResponsive .table_scroll thead tr, .tableResponsive table tbody tr{
+        display: table-row;
+    }
+    .site_line_tabs1{
+        flex-wrap: nowrap;
+        overflow: auto; 
+     }
+     .profileCircleBig >div h3{
+         font-size: 14px;
+     }
+
+     .fr_contest ul.draft_list{
+        justify-content: space-around;
+        /* margin:0px; */
+        width: 100%;
+     }
+
+     .fr_contest ul.draft_list li{
+         flex: 0px;
+     }
+     .fr_contest .draftImg{
+        width: 45px;
+        height: 46px;
+     }
+     .fandom_table .table_scroll tr{
+        display: block;
+        width: auto;
+     }
+     .fandom_table .table_scroll tr th,  .fandom_table .table_scroll tr td {
+         vertical-align: top;
+         flex: unset;
+     }
+     .site_line_tabs1 .nav-link{
+        padding: 9px 12px;
+        white-space: nowrap;
+     }
+     .draftTeamPage1 .draft_header{
+        flex-direction: column;
+     }
+
+     .draftTeamPage1 .status_bar li{
+        margin-right: 7px;
+        padding-bottom: 10px;
+     }
+     .draftTeamPage1 .status_bar li h4{
+         font-size: 14px;
+     }
+     .draftTeamPage1 .category_players{
+         border-left: 0px;
+         border-top: 1px solid #ddd;
+         margin-top: 0px;
+         padding: 9px 0px;
+     }
+
+     .draftTeamPage1 .draft_sidebar{
+        flex: none;
+        max-width: none;
+     }
+
+     .draftTeamPage1 .draft_timer_wrapr, .draftTeamPage1 .round_slider_wrapr{
+        width: 100%;
+     }
+
+     .draftTeamPage1 .Onof-switch{
+         margin: 15px 0px;
+         justify-content: center;
+     }
+
+     .draftTeamPage1 .middleSec .playerStatus{
+        flex-wrap: nowrap;
+        overflow: auto;
+        margin-bottom: 15px;
+     }
+
+     .draftTeamPage1  .topBar{
+         padding: 10px 0px;
+     }
+
+     .draftTeamPage1 .searchBox{
+         width: 100%;
+     }
+
+      .shadow_box_sm.middleSec .team_middle .shortList li{
+          flex: 1;
+      }
+
+    .btn_tabs .nav-link{
+        font-size: .9em;
+    }
+    .common_bg{
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    span.user_name {
+        max-width: 77px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .header_profile_menu .dropdown-menu{
+        min-width: 19em important;
+        left: 50%;
+        transform: translate(-66%);
+    }
+    .site_header a.nav-link.active {
+        background-color: var(--primaryClr);
+        color: #fff !important;
+    }
+    .site_header .dropdown-menu{
+        position: absolute;
+    }
+    .navbar-collapse .navbar-nav{
+        background-color: #f3f4f7;
+        padding: 10px 0;
+    }
+    .navbar-collapse a.nav-link {
+        padding: 10px 18px !important;
+    }
+    .header_login_menu {
+        margin-right: 10px;
+    }
+    .header_login_menu a.nav-link{
+        padding: 8px !important;
+    }
+    .navbar-brand{
+        margin-right: 0;
+    }
+    .site_header {
+        padding: 3px 15px;
+    }
+     .site_header .navbar-collapse{
+        margin: 5px  -15px 0;
+        border-top: 1px solid #eee;
+    }
+    .user_profile{
+        margin-right: 6px;
+        width: 30px;
+        height: 30px;
+    }
+    .header_profile_menu{
+        flex-direction: row;
+    }
+    .header_menu_dropdown_wrapr > a > strong{
+        display: none;
+    }
+    .dash_item {
+        margin-bottom: 15px;
+    }
+    .btn_sm_primary, .btn_sm_secondary, .btn_sm_border, .btn_sm_white {
+        padding: 6px 10px;
+        font-size: .9em;
+    }
+    .search_form input{
+        width: 100%;
+    }
+    .newsletter_form input:not(#submit) {
+        height: 39px; }
+
+    body {
+        font-size: 13px; }
+
+    .site_form {
+        padding: 20px; }
+
+    .dropdown-menu.header_primary_dropdown a img {
+        width: 19px; }
+
+    .dropdown-menu.header_primary_dropdown a {
+        width: 100%; }
+
+    .dropdown-menu.header_primary_dropdown.show {
+        position: relative;
+        border: none;
+        margin: 0;
+        padding: 10px 0;
+        display: inline-block;
+        background-color: #f0f0f0;
+        min-width: auto; }
+
+
+    .site_header .navbar-toggler.collapsed .icon-bar.btm {
+    bottom: 0px;
+    transition: .2s bottom ease .3s,  transform ease .3s;
+    transform: rotate(0deg); }
+  .site_header .navbar-toggler.collapsed .icon-bar.mid {
+    opacity: 1;
+    transition: all ease .3s; }
+  .site_header .navbar-toggler.collapsed .icon-bar.top {
+    top: 0px;
+    transform: rotate(0deg);
+    transition: .2s top ease .3s,  transform ease .3s; }
+
+  .site_header .navbar-toggler .icon-bar {
+    position: relative; }
+  .site_header .navbar-toggler .icon-bar.btm {
+    transition: bottom ease .3s, .2s transform ease .3s;
+    bottom: 8px;
+    transform: rotate(45deg); }
+  .site_header .navbar-toggler .icon-bar.mid {
+    opacity: 0; }
+  .site_header .navbar-toggler .icon-bar.top {
+    top: 8px;
+    transition: top ease .3s, .2s transform ease .3s;
+    transform: rotate(-45deg); }
+
+    .line_icon_content {
+        padding-top: 0; }
+
+    .circle__shadow {
+        width: 80%; }
+
+    .feature__icon {
+        margin-bottom: 10px !important; }
+
+    .step_item h5 {
+        font-size: 1.1em; }
+
+    #reviewSlider p {
+        font-size: 1.05em; }
+
+    .features img {
+        margin: 0 0 10px 0; }
+
+    .feature_line__icon, .feature__icon {
+        width: 70px; }
+
+    .line_icon_content:after, .line_icon_content:before {
+        content: none; }
+
+    .home_banner {
+        min-height: 380px;
+        background-position: top right;
+     }
+
+    .step_item img {
+        height: auto;
+        margin-bottom: 10px; }
+
+    .banner__text h1 {
+        font-size: 2.2em; }
+    .banner__text p {
+        font-size: 1.2em; }
+
+    .pick_sports {
+        position: relative;
+        top: -30px; }
+
+    .comman_heading {
+        margin-bottom: 35px; }
+    .comman_heading h2 {
+        font-size: 1.6em; }
+
+    .navbar-brand {
+        max-width: 75px;
+     }
+     .pick_sports::after{
+        width: 100%;
+     }
+     .home_banner .banner__text h2{
+        font-size: 2em;
+      }
+      .pick_sports {
+        font-size: 18px;
+      }
+      .pick_sports p{
+        font-size: 1.2em;
+      }
+      .pick_sports p:first-child{
+          margin-top: 40px;
+      }
+      .pick_sports .btn_primary{
+        padding: 10px 10px;
+        font-size: 12px;
+        margin-bottom: 23px;
+        display: inline-block;
+      }
+      .features-box{
+        flex-direction: column;
+      }
+      .features-box .features-icon{
+        width: 100%;
+      }
+      .features-box .features-text{
+        width: 100%;
+        order: 1;
+        margin-top: 20px;
+        
+      }
+      .features-box.left-side .features-text{
+        text-align: left;
+      }
+      .features-box.left-side .features-text:after, .features-box .features-text:after{
+          display: none;
+      }
+      .features{
+          padding-bottom: 20px;;
+      }
+      .site_content_wrapr{
+        padding: 20px;
+      }
+      .about-us .comman_heading{
+        margin-bottom: 10px;
+      }
+      .about-us .site_content_wrapr{
+        padding: 20px;
+      }
+      .about-us .burger {
+        padding-bottom:0px;
+      }
+        .innerPageContent-point table{
+            width: 100%;
+            overflow: scroll;
+            overflow-x: scroll;
+            overflow-y: scroll;
+            display: block;
+            height: 100%;
+            max-height: 608px;
+        }
+        .innerPageContent-point table .thead-dark th{
+            vertical-align: top;
+        }
+        .myAccountTable th:nth-child(2){
+            flex: 0 0 48px;
+        }
+        .innerPage-Contenttwo th:first-child{
+            flex: 0 0 63px;
+        }
+        .innerPage-Contenttwo th:last-child{
+            flex: 0 0 60px;
+        }
+        .boxGrplayer{
+            margin-right: 8px;
+            padding: 0px 0px 5px;
+            margin-bottom: 5px;
+        }
+        .custom_scroll1{
+            max-width: 349px;
+            overflow-x: auto;
+        }
+        .d-inblock{
+            margin-right: 0px;
+        }
+        .site_sm_modal .modal-body{
+            padding: 20px;
+        }
+        .createLeaguePage .distribution .positon{
+            width: 45%;
+        }
+        .leaderboard_page table{
+            max-width: 351px;
+            overflow: scroll;
+            max-height: 235px;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .profile_header .btn_secondary, .profile_header .btn_primary{
+            width: 100%;
+            text-align: center;
+        }
+        .text-md-right{
+          padding-top: 12px;
+        }
+        .tinyBanner .text-white{
+            font-size: 16px;
+        }
+        .colorDots{
+            justify-content: flex-start;
+        }
+        .colorDots li{
+            margin-right:10px;
+            margin-left:0px;
+        }
+        .payment_item{
+          padding: 12px 20px;
+         margin-bottom: 20px;
+        }
+        .veryfy_form{
+            padding:0px;
+        }
+     }
+/* max-width 767 END */
+@media (max-width: 991px) {
+    .site_line_tabs .nav-link {
+        padding: 14px 9px;
+    }
+    .shadow_box, .shadow_box_dark{
+        padding: 10px 0;
+    }
+    .lobbySidebar .btn-group .btn:focus{
+        box-shadow: none;
+    }
+    .lobbySidebar .btn-group {
+        display: flex;
+    }
+    .header_profile_menu > li {
+        margin-right: 10px;
+    }
+    .burger {
+        padding-bottom: 50px;
+        padding-top: 50px; }
+
+    .t-burger {
+        padding-top: 50px; }
+
+    .b-burger {
+        padding-bottom: 50px; }
+    .navbar-togglerr {
+        border: none; }
+
+    .sports_list {
+        flex-wrap: wrap; }
+
+    .sports_list a {
+        padding: 26px 12px;
+        min-height: auto;
+        width: 50%;
+        flex: 50%; }
+    .sports_list a img {
+        width: 35px; }
+    .sports_list a:nth-child(1), .sports_list a:nth-child(4) {
+        background-color: var(--secondaryClr); }
+    .sports_list a:nth-child(1):hover, .sports_list a:nth-child(4):hover {
+        background-color: var(--secondaryClr); }
+    .sports_list a:nth-child(2), .sports_list a:nth-child(3) {
+        background-color: var(--primaryClr); }
+    .sports_list a:nth-child(2):hover, .sports_list a:nth-child(3):hover {
+        background-color: var(--primaryClr); }
+    .sports_list a span {
+        font-size: .85em; }
+
+    .pick_sports h2 {
+        margin-bottom: 30px; } }
+/* max-width 991 END */
+@media (min-width: 768px) and (max-width: 991px) {
+    .comman_heading h2 {
+        font-size: 2em; }
+    .pick_sports {
+        position: relative;
+        top: -130px; }
+
+    .step_item img {
+        height: 300px; }
+
+    .line_icon_content:after {
+        top: -11px;
+        width: calc(2% + 40px); 
+    } 
+        .resposnive-menu-f .font-weight-500{
+            font-weight: 500;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 90px;
+            overflow: hidden;
+        }
+        .resposnive-menu-f .user_profile{
+            height: 36px;
+            width: 36px;
+            margin-left: 10px;
+            margin-right: 6px;
+        }
+        .site_header .resposnive-menu-f a.nav-link{
+            padding: 17px 5px !important;
+            font-size: 12px;
+        }
+        .draft_sidebar {
+            font-size: .9em;
+            display: unset;
+            flex: unset;
+            max-width: initial;
+        }
+    }
+@media (min-width: 992px) and (max-width: 1024px) {
+    .shadow_box_sm.middleSec .team_middle .shortList li a{
+        padding: 5px 7px;
+    }
+    .side_bar {
+        max-width: 29%; }
+    .line_icon_content:after {
+        top: -13px;
+        width: calc(2% + 47px); 
+    } 
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+    .testimonials {
+        background-position: 5% 13%;
+        background-size: 28%;
+    } 
+}
+@media (min-width: 1025px) and (max-width: 1919px) {
+    
+}
