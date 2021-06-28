@@ -91,7 +91,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 /*------------------------------*/	
 
 /*Site Related Settings*/
-define('SITE_NAME', 'Proskills');
+define('SITE_NAME', 'propskills');
 define('PATH_TEMPLATE',"./asset/template/");
 
 
@@ -100,25 +100,25 @@ switch (ENVIRONMENT)
 	case 'local':
 	/*Paths*/
 	define('SITE_HOST', 'http://localhost');
-	define('ROOT_FOLDER', '/proskills/admin');
-	 define('API_URL', SITE_HOST."/proskills/api/");
-	 // define('API_URL', "http://54.254.226.187/proskills/api/");
+	define('ROOT_FOLDER', '/propskills/admin');
+	 define('API_URL', SITE_HOST."/propskills/api/");
+	 // define('API_URL', "http://54.254.226.187/propskills/api/");
 	break;
 	case 'testing':
 	/*Paths*/
 	define('SITE_HOST', 'http://192.168.1.211');
-	define('ROOT_FOLDER', '/proskills/admin');
-	define('API_URL', SITE_HOST."/proskills/api/");
+	define('ROOT_FOLDER', '/propskills/admin');
+	define('API_URL', SITE_HOST."/propskills/api/");
 	break;
 	case 'demo':
 	/*Paths*/
 	define('SITE_HOST', 'http://54.254.226.187');
-	define('ROOT_FOLDER', '/proskills/admin');
-	define('API_URL', SITE_HOST."/proskills/api/");
+	define('ROOT_FOLDER', '/propskills/admin');
+	define('API_URL', SITE_HOST."/propskills/api/");
 	break;
 	case 'production':
 	/*Paths*/
-	define('SITE_HOST', 'https://www.proskills.com');
+	define('SITE_HOST', 'https://www.propskills.com');
 	define('ROOT_FOLDER', '/admin');
 	define('API_URL', SITE_HOST."/api/");
 	break;

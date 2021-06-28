@@ -91,7 +91,7 @@ defined('EXIT__AUTO_MAX') OR define('EXIT__AUTO_MAX', 125); // highest automatic
 /* ------------------------------ */
 
 /* Site Related Settings */
-define('SITE_NAME', 'Proskills');
+define('SITE_NAME', 'propskills');
 define('SITE_CONTACT_EMAIL', 'mwadmin@mailinator.com');
 define('MULTISESSION', true);
 define('PHONE_NO_VERIFICATION', true);
@@ -171,7 +171,7 @@ switch (ENVIRONMENT) {
     case 'local':
         /* Paths */
         define('SITE_HOST', 'http://localhost/');
-        define('ROOT_FOLDER', 'proskills/');
+        define('ROOT_FOLDER', 'propskills/');
 
         /* SMTP Settings */
         define('SMTP_PROTOCOL', 'smtp');
@@ -207,7 +207,7 @@ switch (ENVIRONMENT) {
 
         /* Paths */
         define('SITE_HOST', 'http://54.254.226.187/');
-        define('ROOT_FOLDER', 'proskills/');
+        define('ROOT_FOLDER', 'propskills/');
 
         /* SMTP Settings */
         define('SMTP_PROTOCOL', 'smtp');
@@ -241,7 +241,7 @@ switch (ENVIRONMENT) {
     case 'demo':
         /* Paths */
         define('SITE_HOST', 'http://54.254.226.187/');
-        define('ROOT_FOLDER', 'proskills/');
+        define('ROOT_FOLDER', 'propskills/');
 
         /* SMTP Settings */
         define('SMTP_PROTOCOL', 'smtp');
@@ -274,7 +274,7 @@ switch (ENVIRONMENT) {
         break;
     case 'production':
         /* Paths */
-        define('SITE_HOST', 'https://www.proskills.com/');
+        define('SITE_HOST', 'https://www.propskills.com/');
         define('ROOT_FOLDER', '');
 
         /* SMTP Settings */

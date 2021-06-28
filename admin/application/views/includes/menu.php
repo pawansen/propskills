@@ -6,7 +6,7 @@
       <span class="navbar-toggler-icon"> </span> 
     </button>
 
-        <a class="navbar-brand" href="#"><img src="<?php echo API_URL;?>asset/img/emailer/logo.png" height="50"></a>
+        <a class="navbar-brand" href="#"><img src="<?php echo API_URL;?>asset/img/emailer/logo.png" height="20"></a>
     </div>
     <div class="col-md-2 offset-8 d-flex justify-content-around">
           <div class="notification dropdown">
