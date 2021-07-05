@@ -7,7 +7,7 @@
                 <div class="col-sm-4">
                     <h6>quick links</h6>
                     <ul class="footer_menu list-unstyled ">
-                        <li><a href="AboutUs">About Fandom Royal </a></li>
+                        <li><a href="AboutUs">About Propskills </a></li>
                         <li><a href="contactUs">Contact Us</a></li>
                         <li><a href="Rules&info" >Rules & Info </a></li>
                     </ul>
@@ -78,7 +78,7 @@
         base_url: "<?php echo $base_url;?>",
         api_url: "<?php echo $api_url;?>",
         image_base_url: '<?php echo $base_url; ?>assets/img/',
-        brand_name: 'fandomroyale'
+        brand_name: 'propskills'
     });
     app.config(function(socialProvider){
         // socialProvider.setGoogleKey("760247147566-mt9iqjkc4jbjiidd9oj48s7bku07lmt3.apps.googleusercontent.com");

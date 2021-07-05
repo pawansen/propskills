@@ -17,9 +17,9 @@
         //$api_url = 'http://54.254.226.187/propskills/api/';
         $api_url = 'http://localhost/propskills/api/';
         break;
-        case '54.254.226.187':
-        $base_url = 'http://54.254.226.187/propskills/';
-        $api_url = 'http://54.254.226.187/propskills/api/';
+        case '159.65.8.30':
+        $base_url = 'http://159.65.8.30/propskills/';
+        $api_url = 'http://159.65.8.30/propskills/api/';
         break;
         case 'mwdemoserver.com':
         $base_url = 'http://mwdemoserver.com/propskills/';

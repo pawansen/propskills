@@ -208,7 +208,7 @@
                                 <div class="">
                                     <div class="form-group">
                                         <input class="styled-checkbox" ng-required="true" name="agree" ng-model="agree" id="styled-checkbox" type="checkbox">
-                                        <label for="styled-checkbox"> I agree to the Fandom Royale <a href="TermsAndConditions" target="_blank" class="themeClr ml-2">Terms of Use</a></label>
+                                        <label for="styled-checkbox"> I agree to the propskills <a href="TermsAndConditions" target="_blank" class="themeClr ml-2">Terms of Use</a></label>
                                         <div class="form-error text-danger" ng-show="submitted && createContestForm.agree.$error.required">*You must need to agree with condition.</div>
                                     </div>
                                     <div class="text-right">

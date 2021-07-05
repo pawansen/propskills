@@ -103,12 +103,12 @@ switch (ENVIRONMENT) {
 
       $db['default']['hostname'] = 'localhost';
       $db['default']['username'] = 'root';
-      $db['default']['password'] = '';
+      $db['default']['password'] = 'root';
       break;
     case 'testing':
-        $db['default']['hostname'] = '54.254.226.187';
-        $db['default']['username'] = 'mwdemoserver';
-        $db['default']['password'] = 'z3vG?adJM_nQ@$4DMFhvUY!eFg^@4u';
+        $db['default']['hostname'] = '159.65.8.30';
+        $db['default']['username'] = 'root';
+        $db['default']['password'] = 'u%&V+hTAj#84?a9+?cKcm@m6D*ff';
         break;
     case 'demo':
         $db['default']['hostname'] = 'localhost';

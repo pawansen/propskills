@@ -9,7 +9,7 @@ include('header.php');
         </div>
         <div class="site_content_wrapr">
             <div ng-bind-html='Content'></div>
-            <p><a class="text-white" style="text-decoration: underline;"  href="mailto:Fr.support@hypo-igames.com">Fr.support@hypo-igames.com</a></p>
+            <p><a class="text-white" style="text-decoration: underline;"  href="mailto:Fr.support@propskills.com">Fr.support@propskills.com</a></p>
         </div>
     </div>
 </div>

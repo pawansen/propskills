@@ -72,7 +72,7 @@ if (php_sapi_name() == 'cli') {
 		case 'localhost':
 		$_SERVER['CI_ENV'] = 'local';
 		break;
-		case '192.168.1.211':
+		case '159.65.8.30':
 		$_SERVER['CI_ENV'] = 'testing';
 		break;
 		case '54.254.226.187':

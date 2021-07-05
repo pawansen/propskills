@@ -10,7 +10,7 @@ include('header.php');
         <div class="site_content_wrapr text-center  contactus">
 
             <h4 class="mb-4">Let's Connect</h4>
-            <p><strong class="">Email : </strong> <a class="" href="mailto:support@FandomRoyale.com">support@FandomRoyale.com</a>
+            <p><strong class="">Email : </strong> <a class="" href="mailto:support@propskills.com">support@propskills.com</a>
             <p><strong>Phone : </strong> <a href="tel:"></a></p>
             <div class="social_menu">
                 <a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a>

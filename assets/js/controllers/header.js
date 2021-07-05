@@ -42,7 +42,7 @@ app.controller('headerController', ['$scope', '$rootScope', '$location', 'enviro
     var pathArray = window.location.pathname.split('/');
     var secondLevelLocation = pathArray[2];
     $scope.base_url = base_url;
-    if (window.location.host == 'www.FandomRoyale.com') {
+    if (window.location.host == 'www.propskills.com') {
         secondLevelLocation = pathArray[1];
     }
     $scope.headerActiveMenu = secondLevelLocation;

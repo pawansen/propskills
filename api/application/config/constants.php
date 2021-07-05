@@ -206,7 +206,7 @@ switch (ENVIRONMENT) {
     case 'testing':
 
         /* Paths */
-        define('SITE_HOST', 'http://54.254.226.187/');
+        define('SITE_HOST', 'http://159.65.8.30/');
         define('ROOT_FOLDER', 'propskills/');
 
         /* SMTP Settings */

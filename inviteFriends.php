@@ -18,7 +18,7 @@
                             <div class="border_social">
                                 <a href="javascript:;" class="facebook"><i class="fab fa-facebook-f"></i></a>
                                 <a href="javascript:;" class="twitter" data-js="twitter-share"><i class="fab fa-twitter"></i></a>
-                                <a href="https://api.whatsapp.com/send?text=Play with me on Fandom Royale. Click https://www.FandomRoyale.com/ to login to the portal and Use contest code: {{Contest.UserInvitationCode}} to join the contest." target="_blank"><i class="fab fa-whatsapp"></i></a>
+                                <a href="https://api.whatsapp.com/send?text=Play with me on propskills. Click https://www.propskills.com/ to login to the portal and Use contest code: {{Contest.UserInvitationCode}} to join the contest." target="_blank"><i class="fab fa-whatsapp"></i></a>
                             </div>
                         </div>
                         <div class="mb-4">
@@ -58,7 +58,7 @@ $(document).ready(function(){
     var twitterShare = document.querySelector('[data-js="twitter-share"]');
     twitterShare.onclick = function(e) {
         e.preventDefault();    
-        var twitterWindow = window.open("https://twitter.com/intent/tweet?text=Play with me on Fandom Royale. Click https://www.FandomRoyale.com/ to login to the portal and Use contest code: "+$("#inviteCode").val()+" to join the contest.", 'twitter-popup', 'height=350,width=600');
+        var twitterWindow = window.open("https://twitter.com/intent/tweet?text=Play with me on propskills. Click https://www.propskills.com/ to login to the portal and Use contest code: "+$("#inviteCode").val()+" to join the contest.", 'twitter-popup', 'height=350,width=600');
         if(twitterWindow.focus) { twitterWindow.focus(); }
             return false;
     }

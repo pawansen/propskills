@@ -14,8 +14,8 @@ var intervalUserTime;
 var NBAintervalUserTime;
 var getDraftLive;
 var NBAgetDraftLive;
-var base_url = 'http://159.65.8.30/fandomroyale/';
-var nba_base_url = 'http://159.65.8.30/fandomroyale/api/nba/';
+var base_url = 'http://159.65.8.30/propskills/';
+var nba_base_url = 'http://159.65.8.30/propskills/api/nba/';
 var cors = require('cors')
 
 app.use(function (request, response, next) {

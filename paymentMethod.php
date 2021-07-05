@@ -20,7 +20,7 @@
 										 <div id="paypal-button"  class="my-4"></div>
 										<!-- <br> -->
 						                <!-- <button class="btn btn-submit" ng-click="payTmReq(amount)" >Paytm</button> -->
-						                <p>By proceeding, you have read and agreed to Fandom Royale <a target="_blank" href="TermsAndConditions">Terms and Conditions</a> and <a target="_blank" href="privacyPolicy">Privacy Policy</a></p> 
+						                <p>By proceeding, you have read and agreed to propskills <a target="_blank" href="TermsAndConditions">Terms and Conditions</a> and <a target="_blank" href="privacyPolicy">Privacy Policy</a></p> 
 						            </div>
 						        </div>
 					        </div>

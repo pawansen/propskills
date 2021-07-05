@@ -106,7 +106,7 @@ switch (ENVIRONMENT)
 	break;
 	case 'testing':
 	/*Paths*/
-	define('SITE_HOST', 'http://192.168.1.211');
+	define('SITE_HOST', 'http://159.65.8.30');
 	define('ROOT_FOLDER', '/propskills/admin');
 	define('API_URL', SITE_HOST."/propskills/api/");
 	break;

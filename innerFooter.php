@@ -8,7 +8,7 @@
                 <div class="col-sm-4">
                     <h6>quick links</h6>
                     <ul class="footer_menu list-unstyled ">
-                        <li><a href="AboutUs">About Fandom Royal </a></li>
+                        <li><a href="AboutUs">About Propskills </a></li>
                         <li><a href="contactUs">Contact Us</a></li>
                         <li><a href="Rules&info" >Rules & Info </a></li>
                     </ul>
