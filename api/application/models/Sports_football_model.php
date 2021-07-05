@@ -186,6 +186,7 @@ class Sports_football_model extends CI_Model {
                 'MatchID' => 'M.MatchID',
                 'SeasonType' => 'M.SeasonType',
                 'WeekID' => 'M.WeekID',
+                'WeekName' => 'M.WeekName',
                 'MatchNo' => 'M.MatchNo',
                 'MatchIDLive' => 'M.MatchIDLive',
                 'MatchTypeID' => 'M.MatchTypeID',
@@ -8380,13 +8381,25 @@ class Sports_football_model extends CI_Model {
             $MatchTypesData = $this->getMatchTypes();
             $MatchTypeIdsData = array_column($MatchTypesData, 'MatchTypeID', 'MatchTypeName');
 
-            for ($i = 1; $i < count($xml->tournament); $i++) {
+            for ($i = 0; $i < count($xml->tournament); $i++) {
                 $seriesId = (int) $xml->tournament[$i]['id'];
                 $seriesName = (string) trim($xml->tournament[$i]['name']);
                 for ($j = 0; $j < count($xml->tournament[$i]->week); $j++) {
                     $weekName = (string) strtolower($xml->tournament[$i]->week[$j]['name']);
                     $WeekID = 0;
-                    if($i==1){
+                    $PreWeekName = "";
+                    if($i==0){
+                        if (preg_match("/\bweek\b/i", $weekName)) {
+                            $WeekID = trim(str_replace("week", "", $weekName));
+                            $weekName = trim(str_replace("week", "p s", $weekName));
+                        }
+                        $PreSeasonName = explode(" ", $weekName);
+                        
+                        foreach ($PreSeasonName as $w) {
+                          $PreWeekName .= $w[0];
+                        }
+
+                    }else if($i==1){
                         $WeekID = trim(str_replace("week", "", $weekName));
                     }elseif($i==2){
                         if($weekName == 'wild card'){
@@ -8406,7 +8419,7 @@ class Sports_football_model extends CI_Model {
 
                     $SeasonType = "ProFootballRegularSeasonOwners";
                     $SeriesType = "Regular";
-                    if($seriesName == 'Pre Season'){
+                    if($seriesName == "Pre Season"){
                         $SeriesType = "Pre";
                         $SeasonType = "ProFootballPreSeasonOwners";
                     } else if($seriesName == "Post Season"){
@@ -8497,6 +8510,7 @@ class Sports_football_model extends CI_Model {
                                             'TeamIDVisitor' => $TeamIDVisitor,
                                             'MatchStartDateTime' => $match_date_time,
                                             'WeekID' => $WeekID,
+                                            'WeekName' => strtoupper($PreWeekName),
                                             'ScoreIDLive' => $MatchIDLive,
                                             'SeasonType' => $SeasonType
                                         );

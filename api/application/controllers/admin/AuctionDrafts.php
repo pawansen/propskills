@@ -114,7 +114,7 @@ class AuctionDrafts extends API_Controller_Secure {
         $this->form_validation->set_rules('Privacy', 'Privacy', 'trim|required|in_list[Yes,No]');
         $this->form_validation->set_rules('IsPaid', 'IsPaid', 'trim|required|in_list[Yes,No]');
         $this->form_validation->set_rules('ShowJoinedContest', 'ShowJoinedContest', 'trim|required|in_list[Yes,No]');
-        $this->form_validation->set_rules('WinningAmount', 'WinningAmount', 'trim|required|integer');
+        $this->form_validation->set_rules('WinningAmount', 'WinningAmount', 'trim|required|numeric');
         $this->form_validation->set_rules('ContestSize', 'ContestSize', 'trim' . (!empty($this->Post['ContestFormat']) && $this->Post['ContestFormat'] == 'League' ? '|required|integer' : ''));
         $this->form_validation->set_rules('EntryFee', 'EntryFee', 'trim' . (!empty($this->Post['IsPaid']) && $this->Post['IsPaid'] == 'Yes' ? '|required|numeric' : ''));
         $this->form_validation->set_rules('NoOfWinners', 'NoOfWinners', 'trim' . (!empty($this->Post['IsPaid']) && $this->Post['IsPaid'] == 'Yes' ? '|required|integer' : ''));

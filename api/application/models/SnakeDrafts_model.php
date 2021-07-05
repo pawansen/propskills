@@ -159,6 +159,7 @@ class SnakeDrafts_model extends CI_Model {
         $RoosterArray = $this->searchForId((int) $Input['ContestSize'], $RoosterSize);
 
         $RoosterConfiguration = footballGetConfigurationPlayersRoosterPrivate($Input['RosterSize']);
+        $InviteCode = random_string('alnum', 6);
         /* Add contest to contest table . */
         $InsertData = array_filter(array(
             "ContestID"     => $EntityID,
@@ -191,7 +192,7 @@ class SnakeDrafts_model extends CI_Model {
             "CustomizeWinning" => (@$Input['IsPaid'] == 'Yes') ? @$Input['CustomizeWinning'] : json_encode(array($defaultCustomizeWinningObj)),
             "SeriesID" => @$SeriesID,
             "MatchID" => @$MatchID,
-            "UserInvitationCode" => random_string('alnum', 6),
+            "UserInvitationCode" => $InviteCode,
             "MinimumUserJoined" => @$Input['MinimumUserJoined'],
             "ScoringType" => @$Input['ScoringType'],
             "PlayOff" => @$Input['PlayOff'],
@@ -257,6 +258,9 @@ class SnakeDrafts_model extends CI_Model {
         }
 
         $this->joinContestPrivate($Input, $SessionUserID, $EntityID, $SeriesID, '', $Input['IsAutoDraft']);
+
+
+        $this->Notification_model->addNotification('Invite Code', 'Invite Code', $SessionUserID, $SessionUserID, '', 'Congratulations on creating a private league. The invite code for your league is:'.$InviteCode);
 
         $PlayerIs = $this->addAuctionPlayer($SeriesID, $EntityID, $Input['WeekStart'],$Input['ContestDuration'],$Input['DailyDate']);
         if(!$PlayerIs) return false;
@@ -813,6 +817,7 @@ class SnakeDrafts_model extends CI_Model {
                 'PlayerBowlingStats' => 'P.PlayerBowlingStats',
                 'IsInjuries' => 'P.IsInjuries',
                 'LastUpdateDiff' => 'IF(P.LastUpdatedOn IS NULL, 0, TIME_TO_SEC(TIMEDIFF("' . date('Y-m-d H:i:s') . '", P.LastUpdatedOn))) LastUpdateDiff',
+                'TeamID' => 'T.TeamID',
                 'TeamName' => 'T.TeamName',
                 'PlayerRoleShort' => 'CASE P.PlayerRole
                              when "QuarterBack" then "QB"
@@ -833,7 +838,7 @@ class SnakeDrafts_model extends CI_Model {
                 }
             }
         }
-        $this->db->select('P.PlayerGUID,P.PlayerName,P.YardsPerGame,P.Yards,P.TotalTouchdowns,P.WeeklyStats,P.Passing,P.Rushing,P.Receiving,P.Scoring,P.Defense');
+        $this->db->select('P.PlayerGUID,P.PlayerName,T.TeamNameShort,P.YardsPerGame,P.Yards,P.TotalTouchdowns,P.WeeklyStats,P.Passing,P.Rushing,P.Receiving,P.Scoring,P.Defense');
         if (!empty($Field))
         $this->db->select($Field, FALSE);
         $this->db->from('tbl_entity E, sports_players P,tbl_auction_player_bid_status APBS,sports_series S,sports_contest C,sports_teams T');
@@ -923,9 +928,10 @@ class SnakeDrafts_model extends CI_Model {
             $this->db->having("LastUpdateDiff", 0);
             $this->db->or_having("LastUpdateDiff >=", 86400); // 1 Day
         }
-        $this->db->order_by('P.YardsPerGame', 'DESC');
         if (!empty($Where['OrderBy']) && !empty($Where['Sequence'])) {
             $this->db->order_by($Where['OrderBy'], $Where['Sequence']);
+        } else{
+            $this->db->order_by('P.YardsPerGame', 'DESC');
         }
 
         if (!empty($Where['RandData'])) {
@@ -972,6 +978,8 @@ class SnakeDrafts_model extends CI_Model {
                     $WeekStats['field_goals'] = 0;
                     $WeekStats['fumbles_lost'] = 0;
                     $WeekStats['total_tackles'] = 0;
+                    $WeekStats['interceptions'] = 0;
+                    $WeekStats['receptions'] = 0;
 
 
                     if(!empty($Record['Passing'])){
@@ -1035,6 +1043,8 @@ class SnakeDrafts_model extends CI_Model {
                         $WeekStats['field_goals'] = 0;
                         $WeekStats['fumbles_lost'] = 0;
                         $WeekStats['total_tackles'] = 0;
+                        $WeekStats['interceptions'] = 0;
+                        $WeekStats['receptions'] = 0;
                 $Record['PlayerBattingStats'] = (!empty($Record['WeeklyStats'])) ? json_decode($Record['WeeklyStats']) : $WeekStats;
                 $Record['PointsData'] = (!empty($Record['PointsData'])) ? json_decode($Record['PointsData'], TRUE) : array();
                 return $Record;
@@ -1373,6 +1383,8 @@ class SnakeDrafts_model extends CI_Model {
                     $WeekStats['field_goals'] = 0;
                     $WeekStats['fumbles_lost'] = 0;
                     $WeekStats['total_tackles'] = 0;
+                    $WeekStats['interceptions'] = 0;
+                    $WeekStats['receptions'] = 0;
 
                     if(!empty($Record['Passing'])){
                         $Passing = json_decode($Record['Passing'],true);
@@ -1444,12 +1456,12 @@ class SnakeDrafts_model extends CI_Model {
     function getPoints($Where = array()) {
 
         $this->db->select('Points');
-        $this->db->select('PointsTypeGUID,PointsTypeDescprition,PointsTypeShortDescription,PointsType,StatusID');
+        $this->db->select('PointsTypeGUID,PointsTypeDescprition,PointsTypeShortDescription,PointsType,StatusID,Sort');
         $this->db->from('sports_setting_points');
         if (!empty($Where['StatusID'])) {
             $this->db->where("StatusID", $Where['StatusID']);
         }
-        $this->db->order_by("PointsType", 'ASC');
+        $this->db->order_by("Sort", 'ASC');
         $TempOBJ = clone $this->db;
         $TempQ = $TempOBJ->get();
         $Return['Data']['TotalRecords'] = $TempQ->num_rows();
@@ -3800,7 +3812,7 @@ class SnakeDrafts_model extends CI_Model {
                 }
             }
         }
-        $this->db->select('C.ContestGUID,C.ContestName,S.SeriesID,C.ContestID,C.UserID,S.SeriesGUID');
+        $this->db->select('C.ContestGUID,C.ContestName,S.SeriesID,C.ContestID,C.UserID,S.SeriesGUID,(SELECT WeekName FROM sports_matches WHERE SeasonType = C.SubGameType AND WeekID=C.WeekStart LIMIT 1) WeekName');
         if (!empty($Field))
             $this->db->select($Field, FALSE);
         $this->db->from('tbl_entity E, sports_contest C,sports_series S');
@@ -3855,7 +3867,7 @@ class SnakeDrafts_model extends CI_Model {
                         $this->db->where("C.ContestSize >=", @$ContestSize[0]);
                         $this->db->where("C.ContestSize <=", @$ContestSize[1]);
                     } else {
-                        $this->db->where("C.ContestSize >=", @$ContestSize[0]);
+                        $this->db->where("C.ContestSize", @$ContestSize[0]);
                     }
                 }
                 if (isset($Where['Keyword']['EntryFee'])) {
@@ -4036,6 +4048,20 @@ class SnakeDrafts_model extends CI_Model {
                         }
                     }
 
+                    if (isset($Where['MyJoinedContest']) && $Where['MyJoinedContest'] == "Yes") {
+                        $Records[$key]['UserWinningAmount'] = "0";
+                        /** to check auction user final team submitted * */
+                        $this->db->select("UserWinningAmount");
+                        $this->db->from('sports_contest_join');
+                        $this->db->where("ContestID", $Record['ContestID']);
+                        $this->db->where("UserID", @$Where['SessionUserID']);
+                        $this->db->limit(1);
+                        $Query = $this->db->get();
+                        if ($Query->num_rows() > 0) {
+                            $Records[$key]['UserWinningAmount'] = $Query->row_array()['UserWinningAmount'];
+                        }
+                    }
+
                     /** to check series stared or not * */
                     if (isset($Where['JoinedUsers']) && $Where['JoinedUsers'] == "Yes") {
                        $AllJoinedUsers = $this->SnakeDrafts_model->getJoinedContestsUsers("FirstName,UserGUID,UserID,UserTeamCode,ProfilePic", array('ContestID' => $Record['ContestID']), TRUE);
@@ -4207,9 +4233,7 @@ class SnakeDrafts_model extends CI_Model {
 
         $ContestsData = $this->db->query('Select C.ContestSize,C.IsAutoCreate,(SELECT COUNT(*)
                                                         FROM sports_contest_join
-                                                        WHERE ContestID =  C.ContestID ) AS TotalJoined, (SELECT COUNT(ContestID)
-                                                        FROM sports_contest
-                                                        WHERE ContestID=' . $ContestID . ') AS TotalCount from sports_contest C WHERE  ContestID = ' . $ContestID . ' LIMIT 1')->result_array()[0]; 
+                                                        WHERE ContestID =  C.ContestID ) AS TotalJoined from sports_contest C WHERE  ContestID = ' . $ContestID . ' LIMIT 1')->result_array()[0]; 
         if ($ContestsData['TotalJoined'] >= $ContestsData['ContestSize'] && $ContestsData['IsAutoCreate'] == 'Yes') {
             $ContestData = $this->db->query('SELECT * FROM sports_contest WHERE ContestID = ' . $ContestID . ' LIMIT 1')->row_array();
                 /* Create Contest */
@@ -4257,7 +4281,7 @@ class SnakeDrafts_model extends CI_Model {
             "ContestID" => $EntityID,
             "ContestGUID" => $EntityGUID,
             "UserID" => $Input['UserID'],
-            "ContestName" => @$Input['ContestName'] . '- '. (@$Input['TotalCount'] + 1),
+            "ContestName" => @$Input['ContestName'],
             "LeagueType" => @$Input['LeagueType'],
             "LeagueJoinDateTime" => $Input['LeagueJoinDateTime'],
             "AuctionUpdateTime" => (@$Input['LeagueJoinDateTime']) ? date('Y-m-d H:i', strtotime($Input['LeagueJoinDateTime']) + 3600) : null,
@@ -5051,10 +5075,14 @@ class SnakeDrafts_model extends CI_Model {
             $UserTeamPlayers = array();
 
             foreach ($Input['UserTeamPlayers'] as $Key => $Value) {
+                if (empty($Value['PlayerID'])) {
+                    continue;
+                }
                 $UserTeamPlayers[] = array(
                     'UserTeamID' => $EntityID,
                     'SeriesID' => @$SeriesID,
-                    'TeamID' => $Value['TeamID'],
+                    'TeamID' => @$Value['TeamID'],
+                    'PlayerID' => @$Value['PlayerID'],
                     'AuctionDraftAssistantPriority' => $Key + 1,
                     'DateTime' => date('Y-m-d H:i:s')
                 );
@@ -5134,7 +5162,7 @@ class SnakeDrafts_model extends CI_Model {
                 $Temp = array();
                 foreach ($AllJoinedUsers['Data']['Records'] as $Rows) {
                     $this->db->select('UT.UserID,UT.UserTeamID,UTP.PlayerID,UTP.DateTime,T.PlayerGUID,
-                        T.PlayerName,T.PlayerPic,T.PlayerRole,UTP.PlayerSelectTypeRole,
+                        T.PlayerName,T.PlayerPic,T.PlayerRole,UTP.PlayerSelectTypeRole,UTP.DateTime as PlayerDateTime,
                         (CASE T.PlayerRole
                              when "QuarterBack" then "QB"
                              when "RunningBack" then "RB"
@@ -5173,7 +5201,9 @@ class SnakeDrafts_model extends CI_Model {
                         $Temp[] = $PlayersAssistant;
                     }
                 }
-
+                usort($Temp, function($a, $b) {
+                    return $a['PlayerDateTime'] <=> $b['PlayerDateTime'];
+                });
                 $AllTeams['Rounds ' . $i] = $Temp;
             }
         }
@@ -5665,7 +5695,15 @@ class SnakeDrafts_model extends CI_Model {
         /* Edit user team to user team table . */
         $this->db->where('UserTeamID', $UserTeamID);
         $this->db->limit(1);
-        $this->db->update('sports_users_teams', array('UserTeamName' => $Input['UserTeamName'], 'UserTeamType' => $Input['UserTeamType']));
+        $this->db->update('sports_users_teams', 
+            array_filter(
+                array(
+                    'IsPreTeam' => @$Input['IsPreTeam'],
+                    'UserTeamName' => $Input['UserTeamName'],
+                    'UserTeamType' => $Input['UserTeamType']
+                )
+            )
+        );
 
         /* Add User Team Players */
         if (!empty($Input['UserTeamPlayers'])) {
@@ -5679,13 +5717,17 @@ class SnakeDrafts_model extends CI_Model {
             $Input['UserTeamPlayers'] = (!is_array($Input['UserTeamPlayers'])) ? json_decode($Input['UserTeamPlayers'], TRUE) : $Input['UserTeamPlayers'];
             $UserTeamPlayers = array();
             foreach ($Input['UserTeamPlayers'] as $Key => $Value) {
-                $UserTeamPlayers[] = array_filter(array(
+                if (empty($Value['PlayerID'])) {
+                    continue;
+                }
+                $UserTeamPlayers[] = array(
                     'UserTeamID' => $UserTeamID,
                     'SeriesID' => $Input['SeriesID'],
                     'TeamID' => @$Value['TeamID'],
+                    'PlayerID' => @$Value['PlayerID'],
                     'AuctionDraftAssistantPriority' => $Key + 1,
                     'DateTime' => date('Y-m-d H:i:s'),
-                ));
+                );
             }
             if ($UserTeamPlayers)
                 $UserTeamPlayers = array_map("unserialize", array_unique(array_map("serialize", $UserTeamPlayers)));
@@ -8271,7 +8313,7 @@ class SnakeDrafts_model extends CI_Model {
     function getDraftPlayerDropAddTransactions($ContestID) {
                 $WaiverTransaction = array();
                 $this->db->select("U.UserTeamCode,P.PlayerName,P.PlayerGUID,"
-                        . 'CONVERT_TZ(H.DateTime,"+00:00","' . DEFAULT_TIMEZONE . '") AS DateTime,H.Type,H.WeekID,H.PlayerSelectTypeRole,'
+                        . 'CONVERT_TZ(H.DateTime,"+00:00","' . DEFAULT_TIMEZONE . '") AS DateTime,H.DateTime AS DateTimeUTC,H.Type,H.WeekID,H.PlayerSelectTypeRole,'
                         . '(CASE P.PlayerRole
                              when "QuarterBack" then "QB"
                              when "RunningBack" then "RB"
@@ -9134,7 +9176,7 @@ class SnakeDrafts_model extends CI_Model {
         ini_set('max_execution_time', 300);
         $Invite = array();
         /** get upcoming week * */
-        $this->db->select("DATE_FORMAT(MatchStartDateTime,'%y-%m-%d') MatchStartDateTime");
+        $this->db->select("DATE_FORMAT(MatchStartDateTime,'%Y-%m-%d') MatchStartDateTime");
         $this->db->from('sports_matches');
         $this->db->where("SeriesID", $SeriesID);
         $this->db->where("WeekID", $WeekID);
@@ -9232,7 +9274,7 @@ class SnakeDrafts_model extends CI_Model {
                         $this->db->where_in("StatusID", array(2,5));
                         $Query = $this->db->get();
                         if ($Query->num_rows() > 0) {
-                            $Return['Message'] = "Player already played in this week";
+                            $Return['Message'] = "It is past time limit to Add or Drop this player";
                             return $Return;
                         }
                     }
@@ -9249,7 +9291,7 @@ class SnakeDrafts_model extends CI_Model {
                         $this->db->where_in("StatusID", array(2,5));
                         $Query = $this->db->get();
                         if ($Query->num_rows() > 0) {
-                            $Return['Message'] = "Player already played in this week";
+                            $Return['Message'] = "It is past time limit to Add or Drop this player";
                             return $Return;
                         }
                     }
@@ -9419,7 +9461,7 @@ class SnakeDrafts_model extends CI_Model {
                         $this->db->where_in("StatusID", array(2,5));
                         $Query = $this->db->get();
                         if ($Query->num_rows() > 0) {
-                            $Return['Message'] = "Player already played in this week";
+                            $Return['Message'] = "It is past time limit to Add or Drop this player";
                             return $Return;
                         }
                     }
@@ -9436,7 +9478,7 @@ class SnakeDrafts_model extends CI_Model {
                         $this->db->where_in("StatusID", array(2,5));
                         $Query = $this->db->get();
                         if ($Query->num_rows() > 0) {
-                            $Return['Message'] = "Player already played in this week";
+                            $Return['Message'] = "It is past time limit to Add or Drop this player";
                             return $Return;
                         }
                     }

@@ -49,6 +49,7 @@ class Notification_model extends CI_Model
 			N.NotificationText,
 			N.NotificationMessage,
 			N.EntryDate,
+			N.EntryDate as EntryDateUTC,
 			N.StatusID,
 			IF(U.ProfilePic = "","",CONCAT("'.PROFILE_PICTURE_URL.'",U.ProfilePic)) AS ProfilePic
 			');

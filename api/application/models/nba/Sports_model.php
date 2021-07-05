@@ -779,7 +779,7 @@ class Sports_model extends CI_Model {
     function getPoints($Where = array()) {
 
         $this->db->select('Points');
-        $this->db->select('PointsTypeGUID,PointsTypeDescprition,PointsTypeShortDescription,PointsType,StatusID');
+        $this->db->select('PointsTypeGUID,PointsTypeDescprition,PointsTypeShortDescription,PointsType,StatusID,Sort');
         $this->db->from('nba_sports_setting_points');
         if (!empty($Where['StatusID'])) {
             $this->db->where("StatusID", $Where['StatusID']);
@@ -807,7 +807,8 @@ class Sports_model extends CI_Model {
             for ($i = 0; $i < count($Input['Points']); $i++) {
                 $updateArray[] = array(
                     'PointsTypeGUID' => $Input['PointsTypeGUID'][$i],
-                    'Points' => $Input['Points'][$i]
+                    'Points' => $Input['Points'][$i],
+                    'Sort' => $Input['Sort'][$i]
                 );
             }
             /* Update points details to sports_setting_points table. */

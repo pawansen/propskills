@@ -34,7 +34,7 @@ app.controller('PageController', function ($scope, $http,$timeout){
     {
         if ($scope.data.listLoading || $scope.data.noRecords) return;
         $scope.data.listLoading = true;
-        var data = 'SessionKey='+SessionKey+'&OrderByToday=Yes&Params='+'SeriesName,MatchIDLive,MatchStartDateTimeUTC,WeekID,MatchType,MatchNo,MatchStartDateTime,TeamNameLocal,TeamNameVisitor,TeamNameShortLocal,TeamNameShortVisitor,TeamFlagLocal,TeamFlagVisitor,MatchLocation,Status&PageNo='+$scope.data.pageNo+'&PageSize='+$scope.data.pageSize+'&'+$('#filterForm').serialize()+'&'+$('#filterForm1').serialize()+ "&StatusID=" + $scope.StatusID;
+        var data = 'SessionKey='+SessionKey+'&OrderByToday=Yes&Params=WeekName,SeriesName,MatchIDLive,MatchStartDateTimeUTC,WeekID,MatchType,MatchNo,MatchStartDateTime,TeamNameLocal,TeamNameVisitor,TeamNameShortLocal,TeamNameShortVisitor,TeamFlagLocal,TeamFlagVisitor,MatchLocation,Status&PageNo='+$scope.data.pageNo+'&PageSize='+$scope.data.pageSize+'&'+$('#filterForm').serialize()+'&'+$('#filterForm1').serialize()+ "&StatusID=" + $scope.StatusID;
         $http.post(API_URL+'admin/matches/getMatches', data, contentType).then(function(response) {
             var response = response.data;
             if(response.ResponseCode==200 && response.Data.Records){ /* success case */

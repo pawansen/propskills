@@ -6,6 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title><?php echo SITE_NAME;?></title>
 	<base href="<?php echo base_url(); ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="asset/img/favicon-16x16.png">
+
 	<!-- FONT -->
 	<link href='https://fonts.googleapis.com/css?family=Noto+Sans|Roboto:300,400,500|Poppins:100,200,300,400,500,600' rel='stylesheet'>
 	<!-- BOOTSTRAP CSS -->

@@ -182,6 +182,7 @@ class Sports_model extends CI_Model {
                 'SeriesEndDate' => 'DATE_FORMAT(CONVERT_TZ(S.SeriesEndDate,"+00:00","' . DEFAULT_TIMEZONE . '"), "' . DATE_FORMAT . '") SeriesEndDate',
                 'MatchID' => 'M.MatchID',
                 'WeekID' => 'M.WeekID',
+                'WeekName' => 'M.WeekName',
                 'MatchIDLive' => 'M.MatchIDLive',
                 'MatchTypeID' => 'M.MatchTypeID',
                 'MatchNo' => 'M.MatchNo',
@@ -770,12 +771,12 @@ class Sports_model extends CI_Model {
     function getPoints($Where = array()) {
 
         $this->db->select('Points');
-        $this->db->select('PointsTypeGUID,PointsTypeDescprition,PointsTypeShortDescription,PointsType,StatusID');
+        $this->db->select('PointsTypeGUID,PointsTypeDescprition,PointsTypeShortDescription,PointsType,StatusID,Sort');
         $this->db->from('sports_setting_points');
         if (!empty($Where['StatusID'])) {
             $this->db->where("StatusID", $Where['StatusID']);
         }
-        $this->db->order_by("PointsType", 'ASC');
+        $this->db->order_by("Sort", 'ASC');
         $TempOBJ = clone $this->db;
         $TempQ = $TempOBJ->get();
         $Return['Data']['TotalRecords'] = $TempQ->num_rows();
@@ -798,7 +799,8 @@ class Sports_model extends CI_Model {
             for ($i = 0; $i < count($Input['Points']); $i++) {
                 $updateArray[] = array(
                     'PointsTypeGUID' => $Input['PointsTypeGUID'][$i],
-                    'Points' => $Input['Points'][$i]
+                    'Points' => $Input['Points'][$i],
+                    'Sort' => $Input['Sort'][$i]
                 );
             }
             /* Update points details to sports_setting_points table. */

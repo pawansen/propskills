@@ -81,7 +81,7 @@
                         <label class="filter-col" for="ParentCategory">Week</label>
                         <select id="IsPaid" ng-model="WeekStart" name="WeekStart" class="form-control" ng-change="getWeekDate(ContestDuration,WeekStart,SeriesGUID)">
                             <option value="">Please Select</option>
-                            <option ng-repeat="Week in WeekArray" value="{{Week}}" ng-if="Week >= currentWeek.WeekID">{{Week}}</option>
+                            <option ng-repeat="(i, Week) in WeekArray" value="{{i}}" ng-if="i >= currentWeek.WeekID">{{Week}}</option>
                         </select>
                     </div>
                 </div>

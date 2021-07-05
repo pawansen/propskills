@@ -37,7 +37,8 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
     $scope.WeekArray = [];
     $scope.getTypeConfiguration = function (SubGameType)
     {
-        $scope.WeekArray = ($scope.SubGameType == "ProFootballPreSeasonOwners" ? [1,2,3,4] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]);
+        $scope.WeekArray = ($scope.SubGameType == "ProFootballPreSeasonOwners" ? {"0":"HOF","1":"PS1","2":"PS2","3":"PS3"} : {"1":"Week 1", "2":"Week 2", "3":"Week 3", "4":"Week 4", "5":"Week 5", "6":"Week 6", "7":"Week 7", "8":"Week 8", "9":"Week 9", "10":"Week 10", "11":"Week 11", "12":"Week 12", "13":"Week 13", "14":"Week 14", "15":"Week 15", "16":"Week 16", "17":"Week 17", "18":"Week 18", "19":"Week 19", "20":"Week 20", "21":"Week 21", "22":"Week 22", "23":"Week 23"});
+        console.log($scope.WeekArray);
         var data = 'SessionKey=' + SessionKey + '&SubGameType=' + SubGameType;
         $http.post(API_URL + 'admin/auctionDrafts/getSportsGameTypeConfiguration', data, contentType).then(function (response) {
             var response = response.data;
@@ -48,7 +49,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         });
     }
 
-        $scope.getCurrentWeek = function (SeriesGUID)
+    $scope.getCurrentWeek = function (SeriesGUID)
     {
 
         var data = 'SessionKey=' + SessionKey;
@@ -343,7 +344,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         $.each($scope.custom.choices, function (key, value) {
             customWinings.push({'From': value.From, 'To': value.To, 'Percent': value.percent, 'WinningAmount': value.amount});
         });
-        var data = 'SessionKey=' + SessionKey + '&' + '&LeagueJoinTime=' + inputData.LeagueJoinTime + '&SubGameType=' + inputData.SubGameType + '&WeekEnd=' + inputData.WeekEnd + '&WeekStart=' + inputData.WeekStart + '&PlayOff=' + inputData.PlayOff + '&ScoringType=' + inputData.ScoringType + '&LeagueJoinDateTime=' + inputData.LeagueJoinDateTime + '&GameType=' + inputData.GameType + '&GameTimeLive=' + inputData.GameTimeLive + '&AdminPercent=' + inputData.AdminPercent + '&ContestName=' + inputData.ContestName + '&IsPaid=' + inputData.IsPaid + '&WinningAmount=' + inputData.WinningAmount + '&CashBonusContribution=' + inputData.CashBonusContribution + '&ContestFormat=' + inputData.ContestFormat + '&EntryFee=' + inputData.EntryFee + '&EntryType=' + inputData.EntryType + '&ContestSize=' + inputData.ContestSize + '&ContestType=' + inputData.ContestType + '&IsConfirm=' + inputData.IsConfirm + '&ShowJoinedContest=' + inputData.ShowJoinedContest + '&NoOfWinners=' + inputData.NoOfWinners + '&ContestGUID=' + inputData.ContestGUID + '&MinimumUserJoined=' + inputData.MinimumUserJoined + '&Privacy=' + inputData.Privacy + '&CustomizeWinning=' + JSON.stringify(customWinings);
+        var data = 'SessionKey=' + SessionKey + '&' + '&LeagueJoinTime=' + inputData.LeagueJoinTime + '&SubGameType=' + inputData.SubGameType + '&DailyDate=' + inputData.DailyDate +'&WeekEnd=' + inputData.WeekEnd + '&WeekStart=' + inputData.WeekStart + '&PlayOff=' + inputData.PlayOff + '&ScoringType=' + inputData.ScoringType + '&LeagueJoinDateTime=' + inputData.LeagueJoinDateTime + '&GameType=' + inputData.GameType + '&GameTimeLive=' + inputData.GameTimeLive + '&AdminPercent=' + inputData.AdminPercent + '&ContestName=' + inputData.ContestName + '&IsPaid=' + inputData.IsPaid + '&WinningAmount=' + inputData.WinningAmount + '&CashBonusContribution=' + inputData.CashBonusContribution + '&ContestFormat=' + inputData.ContestFormat + '&EntryFee=' + inputData.EntryFee + '&EntryType=' + inputData.EntryType + '&ContestSize=' + inputData.ContestSize + '&ContestType=' + inputData.ContestType+ '&ContestDuration=' + inputData.ContestDuration + '&IsConfirm=' + inputData.IsConfirm + '&ShowJoinedContest=' + inputData.ShowJoinedContest + '&NoOfWinners=' + inputData.NoOfWinners + '&ContestGUID=' + inputData.ContestGUID + '&MinimumUserJoined=' + inputData.MinimumUserJoined + '&Privacy=' + inputData.Privacy + '&CustomizeWinning=' + JSON.stringify(customWinings);
         $http.post(API_URL + 'admin/auctionDrafts/edit', data, contentType).then(function (response) {
             var response = response.data;
             if (response.ResponseCode == 200) { /* success case */

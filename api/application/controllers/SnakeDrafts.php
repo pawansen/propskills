@@ -499,46 +499,27 @@ class SnakeDrafts extends API_Controller {
         $this->form_validation->validation($this);  /* Run validation */
         /* Get Players Data */
         $PlayersData = $this->SnakeDrafts_model->getPlayersDraftAll(@$this->Post['Params'], array_merge($this->Post, array('SeriesID' => $this->SeriesID, 'ContestID' => @$this->ContestID, 'SessionUserID' => @$this->UserID, 'PlayerID' => @$this->PlayerID)), TRUE, @$this->Post['PageNo'], @$this->Post['PageSize']);
-        if (!empty($PlayersData)) {
-            if(!empty($PlayersData['Data']['Records'])){
-                $Roosters = @array_column($PlayersData['Data']['Records'], 'RoosterRole')[0];
-                $RoosterPlayer = array_count_values(array_column($PlayersData['Data']['Records'], 'PlayerSelectTypeRole'));
-                $RoosterArray = array();
-                if($PlayersData['Data']['TotalRecords'] < array_sum($Roosters)){
-                     foreach($Roosters as $Key=>$Row){
-                        if($RoosterPlayer[$Key] < $Row){
-                            for($i=1; $i<= $Row - $RoosterPlayer[$Key]; $i++){
-                                $RoosterArray[]['PlayerSelectTypeRole'] = $Key;
-                            }
-                        } 
-                     }  
-                }
-                $PlayersData['Data']['Records'] = array_merge($PlayersData['Data']['Records'],$RoosterArray);
+
+        if(!empty($PlayersData['Data']['Records'])){
+            $Roosters = @array_column($PlayersData['Data']['Records'], 'RoosterRole')[0];
+            $RoosterPlayer = array_count_values(array_column($PlayersData['Data']['Records'], 'PlayerSelectTypeRole'));
+            $RoosterArray = array();
+            if($PlayersData['Data']['TotalRecords'] < array_sum($Roosters)){
+                 foreach($Roosters as $Key=>$Row){
+                    if($RoosterPlayer[$Key] < $Row){
+                        for($i=1; $i<= $Row - $RoosterPlayer[$Key]; $i++){
+                            $RoosterArray[]['PlayerSelectTypeRole'] = $Key;
+                        }
+                    } 
+                 }  
             }
-            $Query = $this->db->query('SELECT IsAutoDraft FROM sports_contest_join WHERE ContestID = "' . @$this->ContestID . '" AND UserID = "' . @$this->UserID . '" LIMIT 1');
-            $PlayersData['Data']['IsAutoDraft'] = $Query->row()->IsAutoDraft;
-            $this->Return['Data'] = $PlayersData['Data'];
-        }else{
-           $ContestsUsers = $this->SnakeDrafts_model->getContests('ContestID,ContestSize,DraftTotalRounds,Privacy', array('ContestID' => $this->ContestID));
-           if($ContestsUsers['Privacy'] == "No"){
-                $Roosters = footballGetConfigurationPlayersRooster($ContestsUsers['ContestSize']);
-           }else{
-                $Roosters = footballGetConfigurationPlayersRoosterPrivate($ContestsUsers['DraftTotalRounds']);
-           }
-           
-           $RoosterArray = array();
-           foreach($Roosters as $Key=>$Row){
-                for($i=1; $i<= $Row; $i++){
-                    $RoosterArray[]['PlayerSelectTypeRole'] = $Key;
-                }
-           }
-           $PlayersData['Data'] = $this->SnakeDrafts_model->addUserTeamDraft($this->UserID, $this->SeriesID, $this->ContestID);
-           $PlayersData['Data']['TotalRecords'] = $ContestsUsers['DraftTotalRounds'];
-           $PlayersData['Data']['Records'] = $RoosterArray;
-           $Query = $this->db->query('SELECT IsAutoDraft FROM sports_contest_join WHERE ContestID = "' . @$this->ContestID . '" AND UserID = "' . @$this->UserID . '" LIMIT 1');
-           $PlayersData['Data']['IsAutoDraft'] = $Query->row()->IsAutoDraft;
-           $this->Return['Data'] = $PlayersData['Data']; 
+            $PlayersData['Data']['Records'] = array_merge($PlayersData['Data']['Records'],$RoosterArray);
+        } else {
+            $PlayersData['Data']['Records'] = array();
         }
+        $Query = $this->db->query('SELECT IsAutoDraft FROM sports_contest_join WHERE ContestID = "' . @$this->ContestID . '" AND UserID = "' . @$this->UserID . '" LIMIT 1');
+        $PlayersData['Data']['IsAutoDraft'] = $Query->row()->IsAutoDraft;
+        $this->Return['Data'] = $PlayersData['Data'];
     }
 
 
@@ -562,11 +543,11 @@ class SnakeDrafts extends API_Controller {
         
     }
 
-        /*
-      Description: To get players data
+    /*
+      Description: getMyTeamPlayerPos
      */
 
-    public function getPlayersMyTeam_post() {
+    public function getMyTeamPlayerPos_post() {
         $this->form_validation->set_rules('SessionKey', 'SessionKey', 'trim|callback_validateSession');
         $this->form_validation->set_rules('SeriesGUID', 'SeriesGUID', 'trim|required|callback_validateEntityGUID[Series,SeriesID]');
         $this->form_validation->set_rules('ContestGUID', 'ContestGUID', 'trim|callback_validateEntityGUID[Contest,ContestID]');
@@ -577,43 +558,26 @@ class SnakeDrafts extends API_Controller {
         $this->form_validation->set_rules('OrderBy', 'OrderBy', 'trim');
         $this->form_validation->set_rules('Sequence', 'Sequence', 'trim|in_list[ASC,DESC]');
         $this->form_validation->validation($this);  /* Run validation */
-        /* Get Players Data */
-        $PlayersData = $this->SnakeDrafts_model->getPlayersMyTeam(@$this->Post['Params'], array_merge($this->Post, array('SeriesID' => $this->SeriesID, 'ContestID' => @$this->ContestID, 'SessionUserID' => @$this->UserID, 'PlayerID' => @$this->PlayerID)), TRUE, @$this->Post['PageNo'], @$this->Post['PageSize']);
-        if (!empty($PlayersData)) {
-            if(!empty($PlayersData['Data']['Records'])){
-                $Roosters = @array_column($PlayersData['Data']['Records'], 'RoosterRole')[0];
-                $RoosterPlayer = array_count_values(array_column($PlayersData['Data']['Records'], 'PlayerSelectTypeRole'));
-                $RoosterArray = array();
-                if($PlayersData['Data']['TotalRecords'] < array_sum($Roosters)){
-                     foreach($Roosters as $Key=>$Row){
-                        if($RoosterPlayer[$Key] < $Row){
-                            for($i=1; $i<= $Row - $RoosterPlayer[$Key]; $i++){
-                                $RoosterArray[]['PlayerSelectTypeRole'] = $Key;
-                            }
-                        } 
-                     }  
-                }
-                $PlayersData['Data']['Records'] = array_merge($PlayersData['Data']['Records'],$RoosterArray);
+        
+       $ContestsUsers = $this->SnakeDrafts_model->getContests('ContestID,ContestSize,DraftTotalRounds,Privacy', array('ContestID' => $this->ContestID));
+       if($ContestsUsers['Privacy'] == "No"){
+            $Roosters = footballGetConfigurationPlayersRooster($ContestsUsers['ContestSize']);
+       }else{
+            $Roosters = footballGetConfigurationPlayersRoosterPrivate($ContestsUsers['DraftTotalRounds']);
+       }
+       
+       $RoosterArray = array();
+       foreach($Roosters as $Key=>$Row){
+            for($i=1; $i<= $Row; $i++){
+                $RoosterArray[]['PlayerSelectTypeRole'] = $Key;
             }
-            $this->Return['Data'] = $PlayersData['Data'];
-        }else{
-           $ContestsUsers = $this->SnakeDrafts_model->getContests('ContestID,ContestSize,DraftTotalRounds,Privacy', array('ContestID' => $this->ContestID));
-           if($ContestsUsers['Privacy'] == "No"){
-              $Roosters = footballGetConfigurationPlayersRooster($ContestsUsers['ContestSize']);
-           }else{
-              $Roosters = footballGetConfigurationPlayersRoosterPrivate($ContestsUsers['DraftTotalRounds']);
-           }
-           $RoosterArray = array();
-           foreach($Roosters as $Key=>$Row){
-                for($i=1; $i<= $Row; $i++){
-                    $RoosterArray[]['PlayerSelectTypeRole'] = $Key;
-                }
-           }
-           $PlayersData['Data'] = $this->SnakeDrafts_model->addUserTeamDraft($this->UserID, $this->SeriesID, $this->ContestID);
-           $PlayersData['Data']['TotalRecords'] = $ContestsUsers['DraftTotalRounds'];
-           $PlayersData['Data']['Records'] = $RoosterArray;
-           $this->Return['Data'] = $PlayersData['Data']; 
-        }
+       }
+       $PlayersData['Data'] = $this->SnakeDrafts_model->addUserTeamDraft($this->UserID, $this->SeriesID, $this->ContestID);
+       $PlayersData['Data']['TotalRecords'] = $ContestsUsers['DraftTotalRounds'];
+       $PlayersData['Data']['Records'] = $RoosterArray;
+       $Query = $this->db->query('SELECT IsAutoDraft FROM sports_contest_join WHERE ContestID = "' . @$this->ContestID . '" AND UserID = "' . @$this->UserID . '" LIMIT 1');
+       $PlayersData['Data']['IsAutoDraft'] = $Query->row()->IsAutoDraft;
+       $this->Return['Data'] = $PlayersData['Data']; 
     }
 
     /*

@@ -54,48 +54,39 @@
 				<tbody>
 					<tr scope="row" ng-repeat="(key, row) in data.dataList">
 
-						<td class="listed sm clearfix">
+						<td class="listed sm clearfix pb-5">
 							<img class="rounded-circle float-left" ng-src="{{row.ProfilePic}}">
-							<div class="content float-left"><strong><a target="_blank" href="userdetails?UserGUID={{row.UserGUID}}">{{row.Username}}</a></strong>
+							<div class="content float-left"><strong><a target="_blank" href="userdetails?UserGUID={{row.UserGUID}}">{{row.FullName}}</a></strong>
 							<div ng-if="row.Email"><a href="mailto:{{row.Email}}" target="_top">{{row.Email}}</a></div><div ng-if="!row.Email">-</div>
 							</div>
 						</td> 
 						<td class="text-center">
 							<span>{{row.SocialSecurityNumber}}</span>
 						</td>
-						 <td><span>{{row.StateName}}</span></td>
-									<td><span ng-if="row.TotalDeposit > 0">${{row.TotalDeposit}}</span>
-							<span ng-if="row.TotalDeposit <= 0">$0</span></td>
-
-										<td><span ng-if="row.TotalFeePaid > 0">${{row.TotalFeePaid}}</span>
-							<span ng-if="row.TotalFeePaid <= 0">$0</span></td>
-
-										<td><span ng-if="row.TotalWinning > 0">${{row.TotalWinning}}</span>
-							<span ng-if="row.TotalWinning <= 0">$0</span></td>
-
-										<td><span>${{row.NetProfit}}</span>
-						
-                        <!--<td><span>{{row.UserTeamCode}}</span></td>-->
-      <!--                   <td><span>{{row.Username}}</span></td> -->
-						<!-- <td><span>{{row.PlayingHistory.TotalJoinedContestWinning}}/{{row.PlayingHistory.TotalJoinedContest}}</span></td> -->
-						<!-- <td><span ng-if="row.TotalWithdrawals > 0">${{row.TotalWithdrawals}}</span> -->
-							<span ng-if="row.TotalWithdrawals <= 0">$0</span></td>
-		<!-- 				<td class="text-center"><span ng-if="row.Source">{{row.Source}}</span><span ng-if="!row.Source">-</span></td>  -->
-<!-- 						<td class="text-center"><span ng-class="{Pending:'text-danger', Verified:'text-success',Deleted:'text-danger',Blocked:'text-danger'}[row.Status]">{{row.Status}}</span></td> 
 						<td class="text-center">
-							<div class="dropdown">
-								<button class="btn btn-secondary  btn-sm action" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-if="data.UserGUID!=row.UserGUID">&#8230;</button>
-								<div class="dropdown-menu dropdown-menu-left">
-
-									
-									<a class="dropdown-item" target="_blank" href="transactions?UserGUID={{row.UserGUID}}" >Transactions</a>
-									<a class="dropdown-item" target="_blank" href="joinedcontests?UserGUID={{row.UserGUID}}" >Joined Contests</a>
-									<a class="dropdown-item" target="_blank" href="privatecontests?UserGUID={{row.UserGUID}}" >Private Contests</a>
-									<a class="dropdown-item" href="" ng-click="loadFormEdit(key, row.UserGUID)">Edit</a>
-									<a class="dropdown-item" href="" ng-click="loadFormDelete(key, row.UserGUID)">Delete</a>
-								</div>
-							</div>
-						</td> -->
+						 	<span>{{row.StateName}}</span>
+						</td>
+						<td class="text-center">
+							<span ng-if="row.TotalDeposit > 0">
+								${{row.TotalDeposit}}
+							</span>
+							<span ng-if="row.TotalDeposit <= 0">
+								$0
+							</span>
+						</td>
+						<td class="text-center">
+							<span ng-if="row.TotalFeePaid > 0">${{row.TotalFeePaid}}</span>
+							<span ng-if="row.TotalFeePaid <= 0">$0</span>
+						</td>
+						<td class="text-center">
+							<span ng-if="row.TotalWinning > 0">${{row.TotalWinning}}</span>
+							<span ng-if="row.TotalWinning <= 0">$0</span>
+						</td>
+						<td class="text-center">
+							<span>
+								${{row.NetProfit}}
+							</span>
+						</td>
 					</tr>
 				</tbody>
 			</table>

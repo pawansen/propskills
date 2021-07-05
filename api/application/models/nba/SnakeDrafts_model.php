@@ -1467,7 +1467,7 @@ class SnakeDrafts_model extends CI_Model {
     function getPoints($Where = array()) {
 
         $this->db->select('Points');
-        $this->db->select('PointsTypeGUID,PointsTypeDescprition,PointsTypeShortDescription,PointsType,StatusID');
+        $this->db->select('PointsTypeGUID,PointsTypeDescprition,PointsTypeShortDescription,PointsType,StatusID,Sort');
         $this->db->from('nba_sports_setting_points');
         if (!empty($Where['StatusID'])) {
             $this->db->where("StatusID", $Where['StatusID']);

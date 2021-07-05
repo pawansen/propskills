@@ -94,6 +94,12 @@ class AuctionDrafts_model extends CI_Model {
             "PlayedRoster" => $RoosterArray['Start'],
             "BatchRoster" => (!empty($RoosterArray['Batch'])) ? $RoosterArray['Batch'] : 0
         ));
+       if ($Input['WeekStart'] == 0) {
+           $InsertData  =   array_merge($InsertData, array(
+                                'WeekStart' => $Input['WeekStart'],
+                                'WeekEnd'   => $Input['WeekStart']
+                            ));
+        }
         $this->db->insert('sports_contest', $InsertData);
         $PlayerIs = $this->addAuctionPlayer($SeriesID, $EntityID, $Input['WeekStart'],$Input['ContestDuration'],$Input['DailyDate']);
         if(!$PlayerIs) return false;
@@ -515,6 +521,12 @@ class AuctionDrafts_model extends CI_Model {
             // "CustomizeWinning" => (@$Input['IsPaid'] == 'Yes') ? @$Input['CustomizeWinning'] : NULL,
             "CustomizeWinning" => (@$Input['IsPaid'] == 'Yes') ? @$Input['CustomizeWinning'] : array($defaultCustomizeWinningObj),
         ));
+        if ($Input['WeekStart'] == 0) {
+            $UpdateData = array_merge($UpdateData, array(
+                'WeekStart' => $Input['WeekStart'],
+                'WeekEnd'   => $Input['WeekStart']
+            ));
+        }
         $this->db->where('ContestID', $ContestID);
         $this->db->limit(1);
         $this->db->update('sports_contest', $UpdateData);
@@ -1014,7 +1026,7 @@ class AuctionDrafts_model extends CI_Model {
                 }
             }
         }
-        $this->db->select('C.ContestGUID,C.ContestName');
+        $this->db->select('C.ContestGUID,C.ContestName,(SELECT WeekName FROM sports_matches WHERE SeasonType = C.SubGameType AND WeekID=C.WeekStart LIMIT 1) WeekName');
         if (!empty($Field))
             $this->db->select($Field, FALSE);
         $this->db->from('tbl_entity E, sports_contest C,sports_series S');
@@ -1290,9 +1302,7 @@ class AuctionDrafts_model extends CI_Model {
 
             $ContestsData = $this->db->query('Select C.ContestSize,C.IsAutoCreate,(SELECT COUNT(*)
                                                         FROM sports_contest_join
-                                                        WHERE ContestID =  C.ContestID ) AS TotalJoined, (SELECT COUNT(ContestID)
-                                                        FROM sports_contest
-                                                        WHERE ContestID=' . $ContestID . ') AS TotalCount from sports_contest C WHERE  ContestID = ' . $ContestID . ' LIMIT 1')->result_array()[0]; 
+                                                        WHERE ContestID =  C.ContestID ) AS TotalJoined from sports_contest C WHERE  ContestID = ' . $ContestID . ' LIMIT 1')->result_array()[0]; 
             if ($ContestsData['TotalJoined'] >= $ContestsData['ContestSize'] && $ContestsData['IsAutoCreate'] == 'Yes') {
                 $ContestData = $this->db->query('SELECT * FROM sports_contest WHERE ContestID = ' . $ContestID . ' LIMIT 1')->row_array();
                     /* Create Contest */
@@ -1330,7 +1340,7 @@ class AuctionDrafts_model extends CI_Model {
             "ContestID" => $EntityID,
             "ContestGUID" => $EntityGUID,
             "UserID" => $Input['UserID'],
-            "ContestName" => @$Input['ContestName'] . '- '. (@$Input['TotalCount'] + 1),
+            "ContestName" => @$Input['ContestName'],
             "LeagueType" => @$Input['LeagueType'],
             "LeagueJoinDateTime" => $Input['LeagueJoinDateTime'],
             "AuctionUpdateTime" => (@$Input['LeagueJoinDateTime']) ? date('Y-m-d H:i', strtotime($Input['LeagueJoinDateTime']) + 3600) : null,

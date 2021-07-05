@@ -424,7 +424,7 @@ function footballGetConfiguration($Key) {
     $Football['ProFootballPlayoffs'] = array(
         array('Owners' => 16, "RosterSize" => 4, "Start" => 4, "Batch" => 0),
         array('Owners' => 10, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
-        array('Owners' => 6, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
+        array('Owners' => 6, "RosterSize" => 8, "Start" => 8, "Batch" => 0),
         array('Owners' => 2, "RosterSize" => 8, "Start" => 8, "Batch" => 0)
     );
     /*$Football['ProFootballRegularSeasonOwners'] = array(
@@ -476,7 +476,14 @@ function footballGetConfigurationPrivate($Key='ProFootballRegularSeasonOwners') 
         array('Owners' => 6, "RosterSize" => 8, "Start" => 8, "Batch" => 0),
         array('Owners' => 8, "RosterSize" => 8, "Start" => 8, "Batch" => 0),
         array('Owners' => 10, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
-        array('Owners' => 12, "RosterSize" => 6, "Start" => 6, "Batch" => 0)
+        array('Owners' => 12, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
+        array('Owners' => 11, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
+        array('Owners' => 2, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
+        array('Owners' => 3, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
+        array('Owners' => 4, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
+        array('Owners' => 5, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
+        array('Owners' => 7, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
+        array('Owners' => 9, "RosterSize" => 6, "Start" => 6, "Batch" => 0),
     );
     return (isset($Football[$Key])) ? $Football[$Key] : array();
 }
@@ -487,12 +494,12 @@ function footballGetConfigurationPrivate($Key='ProFootballRegularSeasonOwners') 
 
 function footballGetConfigurationPlayersRooster($Size) {
     $Football = array();
-    $Football[16] = array('QB' => 1, "RB" => 1, "WR" => 1, "TE" => 1,"FLEX"=>0);
+    $Football[16] = array('QB' => 1, "RB" => 1, "WR" => 1, "WR/TE" => 1);
     $Football[10] = array('QB' => 1, "RB" => 1, "WR" => 2, "TE" => 1,"FLEX"=>1);
     $Football[3] = array('QB' => 1, "RB" => 2, "WR" => 3, "TE" => 1,"FLEX"=>1);
     $Football[2] = array('QB' => 1, "RB" => 2, "WR" => 3, "TE" => 1,"FLEX"=>1);
     /*- For Private Contest -*/ 
-    $Football[6] = array('QB' => 1, "RB" => 1, "WR" => 2, "TE" => 1,"FLEX"=>1);
+    $Football[6] = array('QB' => 1, "RB" => 2, "WR" => 3, "TE" => 1,"FLEX"=>1);
     $Football[8] = array('QB' => 1, "RB" => 2, "WR" => 3, "TE" => 1,"FLEX"=>1);
 
     return (isset($Football[$Size])) ? $Football[$Size] : array();

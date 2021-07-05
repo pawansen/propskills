@@ -29,6 +29,7 @@
 			<thead>
 				<tr>
 					<th >Type of Points (OFFENSIVE)</th>
+					<th style="width: 75px;">Sort</th>
 					<th style="width: 200px;">Points</th>
 	<!-- 				<th style="width: 200px;">ODI</th>
 					<th style="width: 200px;" >TEST</th> -->
@@ -43,8 +44,11 @@
 							<strong>{{row.PointsTypeDescprition}}</strong>
 						</td>
 						<td>
+							<input type="text" name="Sort[]" class="form-control" ng-model="row.Sort" value="{{row.Sort}}">
+						</td>
+						<td>
 							<input type="text" class="form-control numeric " name="Points[]" ng-model="pointSystem[0].Points" ng-value="{{row.Points | number : 2 }}" >
-										<input type="hidden" name="PointsTypeGUID[]" value="{{row.PointsTypeGUID}}">
+							<input type="hidden" name="PointsTypeGUID[]" value="{{row.PointsTypeGUID}}">
 						</td>
 					</tr>
 				

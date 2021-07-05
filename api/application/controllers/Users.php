@@ -108,6 +108,7 @@ class Users extends API_Controller_Secure {
         /* Validation section */
         $this->form_validation->set_rules('Email', 'Email', 'trim|valid_email|callback_validateEmail[' . $this->Post['SessionKey'] . ']');
         $this->form_validation->set_rules('Username', 'Username', 'trim|alpha_dash|callback_validateUsername[' . $this->Post['SessionKey'] . ']');
+        $this->form_validation->set_rules('UserTeamCode', 'UserTeamCode', 'trim|callback_validateUserTeamCode[' . $this->Post['SessionKey'] . ']');
 
         $this->form_validation->set_rules('Gender', 'Gender', 'trim|in_list[Male,Female,Other]');
         $this->form_validation->set_rules('CitizenStatus', 'Citizen Status', 'trim|in_list[Yes,No]');
@@ -261,6 +262,20 @@ class Users extends API_Controller_Secure {
         array_push($Avatars, $avatarObj7);
 
         $this->Return['Data']['Records'] = $Avatars;
+    }
+
+
+    function validateUserTeamCode($UserTeamCode,$SessionKey){
+        $UserID = $this->Users_model->checkSession($SessionKey);
+        if (!$UserID) {
+            $this->form_validation->set_message('validateUserTeamCode', 'Please relogin and try again!');
+            return FALSE;
+        }
+        $Check = $this->Users_model->getUsers('UserID', array('UserIDNot'=> $UserID,'UserTeamCode' => $UserTeamCode));
+        if ($Check) {
+            $this->form_validation->set_message('validateUserTeamCode', 'Sorry, but this Team Name is already taken.');
+            return FALSE;
+        }
     }
 
 }

@@ -59,7 +59,7 @@
                         <label class="filter-col" for="ParentCategory">Week Start</label>
                         <select id="IsPaid" ng-model="formData.WeekStart" name="WeekStart" class="form-control" ng-change="getWeekDate(ContestDuration,WeekStart,SeriesGUID)">
                             <option value="">Please Select</option>
-                            <option ng-repeat="Week in WeekArray" value="{{Week}}">{{Week}}</option>
+                            <option ng-repeat="(i, Week) in WeekArray" ng-selected="(i == formData.WeekStart ? true : false)" value="{{i}}">{{Week}}</option>
                         </select>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                         <label class="filter-col" for="ParentCategory">Day Date</label>
                         <select id="DailyDate" ng-model="formData.DailyDate" name="DailyDate" class="form-control" >
                             <option value="">Please Select</option>
-                            <option ng-repeat="Value in DailyDateResponse" value="{{Value.MatchStartDateTime}}">{{Value.MatchStartDateTime}}</option>
+                            <option ng-repeat="Value in DailyDateResponse" ng-selected="(formData.DailyDate == Value.MatchStartDateTime ? true : false)" value="{{Value.MatchStartDateTime}}">{{Value.MatchStartDateTime}}</option>
                         </select>
                     </div>
                 </div>

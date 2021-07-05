@@ -36,17 +36,17 @@
 					<tr>
 						<!-- <th style="width: 50px;" class="text-center" ng-if="data.dataList.length>1"><input type="checkbox" name="select-all" id="select-all" class="mt-1" ></th> -->	
 						<th class="sort" ng-click="applyOrderedList('FirstName','ASC')" style="width: 400px;min-width:200px;">User &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Name &nbsp;<span class="sort_deactive"></span></th>
-				<!-- 		<th>User Team Code</th> -->
-						<th>Username</th>
+						<th>Team Name</th>
+						<!-- <th>Username</th> -->
 						<!-- <th>Full Legal Name</th> -->
 						<!-- <th style="width: 120px;">Gender</th> -->
-						<th style="width: 120px;">Date of Birth</th>
+						<th style="width: 120px;" class="text-center">Date of Birth</th>
 						<!-- <th style="width: 120px;">Referred</th> -->
 						<!-- <th style="width: 200px;">Role</th> -->
 
-			<!-- 			<th style="width: 120px;" class="text-center">Social Security Number</th> -->
-				<!-- 		<th>Citizen Status</th>  -->
-						<th>State</th> 
+						<!-- 			<th style="width: 120px;" class="text-center">Social Security Number</th> -->
+						<!-- 		<th>Citizen Status</th>  -->
+						<th class="text-center">State</th> 
 						<th style="width: 160px;" class="text-center">Last Login</th>
 						<th style="width: 160px;" class="text-center sort" ng-click="applyOrderedList('E.EntryDate', 'ASC')">Registered On <span class="sort_deactive">&nbsp;</span></th>
 						<th style="width: 80px;" class="text-center">Public Contest Won/Play</th>
@@ -63,35 +63,33 @@
 
 						<td class="listed sm clearfix">
 							<img class="rounded-circle float-left" ng-src="{{row.ProfilePic}}">
-							<div class="content float-left"><strong><a target="_blank" href="userdetails?UserGUID={{row.UserGUID}}">{{row.FullName}}</a></strong>
+							<div class="content float-left"><strong><a target="_blank" href="userdetails?UserGUID={{row.UserGUID}}">{{row.FullName}} ({{row.Username}})</a></strong>
 							<div ng-if="row.Email"><a href="mailto:{{row.Email}}" target="_top">{{row.Email}}</a></div><div ng-if="!row.Email">-</div>
 							</div>
 						</td> 
-                        <!--<td><span>{{row.UserTeamCode}}</span></td>-->
-                        <td><span>{{row.Username}}</span></td>
-<!-- 						<td><span ng-if="row.MediaPAN.MediaCaption">{{row.MediaPAN.MediaCaption.LegalName}}</span><span ng-if="!row.MediaPAN.MediaCaption">-</span></td>  -->
-						<!-- <td><span ng-if="row.Gender">{{row.Gender}}</span><span ng-if="!row.Gender">-</span></td>  -->
-						<td><span ng-if="row.BirthDate">{{row.BirthDate}}</span><span ng-if="!row.BirthDate">-</span></td> 
-						<!-- <td><span ng-if="row.ReferredCount"><a href="javascript:void(0)" ng-click="loadFormReferredUsersList(key, row.UserGUID)" >{{row.ReferredCount}}</span><span ng-if="!row.ReferredCount">-</span></td>  -->
-						<!-- <td ng-bind="row.UserTypeName"></td>  -->
+                        <td class="text-center"><span>{{row.UserTeamCode}}</span></td>
+                        <!-- <td class="text-center"><span>{{row.Username}}</span></td> -->
+						<!-- 						<td class="text-center"><span ng-if="row.MediaPAN.MediaCaption">{{row.MediaPAN.MediaCaption.LegalName}}</span><span ng-if="!row.MediaPAN.MediaCaption">-</span></td>  -->
+						<!-- <td class="text-center"><span ng-if="row.Gender">{{row.Gender}}</span><span ng-if="!row.Gender">-</span></td>  -->
+						<td class="text-center"><span ng-if="row.BirthDate">{{row.BirthDate}}</span><span ng-if="!row.BirthDate">-</span></td> 
+						<!-- <td class="text-center"><span ng-if="row.ReferredCount"><a href="javascript:void(0)" ng-click="loadFormReferredUsersList(key, row.UserGUID)" >{{row.ReferredCount}}</span><span ng-if="!row.ReferredCount">-</span></td>  -->
+						<!-- <td class="text-center" ng-bind="row.UserTypeName"></td>  -->
 						
-<!-- 						<td align="center"><span ng-if="row.SocialSecurityNumber">{{row.SocialSecurityNumber}}</span><span ng-if="!row.SocialSecurityNumber">-</span></td>  -->
-					<!-- 	<td><span>{{row.CitizenStatus}}</span></td> -->
-						<td><span>{{row.StateName}}</span></td>
-						<td><span ng-if="row.LastLoginDate">{{row.LastLoginDate}}</span><span ng-if="!row.LastLoginDate">-</span></td> 
-						<td ng-bind="row.RegisteredOn"></td> 
-						<td><span>{{row.PlayingHistory.TotalJoinedContestWinning}}/{{row.PlayingHistory.TotalJoinedContest}}</span></td>
-						<td><span >${{(row.TotalWithdrawals == '')?0:row.TotalWithdrawals }}</span></td>
-						<td><span >${{row.WalletAmount}}</span></td>
-		<!-- 				<td class="text-center"><span ng-if="row.Source">{{row.Source}}</span><span ng-if="!row.Source">-</span></td>  -->
+						<!-- 						<td class="text-center" align="center"><span ng-if="row.SocialSecurityNumber">{{row.SocialSecurityNumber}}</span><span ng-if="!row.SocialSecurityNumber">-</span></td>  -->
+						<!-- 	<td class="text-center"><span>{{row.CitizenStatus}}</span></td> -->
+						<td class="text-center"><span>{{row.StateName}}</span></td>
+						<td class="text-center"><span ng-if="row.LastLoginDate">{{row.LastLoginDate}}</span><span ng-if="!row.LastLoginDate">-</span></td> 
+						<td class="text-center" ng-bind="row.RegisteredOn"></td> 
+						<td class="text-center"><span>{{row.PlayingHistory.TotalJoinedContestWinning}}/{{row.PlayingHistory.TotalJoinedContest}}</span></td>
+						<td class="text-center"><span >${{(row.TotalWithdrawals == '')?0:row.TotalWithdrawals }}</span></td>
+						<td class="text-center"><span >${{row.WalletAmount}}</span></td>
+							<!-- 				<td class="text-center" class="text-center"><span ng-if="row.Source">{{row.Source}}</span><span ng-if="!row.Source">-</span></td>  -->
 						<td class="text-center"><span ng-class="{Pending:'text-danger', Verified:'text-success',Deleted:'text-danger',Blocked:'text-danger'}[row.Status]">{{row.Status}}</span></td> 
 						<td class="text-center">
 							<div class="dropdown">
 								<button class="btn btn-secondary  btn-sm action" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-if="data.UserGUID!=row.UserGUID">&#8230;</button>
 								<div class="dropdown-menu dropdown-menu-left">
-									
-<!--									<a class="dropdown-item" href="" ng-click="loadFormAddCash(key, row.UserGUID)">Add Cash Bonus</a>-->
-									
+									<!--<a class="dropdown-item" href="" ng-click="loadFormAddCash(key, row.UserGUID)">Add Cash Bonus</a>-->
 									<a class="dropdown-item" target="_blank" href="transactions?UserGUID={{row.UserGUID}}" >Transactions</a>
 									<a class="dropdown-item" target="_blank" href="joinedcontests?UserGUID={{row.UserGUID}}" >Joined Contests</a>
 									<a class="dropdown-item" target="_blank" href="privatecontests?UserGUID={{row.UserGUID}}" >Private Contests</a>

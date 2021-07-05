@@ -505,6 +505,7 @@ class Users_model extends CI_Model {
         if (!empty($Where['UserGUID'])) {
             $this->db->where("U.UserGUID", $Where['UserGUID']);
         }
+        
         if (!empty($Where['ReferredByUserID'])) {
             $this->db->where("U.ReferredByUserID", $Where['ReferredByUserID']);
         }
@@ -512,6 +513,11 @@ class Users_model extends CI_Model {
         if (!empty($Where['Username'])) {
             $this->db->where("U.Username", $Where['Username']);
         }
+
+        if (!empty($Where['UserTeamCode'])) {
+            $this->db->where("U.UserTeamCode", $Where['UserTeamCode']);
+        }
+
         if (!empty($Where['Email'])) {
             $this->db->where("U.Email", $Where['Email']);
         }
@@ -1563,6 +1569,7 @@ class Users_model extends CI_Model {
                 'OpeningBalance' => '(W.OpeningWalletAmount + W.OpeningWinningAmount + W.OpeningCashBonus) OpeningBalance',
                 'ClosingBalance' => '(W.ClosingWalletAmount + W.ClosingWinningAmount + W.ClosingCashBonus) ClosingBalance',
                 'Narration' => 'W.Narration',
+                'EntryDateUTC' => 'W.EntryDate EntryDateUTC',
                 'EntryDate' => 'DATE_FORMAT(CONVERT_TZ(W.EntryDate,"+00:00","' . DEFAULT_TIMEZONE . '"), "' . DATE_FORMAT . '") EntryDate',
                 'Status' => 'CASE W.StatusID
                                         when "1" then "Pending"
@@ -1780,6 +1787,7 @@ class Users_model extends CI_Model {
                 'LastName' => 'U.LastName',
                 'ProfilePic' => 'IF(U.ProfilePic IS NULL,CONCAT("' . BASE_URL . '","uploads/profile/picture/","default.jpg"),CONCAT("' . BASE_URL . '","uploads/profile/picture/",U.ProfilePic)) AS ProfilePic',
                 'PaymentGateway' => 'W.PaymentGateway',
+                'EntryDateUTC' => 'W.EntryDate EntryDateUTC',
                 'EntryDate' => 'DATE_FORMAT(CONVERT_TZ(W.EntryDate,"+00:00","' . DEFAULT_TIMEZONE . '"), "' . DATE_FORMAT . '") EntryDate',
                 'Status' => 'CASE W.StatusID
                                                             when "1" then "Pending"

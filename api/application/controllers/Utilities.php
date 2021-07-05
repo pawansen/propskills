@@ -82,6 +82,23 @@ class Utilities extends API_Controller {
         ));
     }
 
+
+    /*
+    Name:       update
+    Description:  Use to get site config.
+    URL:      /utilities/getSettings/ 
+    */
+    public function getSettings_post()
+    {
+      $this->form_validation->set_rules('ConfigTypeGUID', 'Config Type', 'trim|required');
+      $this->form_validation->validation($this);
+
+      $ConfigData = $this->Utility_model->getConfigs(@$this->Post);
+      if(!empty($ConfigData)){
+        $this->Return['Data'] = $ConfigData['Data'];
+      }
+    }
+
     /*
       Description:    Use to get list of random posts.
       URL:            /api/utilities/getPosts

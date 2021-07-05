@@ -47,9 +47,9 @@
 					<th style="width: 200px;">Team Local</th>
 					<th style="width: 100px;"></th>
 					<th style="width: 200px;">Team Visitor</th>
-					<th>Match Live ID</th>
-					<th style="width: 170px;">Match Start On</th>
-					<th style="width: 170px;">Week</th>
+					<th class="text-center">Match Live ID</th>
+					<th class="text-center" style="width: 170px;">Match Start On</th>
+					<th style="width: 170px;" class="text-center">Week</th>
 					<th style="width: 100px;" class="text-center">Status</th>
 					<th style="width: 100px;" class="text-center">Action</th>
 				</tr>
@@ -73,15 +73,16 @@
 					<td>
 						<p>{{row.TeamNameVisitor}} <br><small>( {{row.TeamNameShortVisitor}} )</small></p>
 					</td>
-					<td>
+					<td class="text-center">
 						<p>{{row.MatchIDLive}}</p>
 					</td>
 					
-					<td>
+					<td class="text-center">
 						<p>{{row.MatchStartDateTimeUTC}} (EST)</p>
 					</td>
-					<td>
-						<p>{{row.WeekID}}</p>
+					<td class="text-center">
+						<!-- <p>{{row.WeekID}}</p> -->
+						<p>{{(row.WeekName != "" ? row.WeekName : row.WeekID )}}</p>
 					</td>
 					<td class="text-center"><span ng-class="{Pending:'text-secondary', Completed:'text-success',Cancelled:'text-danger',Running:'text-primary'}[row.Status]">{{row.Status}}</span></td>
 

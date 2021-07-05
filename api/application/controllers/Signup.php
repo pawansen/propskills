@@ -19,7 +19,7 @@ class Signup extends API_Controller {
     public function index_post() {
         /* Validation section */
         $this->form_validation->set_rules('Email', 'Email', 'trim' . (empty($this->Post['Source']) || $this->Post['Source'] == 'Direct' ? '|required' : '') . '|valid_email|callback_validateEmail');
-        $this->form_validation->set_rules('Username', 'Username', 'trim|callback_validateUsername');
+        $this->form_validation->set_rules('Username', 'Username', 'trim|alpha_dash|callback_validateUsername');
         $this->form_validation->set_rules('Password', 'Password', 'trim' . (empty($this->Post['Source']) || $this->Post['Source'] == 'Direct' ? '|required' : ''));
         $this->form_validation->set_rules('FirstName', 'FirstName', 'trim');
         $this->form_validation->set_rules('MiddleName', 'MiddleName', 'trim');
