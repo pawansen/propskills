@@ -84,7 +84,7 @@ Creation date: 20/12/2018 11:41
 .top_header {
     border-bottom: 1px solid #666;
     z-index: 1070;
-    background-color: #4f5356;
+    background-color: #8A9749;
 }
 a:hover {
     text-decoration: none;
@@ -97,7 +97,7 @@ a:hover {
     max-width: 225px;
     height: 100%;
     display: block;
-    background: #4f5356 !important;
+    background: #8A9749 !important;
     padding: 0;
     transition: all 0.1s ease 0s;
     top: 56px;
@@ -181,7 +181,7 @@ a:hover {
 }
 .navigation .dropdown-menu {
     border: none;
-    background-color: #4f5356;
+    background-color: #8A9749;
     box-shadow: none;
     width: 100%;
     position: static !important;

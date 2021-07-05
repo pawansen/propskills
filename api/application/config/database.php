@@ -103,7 +103,7 @@ switch (ENVIRONMENT) {
 
       $db['default']['hostname'] = 'localhost';
       $db['default']['username'] = 'root';
-      $db['default']['password'] = 'root';
+      $db['default']['password'] = '';
       break;
     case 'testing':
         $db['default']['hostname'] = '54.254.226.187';
