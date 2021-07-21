@@ -164,14 +164,18 @@ class AuctionDrafts_model extends CI_Model {
 
     function addAuctionPlayer($SeriesID, $ContestID, $WeekID, $ContestDuration, $DailyDate) {
 
-        // if($ContestDuration == "Weekly"){
-        //   $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "' AND SeriesID = '" . $SeriesID . "'");
-        // }else{
-        //   $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "' AND SeriesID = '" . $SeriesID . "' AND DATE(MatchStartDateTime) = '" .$DailyDate . "'");
-        // }
-        $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "'");
+        if($ContestDuration == "Weekly"){
+          $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "' AND SeriesID = '" . $SeriesID . "'");
+        }else{
+          $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE SeriesID = '" . $SeriesID . "' AND DATE(MatchStartDateTime) = '" .$DailyDate . "'");
+        }
+
+        /**last this line comment open**/
+        /*$Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "'");*/
+
         //$Query = $this->db->query('SELECT T.TeamID FROM sports_teams T,tbl_entity E WHERE T.TeamID=E.EntityID AND E.GameSportsType="Nfl"');
         //$Teams = ($Query->num_rows() > 0) ? $Query->result_array() : FALSE;
+
         $TeamData = ($Query->num_rows() > 0) ? $Query->result_array() : false;
         $TeamIDLocal = array_column($TeamData,'TeamIDLocal');
         $TeamIDVisitor = array_column($TeamData,'TeamIDVisitor');
@@ -220,7 +224,6 @@ class AuctionDrafts_model extends CI_Model {
                     }
                     if (!empty($InsertBatch)) {
                         $this->db->insert_batch('tbl_auction_player_bid_status', $InsertBatch);
-
                         $Query = $this->db->query('SELECT SeriesID FROM sports_auction_draft_player_point WHERE SeriesID = "' . $SeriesID . '" LIMIT 1');
                         $SeriesID = ($Query->num_rows() > 0) ? $Query->row()->SeriesID : false;
                         if (!$SeriesID) {
@@ -2616,14 +2619,14 @@ class AuctionDrafts_model extends CI_Model {
 
                     /* Send Mail To Users */
 
-                    send_mail(array(
+                    /*send_mail(array(
                         'emailTo' => $Rows['Email'],
                         'template_id' => 'd-9683d71dcf0546bdb255e4edaffa09ba',
                         'Subject' => SITE_NAME . " Contest Cancelled",
                         "Name" => $Rows['FirstName'],
                         "ContestName" => $Value['ContestName'],
                         "EmailText" => $Value['LeagueJoinDateTime']
-                    ));
+                    ));*/
                 }
             }
         }

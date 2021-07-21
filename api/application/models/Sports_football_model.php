@@ -8815,6 +8815,7 @@ class Sports_football_model extends CI_Model {
                                     'passing_touchdowns' => (isset($xml2->category[$i]->player[$j]['passing_touchdowns'])) ? (string) $xml2->category[$i]->player[$j]['passing_touchdowns'] : 0,
                                     'passing_touchdowns_pct' => (isset($xml2->category[$i]->player[$j]['passing_touchdowns_pct']))?(string) $xml2->category[$i]->player[$j]['passing_touchdowns_pct']:0,
                                     'interceptions' => (isset($xml2->category[$i]->player[$j]['interceptions']))?(string) $xml2->category[$i]->player[$j]['interceptions']:0,
+                                    'fumbles_returned_for_touchdowns' => (isset($xml2->category[$i]->player[$j]['fumbles_returned_for_touchdowns']))?(string) $xml2->category[$i]->player[$j]['fumbles_returned_for_touchdowns']:0,
                                     'quaterback_rating' => isset($xml2->category[$i]->player[$j]['quaterback_rating'])?(string) $xml2->category[$i]->player[$j]['quaterback_rating']:0,
 
                                     'rushing_attempts' => isset($xml2->category[$i]->player[$j]['rushing_attempts'])?(string) $xml2->category[$i]->player[$j]['rushing_attempts']:0,
@@ -8845,7 +8846,9 @@ class Sports_football_model extends CI_Model {
                                     'punts_returned' => isset($xml2->category[$i]->player[$j]['punts_returned'])?(string) $xml2->category[$i]->player[$j]['punts_returned']:0,
                                     'field_goals_made' => isset($xml2->category[$i]->player[$j]['field_goals_made'])?(string) $xml2->category[$i]->player[$j]['field_goals_made']:0,
                                     'punts' => isset($xml2->category[$i]->player[$j]['punts'])?(string) $xml2->category[$i]->player[$j]['punts']:0,
-                                    'touchbacks' => isset($xml2->category[$i]->player[$j]['touchbacks'])?(string) $xml2->category[$i]->player[$j]['touchbacks']:0
+                                    'touchbacks' => isset($xml2->category[$i]->player[$j]['touchbacks'])?(string) $xml2->category[$i]->player[$j]['touchbacks']:0,
+                                    'two_point_conversions' => isset($xml2->category[$i]->player[$j]['two_point_conversions'])?(string) $xml2->category[$i]->player[$j]['two_point_conversions']:0,
+                                    'return_touchdowns' => isset($xml2->category[$i]->player[$j]['return_touchdowns'])?(string) $xml2->category[$i]->player[$j]['return_touchdowns']:0
                                 ));
 
                                 $PlayerRole = $Players[(int)$xml2->category[$i]->player[$j]['id']];
@@ -8879,13 +8882,18 @@ class Sports_football_model extends CI_Model {
                                     $PlayerUpdates['PlayerBattingStats'] = json_encode($PlayerStats);
                                 }
                                     if($Category == 'Passing'){
+                                      $Passing['fumbles'] = (isset($xml2->category[$i]->player[$j]['fumbles'])) ? (string) $xml2->category[$i]->player[$j]['fumbles'] : 0 ;
+                                      $Passing['interceptions'] = (isset($xml2->category[$i]->player[$j]['interceptions'])) ? (string) $xml2->category[$i]->player[$j]['interceptions'] : 0 ;
                                       $Passing['rank'] = (isset($xml2->category[$i]->player[$j]['rank'])) ? (string) $xml2->category[$i]->player[$j]['rank'] : 0 ;
                                       $Passing['yards'] = (isset($xml2->category[$i]->player[$j]['yards'])) ? (string) $xml2->category[$i]->player[$j]['yards'] : 0 ;
+                                      $Passing['yards_per_game'] = (isset($xml2->category[$i]->player[$j]['yards_per_game'])) ? (string) $xml2->category[$i]->player[$j]['yards_per_game'] : 0 ;
                                       $Passing['passing_touchdowns'] = (isset($xml2->category[$i]->player[$j]['passing_touchdowns'])) ? (string) $xml2->category[$i]->player[$j]['passing_touchdowns'] : 0 ;
                                       $PlayerUpdates['Passing'] = json_encode($Passing);
                                     }
 
                                      if($Category == 'Rushing'){
+                                      $Rushing['fumbles'] = (isset($xml2->category[$i]->player[$j]['fumbles'])) ? (string) $xml2->category[$i]->player[$j]['fumbles'] : 0 ;
+                                      $Rushing['yards_per_game'] = (isset($xml2->category[$i]->player[$j]['yards_per_game'])) ? (string) $xml2->category[$i]->player[$j]['yards_per_game'] : 0 ;
                                       $Rushing['rushing_yards'] = (isset($xml2->category[$i]->player[$j]['yards'])) ? (string) $xml2->category[$i]->player[$j]['yards'] : 0 ;
                                       $Rushing['rushing_touchdowns'] = (isset($xml2->category[$i]->player[$j]['rushing_touchdowns'])) ? (string) $xml2->category[$i]->player[$j]['rushing_touchdowns'] : 0 ;
                                       $Rushing['fumbles_lost'] = (isset($xml2->category[$i]->player[$j]['fumbles_lost'])) ? (string) $xml2->category[$i]->player[$j]['fumbles_lost'] : 0 ;
@@ -8893,6 +8901,9 @@ class Sports_football_model extends CI_Model {
                                     }
 
                                      if($Category == 'Receiving'){
+                                      $Receiving['receptions'] = (isset($xml2->category[$i]->player[$j]['receptions'])) ? (string) $xml2->category[$i]->player[$j]['receptions'] : 0 ;
+                                      $Receiving['fumbles'] = (isset($xml2->category[$i]->player[$j]['fumbles'])) ? (string) $xml2->category[$i]->player[$j]['fumbles'] : 0 ;
+                                      $Receiving['yards_per_game'] = (isset($xml2->category[$i]->player[$j]['yards_per_game'])) ? (string) $xml2->category[$i]->player[$j]['yards_per_game'] : 0 ;
                                       $Receiving['receiving_yards'] = (isset($xml2->category[$i]->player[$j]['receiving_yards'])) ? (string) $xml2->category[$i]->player[$j]['receiving_yards'] : 0 ;
                                       $Receiving['receiving_touchdowns'] = (isset($xml2->category[$i]->player[$j]['receiving_touchdowns'])) ? (string) $xml2->category[$i]->player[$j]['receiving_touchdowns'] : 0 ;
                                       $Receiving['fumbles_lost'] = (isset($xml2->category[$i]->player[$j]['fumbles_lost'])) ? (string) $xml2->category[$i]->player[$j]['fumbles_lost'] : 0 ;
@@ -8900,11 +8911,16 @@ class Sports_football_model extends CI_Model {
                                     }
 
                                     if($Category == 'Scoring'){
+                                      $Scoring['return_touchdowns'] = (isset($xml2->category[$i]->player[$j]['return_touchdowns'])) ? (string) $xml2->category[$i]->player[$j]['return_touchdowns'] : 0 ;
+                                       $Scoring['two_point_conversions'] = (isset($xml2->category[$i]->player[$j]['two_point_conversions'])) ? (string) $xml2->category[$i]->player[$j]['two_point_conversions'] : 0 ;
                                       $Scoring['field_goals'] = (isset($xml2->category[$i]->player[$j]['field_goals'])) ? (string) $xml2->category[$i]->player[$j]['field_goals'] : 0 ;
+                                      $Scoring['total_points_per_game'] = (isset($xml2->category[$i]->player[$j]['total_points_per_game'])) ? (string) $xml2->category[$i]->player[$j]['total_points_per_game'] : 0 ;
+                                      $Scoring['total_points'] = (isset($xml2->category[$i]->player[$j]['total_points'])) ? (string) $xml2->category[$i]->player[$j]['total_points'] : 0 ;
                                       $PlayerUpdates['Scoring'] = json_encode($Scoring);
                                     }
 
                                     if($Category == 'Defense'){
+                                      $Defense['fumbles_returned_for_touchdowns'] = (isset($xml2->category[$i]->player[$j]['fumbles_returned_for_touchdowns'])) ? (string) $xml2->category[$i]->player[$j]['fumbles_returned_for_touchdowns'] : 0 ;
                                       $Defense['total_tackles'] = (isset($xml2->category[$i]->player[$j]['total_tackles'])) ? (string) $xml2->category[$i]->player[$j]['total_tackles'] : 0 ;
                                       $PlayerUpdates['Defense'] = json_encode($Defense);
                                     }

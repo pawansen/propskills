@@ -6,7 +6,8 @@ var contentType = {
     }
 };
 app.factory('socket', function () {
-    var socket = io.connect('http://159.65.8.30:3300');
+    //var socket = io.connect('http://159.65.8.30:3300');
+    var socket = io.connect('http://localhost:3000');
     return socket;
 });
 /*main controller*/

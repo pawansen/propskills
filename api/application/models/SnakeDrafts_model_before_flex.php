@@ -7820,7 +7820,7 @@ class SnakeDrafts_model extends CI_Model {
             /* Send referral SMS to User with referral url */
             $this->Utility_model->sendMobileSMS(array(
                 'PhoneNumber' => $Input['Phone'],
-                'Text' => "Play with me on Stat Action Sports. Click " . base_url() . " to login on portal and Use contest code " . $UserInvitationCode . " to join contest."
+                'Text' => "Play with me on Fandom Royale. Click " . base_url() . " to login on portal and Use contest code " . $UserInvitationCode . " to join contest."
             ));
         }
     }

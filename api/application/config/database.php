@@ -79,7 +79,7 @@ $db['default'] = array(
     'hostname' => '',
     'username' => '',
     'password' => '',
-    'database' => 'fandomroyale',
+    'database' => 'propskills',
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
     'pconnect' => FALSE,
@@ -97,9 +97,9 @@ $db['default'] = array(
 );
 switch (ENVIRONMENT) {
     case 'local':
-      // $db['default']['hostname'] = '159.65.8.30';
+      // $db['default']['hostname'] = 'localhost';
       // $db['default']['username'] = 'root';
-      // $db['default']['password'] = 'u%&V+hTAj#84?a9+?cKcm@m6D*ff';
+      // $db['default']['password'] = '';
 
       $db['default']['hostname'] = 'localhost';
       $db['default']['username'] = 'root';

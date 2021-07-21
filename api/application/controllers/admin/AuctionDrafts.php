@@ -88,7 +88,8 @@ class AuctionDrafts extends API_Controller_Secure {
         $this->Post['DraftTotalRounds'] = round($TeamSize / $ContestSize);
         if (!$this->AuctionDrafts_model->addContest($this->Post, $this->SessionUserID, $this->MatchID, $this->SeriesID)) {
             $this->Return['ResponseCode'] = 500;
-            $this->Return['Message'] = "An error occurred, please try again later.";
+            //$this->Return['Message'] = "An error occurred, please try again later.";
+            $this->Return['Message'] = "Players not available.";
         } else {
             $this->Return['Message'] = "Contest created successfully.";
         }

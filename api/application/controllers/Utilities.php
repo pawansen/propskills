@@ -70,16 +70,28 @@ class Utilities extends API_Controller {
         $this->form_validation->set_rules('Message', 'Message', 'trim|required');
         $this->form_validation->validation($this); /* Run validation */
         /* Validation - ends */
-        send_mail(array(
-            'emailTo' => SITE_CONTACT_EMAIL,
-            'template_id' => 'd-67f8b7d6a2f047cea64e1958b9de7ff6',
-            'Subject' => $this->Post['Name'] . " filled out the contact form on the " . SITE_NAME,
-            "Name" => $this->Post['Name'],
-            'Email' => $this->Post['Email'],
-            'PhoneNumber' => $this->Post['PhoneNumber'],
-            'Title' => $this->Post['Title'],
-            'Message' => $this->Post['Message']
-        ));
+        // send_mail(array(
+        //     'emailTo' => SITE_CONTACT_EMAIL,
+        //     'template_id' => 'd-67f8b7d6a2f047cea64e1958b9de7ff6',
+        //     'Subject' => $this->Post['Name'] . " filled out the contact form on the " . SITE_NAME,
+        //     "Name" => $this->Post['Name'],
+        //     'Email' => $this->Post['Email'],
+        //     'PhoneNumber' => $this->Post['PhoneNumber'],
+        //     'Title' => $this->Post['Title'],
+        //     'Message' => $this->Post['Message']
+        // ));
+        sendMail(array(
+          'emailTo' => SITE_CONTACT_EMAIL,
+          'emailSubject' => $this->Post['Name'] . " filled out the contact form on the " . SITE_NAME,
+          'emailMessage' => emailTemplate($this->load->view('emailer/contact', array(
+                              "Name" => $this->Post['Name'],
+                              'Email' => $this->Post['Email'],
+                              'PhoneNumber' => $this->Post['PhoneNumber'],
+                              'Title' => $this->Post['Title'],
+                              'Message' => $this->Post['Message']
+                            ), TRUE))
+          )
+        );
     }
 
 
@@ -1007,7 +1019,7 @@ class Utilities extends API_Controller {
      */
     public function contestStanding_post() {
         $Standing = $this->db->query('
-          SELECT U.UserID,Username,FirstName, 
+          SELECT U.UserID,U.UserTeamCode,Username,FirstName, 
           IF(U.ProfilePic IS NULL,CONCAT("' . BASE_URL . '","uploads/profile/picture/","user-img.svg"),CONCAT("' . BASE_URL . '","uploads/profile/picture/",U.ProfilePic)) AS ProfilePic,
           (SELECT COUNT(CJ.ContestID) FROM sports_contest_join CJ WHERE CJ.UserID=U.UserID) AS JoinContestCount,
           (SELECT COUNT(CJ.ContestID) FROM sports_contest_join CJ WHERE CJ.UserID=U.UserID AND CJ.UserWinningAmount>0) AS WinContestCount

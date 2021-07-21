@@ -512,15 +512,17 @@ class SnakeDrafts_model extends CI_Model {
 
     function addAuctionPlayer($SeriesID, $ContestID, $WeekID, $ContestDuration, $DailyDate) {
 
-        // if($ContestDuration == "SeasonLong"){
-        //     $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "' AND SeriesID = '" . $SeriesID . "'");
-        // }elseif($ContestDuration == "Weekly"){
-        //     $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "' AND SeriesID = '" . $SeriesID . "'");
-        // }else{
-        //     $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "' AND SeriesID = '" . $SeriesID . "' AND DATE(MatchStartDateTime) = '" .$DailyDate . "'");
-        // }
+        if($ContestDuration == "SeasonLong"){
+            $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "' AND SeriesID = '" . $SeriesID . "'");
+        }elseif($ContestDuration == "Weekly"){
+            $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "' AND SeriesID = '" . $SeriesID . "'");
+        }else{
+            $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "' AND SeriesID = '" . $SeriesID . "' AND DATE(MatchStartDateTime) = '" .$DailyDate . "'");
+        }
+
         // $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_teams WHERE SeriesID = '" . $SeriesID . "' AND DATE(MatchStartDateTime) = '" .$DailyDate . "'");
-        $Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "'");
+
+        //$Query = $this->db->query("SELECT TeamIDLocal,TeamIDVisitor FROM sports_matches WHERE WeekID = '" . $WeekID . "'");
 
         $TeamData = ($Query->num_rows() > 0) ? $Query->result_array() : false;
         $TeamIDLocal = array_column($TeamData,'TeamIDLocal');
@@ -733,6 +735,11 @@ class SnakeDrafts_model extends CI_Model {
                     $UserTeamGUID = "";
                     $UserTeamName = "";
                     // $Records[$key]['PlayerSalary'] = $Record['PlayerSalary']*10000000;
+                    $Records[$key]['Scoring'] = (!empty($Record['Scoring'])) ? json_decode($Record['Scoring']) : new stdClass();
+                    $Records[$key]['Defense'] = (!empty($Record['Defense'])) ? json_decode($Record['Defense']) : new stdClass();
+                    $Records[$key]['Passing'] = (!empty($Record['Passing'])) ? json_decode($Record['Passing']) : new stdClass();
+                    $Records[$key]['Receiving'] = (!empty($Record['Receiving'])) ? json_decode($Record['Receiving']) : new stdClass();
+                    $Records[$key]['Rushing'] = (!empty($Record['Rushing'])) ? json_decode($Record['Rushing']) : new stdClass();
                     $Records[$key]['PlayerBattingStats'] = (!empty($Record['PlayerBattingStats'])) ? json_decode($Record['PlayerBattingStats']) : new stdClass();
                     $Records[$key]['PlayerBowlingStats'] = (!empty($Record['PlayerBowlingStats'])) ? json_decode($Record['PlayerBowlingStats']) : new stdClass();
                     $Records[$key]['PointsData'] = (!empty($Record['PointsData'])) ? json_decode($Record['PointsData'], TRUE) : array();
@@ -761,6 +768,11 @@ class SnakeDrafts_model extends CI_Model {
                 return $Return;
             } else {
                 $Record = $Query->row_array();
+                $Record['Scoring'] = (!empty($Record['Scoring'])) ? json_decode($Record['Scoring']) : new stdClass();
+                $Record['Defense'] = (!empty($Record['Defense'])) ? json_decode($Record['Defense']) : new stdClass();
+                $Record['Passing'] = (!empty($Record['Passing'])) ? json_decode($Record['Passing']) : new stdClass();
+                $Record['Receiving'] = (!empty($Record['Receiving'])) ? json_decode($Record['Receiving']) : new stdClass();
+                $Record['Rushing'] = (!empty($Record['Rushing'])) ? json_decode($Record['Rushing']) : new stdClass();
                 $Record['PlayerBattingStats'] = (!empty($Record['PlayerBattingStats'])) ? json_decode($Record['PlayerBattingStats']) : new stdClass();
                 $Record['PlayerBowlingStats'] = (!empty($Record['PlayerBowlingStats'])) ? json_decode($Record['PlayerBowlingStats']) : new stdClass();
                 $Record['PointsData'] = (!empty($Record['PointsData'])) ? json_decode($Record['PointsData'], TRUE) : array();
@@ -906,6 +918,9 @@ class SnakeDrafts_model extends CI_Model {
                $Role=array('QuarterBack','RunningBack','WideReceiver',
                      'TightEnd');
                $this->db->where_in("P.PlayerRole", $Role);  
+           }else if($Where['PlayerRoleShort'] == "WR/TE"){
+               $Role=array('TightEnd','WideReceiver');
+               $this->db->where_in("P.PlayerRole", $Role);  
            }
             
         }
@@ -980,31 +995,47 @@ class SnakeDrafts_model extends CI_Model {
                     $WeekStats['total_tackles'] = 0;
                     $WeekStats['interceptions'] = 0;
                     $WeekStats['receptions'] = 0;
-
+                    $WeekStats['fumbles'] = 0;
+                    $WeekStats['two_point_conversions'] = 0;
+                    $WeekStats['return_touchdowns'] = 0;
+                    $WeekStats['fumbles_returned_for_touchdowns'] = 0;
+                    $WeekStats['total_points_per_game'] = 0;
 
                     if(!empty($Record['Passing'])){
-                        $Passing = json_decode($Record['Passing'],true);
+                        $Records[$key]['Passing'] = $Passing = json_decode($Record['Passing'],true);
                         $WeekStats['yards'] = $Passing['yards'];
                         $WeekStats['passing_touchdowns'] = $Passing['passing_touchdowns'];
+                        $WeekStats['passing_fumbles'] = @$Passing['fumbles'];
+                        $WeekStats['passing_yards_per_game'] = @$Passing['yards_per_game'];
                     }
                     if(!empty($Record['Rushing'])){
-                        $Rushing = json_decode($Record['Rushing'],true);
+                        $Records[$key]['Rushing'] = $Rushing = json_decode($Record['Rushing'],true);
                         $WeekStats['rushing_yards'] = $Rushing['rushing_yards'];
                         $WeekStats['rushing_touchdowns'] = $Rushing['rushing_touchdowns'];
                         $WeekStats['fumbles_lost'] += $Rushing['fumbles_lost'];
+                        $WeekStats['russing_fumbles'] = @$Rushing['fumbles'];
+                        $WeekStats['russing_yards_per_game'] = @$Rushing['yards_per_game'];
                     }
                     if(!empty($Record['Receiving'])){
-                        $Receiving = json_decode($Record['Receiving'],true);
+                        $Records[$key]['Receiving'] = $Receiving = json_decode($Record['Receiving'],true);
                         $WeekStats['receiving_yards'] =$Receiving['receiving_yards'];
                         $WeekStats['receiving_touchdowns'] = $Receiving['receiving_touchdowns'];
-                         $WeekStats['fumbles_lost'] += $Receiving['fumbles_lost'];
+                        $WeekStats['fumbles_lost'] += $Receiving['fumbles_lost'];
+                        $WeekStats['receiving_fumbles'] = @$Receiving['fumbles'];
+                        $WeekStats['receiving_yards_per_game'] = @$Receiving['yards_per_game'];
+                        $WeekStats['receptions'] = @$Receiving['receptions'];
                     }
                     if(!empty($Record['Scoring'])){
-                        $Scoring = json_decode($Record['Scoring'],true);
+                        $Records[$key]['Scoring'] = $Scoring = json_decode($Record['Scoring'],true);
                         $WeekStats['field_goals'] = $Scoring['field_goals'];
+                        $WeekStats['return_touchdowns'] = $Scoring['return_touchdowns'];
+                        $WeekStats['total_points'] = $Scoring['total_points'];
+                        $WeekStats['two_point_conversions'] = $Scoring['two_point_conversions'];
+                        $WeekStats['total_points_per_game'] = $Scoring['total_points_per_game'];
                     }
                     if(!empty($Record['Defense'])){
-                        $Defense = json_decode($Record['Defense'],true);
+                        $Records[$key]['Defense'] = $Defense = json_decode($Record['Defense'],true);
+                        $WeekStats['fumbles_returned_for_touchdowns'] = $Defense['fumbles_returned_for_touchdowns'];
                         $WeekStats['total_tackles'] = $Defense['total_tackles'];
                     }
                     if(!empty($Record['WeeklyStats'])){
@@ -1014,10 +1045,23 @@ class SnakeDrafts_model extends CI_Model {
 
                     $Records[$key]['PlayerBattingStats'] = $WeekStats;
 
+                    $Records[$key]['dropPlayer'] = "No";
+                    if(!empty($Where['WireHistoryStatus']) && $Where['WireHistoryStatus'] == "Yes"){
+                        $this->db->select("PlayerID");
+                        $this->db->from('sports_wire_history');
+                        $this->db->where("PlayerID", $Record['PlayerID']);
+                        $this->db->where("ContestID", $Where['ContestID']);
+                        $this->db->where("Type", "DROP");
+                        $Query = $this->db->get();
+                        if ($Query->num_rows() > 0) {
+                            $Records[$key]['dropPlayer'] = "Yes";
+                        }
+                    }
+
                     /*$Records[$key]['PlayerBattingStats'] = (!empty($Record['WeeklyStats'])) ? json_decode($Record['WeeklyStats']) : $WeekStats;*/
 
                     $Records[$key]['PointsData'] = (!empty($Record['PointsData'])) ? json_decode($Record['PointsData'], TRUE) : array();
-                    $IsAssistant = $Record['IsAssistant'];
+                    $IsAssistant = @$Record['IsAssistant'];
                     $UserTeamGUID = $Record['UserTeamGUID'];
                     $UserTeamName = $Record['UserTeamName'];
                     $AuctionTopPlayerSubmitted = $Record['AuctionTopPlayerSubmitted'];
@@ -1028,24 +1072,74 @@ class SnakeDrafts_model extends CI_Model {
                     $Return['Data']['UserTeamName'] = $UserTeamName;
                     $Return['Data']['AuctionTopPlayerSubmitted'] = $AuctionTopPlayerSubmitted;
                 }
+
                 $Return['Data']['Records'] = $Records;
                 return $Return;
             } else {
                 $Record = $Query->row_array();
-                        $WeekStats = array();
-                        $WeekStats['total_points'] = 0;
-                        $WeekStats['yards'] = 0;
-                        $WeekStats['passing_touchdowns'] = 0;
-                        $WeekStats['rushing_yards'] = 0;
-                        $WeekStats['rushing_touchdowns'] = 0;
-                        $WeekStats['receiving_yards'] = 0;
-                        $WeekStats['receiving_touchdowns'] = 0;
-                        $WeekStats['field_goals'] = 0;
-                        $WeekStats['fumbles_lost'] = 0;
-                        $WeekStats['total_tackles'] = 0;
-                        $WeekStats['interceptions'] = 0;
-                        $WeekStats['receptions'] = 0;
+                $WeekStats = array();
+                $WeekStats['total_points'] = 0;
+                $WeekStats['yards'] = 0;
+                $WeekStats['passing_touchdowns'] = 0;
+                $WeekStats['rushing_yards'] = 0;
+                $WeekStats['rushing_touchdowns'] = 0;
+                $WeekStats['receiving_yards'] = 0;
+                $WeekStats['receiving_touchdowns'] = 0;
+                $WeekStats['field_goals'] = 0;
+                $WeekStats['fumbles_lost'] = 0;
+                $WeekStats['total_tackles'] = 0;
+                $WeekStats['interceptions'] = 0;
+                $WeekStats['receptions'] = 0;
+                $WeekStats['fumbles'] = 0;
+                $WeekStats['two_point_conversions'] = 0;
+                $WeekStats['return_touchdowns'] = 0;
+                $WeekStats['fumbles_returned_for_touchdowns'] = 0;
+                $WeekStats['total_points_per_game'] = 0;
+
+                if(!empty($Record['Passing'])){
+                    $Record['Passing'] = $Passing = json_decode($Record['Passing'],true);
+                    $WeekStats['yards'] = $Passing['yards'];
+                    $WeekStats['passing_touchdowns'] = $Passing['passing_touchdowns'];
+                    $WeekStats['passing_fumbles'] = @$Passing['fumbles'];
+                    $WeekStats['passing_yards_per_game'] = @$Passing['yards_per_game'];
+                }
+                if(!empty($Record['Rushing'])){
+                    $Record['Rushing'] = $Rushing = json_decode($Record['Rushing'],true);
+                    $WeekStats['rushing_yards'] = $Rushing['rushing_yards'];
+                    $WeekStats['rushing_touchdowns'] = $Rushing['rushing_touchdowns'];
+                    $WeekStats['fumbles_lost'] += $Rushing['fumbles_lost'];
+                    $WeekStats['russing_fumbles'] = @$Rushing['fumbles'];
+                    $WeekStats['russing_yards_per_game'] = @$Rushing['yards_per_game'];
+                }
+                if(!empty($Record['Receiving'])){
+                    $Record['Receiving'] = $Receiving = json_decode($Record['Receiving'],true);
+                    $WeekStats['receiving_yards'] =$Receiving['receiving_yards'];
+                    $WeekStats['receiving_touchdowns'] = $Receiving['receiving_touchdowns'];
+                    $WeekStats['fumbles_lost'] += $Receiving['fumbles_lost'];
+                    $WeekStats['receiving_fumbles'] = @$Receiving['fumbles'];
+                    $WeekStats['receiving_yards_per_game'] = @$Receiving['yards_per_game'];
+                }
+                if(!empty($Record['Scoring'])){
+                    $Record['Scoring'] = $Scoring = json_decode($Record['Scoring'],true);
+                    $WeekStats['return_touchdowns'] = $Scoring['return_touchdowns'];
+                    $WeekStats['total_points'] = $Scoring['total_points'];
+                    $WeekStats['two_point_conversions'] = $Scoring['two_point_conversions'];
+                    $WeekStats['total_points_per_game'] = $Scoring['total_points_per_game'];
+                    $WeekStats['field_goals'] = $Scoring['field_goals'];
+                }
+                if(!empty($Record['Defense'])){
+                    $Record['Defense'] = $Defense = json_decode($Record['Defense'],true);
+                    $WeekStats['fumbles_returned_for_touchdowns'] = $Defense['fumbles_returned_for_touchdowns'];
+                    $WeekStats['total_tackles'] = $Defense['total_tackles'];
+                }
+                if(!empty($Record['WeeklyStats'])){
+                    $Record['WeeklyStats'] = $WeeklyStats = json_decode($Record['WeeklyStats'],true);
+                    $WeekStats['total_points'] =$WeeklyStats['total_points'];
+                }
+
                 $Record['PlayerBattingStats'] = (!empty($Record['WeeklyStats'])) ? json_decode($Record['WeeklyStats']) : $WeekStats;
+
+
                 $Record['PointsData'] = (!empty($Record['PointsData'])) ? json_decode($Record['PointsData'], TRUE) : array();
                 return $Record;
             }
@@ -1134,6 +1228,9 @@ class SnakeDrafts_model extends CI_Model {
            }else if($Where['PlayerRoleShort'] == "FLEX"){
                $Role=array('QuarterBack','RunningBack','WideReceiver',
                      'TightEnd');
+               $this->db->where_in("P.PlayerRole", $Role);  
+           }else if($Where['PlayerRoleShort'] == "WR/TE"){
+               $Role=array('TightEnd','WideReceiver');
                $this->db->where_in("P.PlayerRole", $Role);  
            }
             
@@ -1263,6 +1360,7 @@ class SnakeDrafts_model extends CI_Model {
                 'PlayerBowlingStats' => 'P.PlayerBowlingStats',
                 'LastUpdateDiff' => 'IF(P.LastUpdatedOn IS NULL, 0, TIME_TO_SEC(TIMEDIFF("' . date('Y-m-d H:i:s') . '", P.LastUpdatedOn))) LastUpdateDiff',
                 'TeamName' => 'T.TeamName',
+                'TeamNameShort' => 'T.TeamNameShort',
                 'PlayerRoleShort' => 'CASE P.PlayerRole
                              when "QuarterBack" then "QB"
                              when "RunningBack" then "RB"
@@ -1338,10 +1436,8 @@ class SnakeDrafts_model extends CI_Model {
         }
 
         if (!empty($Where['OrderBy']) && !empty($Where['Sequence'])) {
-            $this->db->order_by($Where['OrderBy'], $Where['Sequence']);
-        }
-
-        if (!empty($Where['RandData'])) {
+            $this->db->order_by($Where['OrderBy'], $Where['Sequence'],FALSE);
+        }else if (!empty($Where['RandData'])) {
             $this->db->order_by($Where['RandData']);
         } else {
             $this->db->order_by('P.PlayerSalary', 'DESC');
@@ -1372,7 +1468,7 @@ class SnakeDrafts_model extends CI_Model {
                     $UserTeamGUID = "";
                     $UserTeamName = "";
 
-                                  $WeekStats = array();
+                    $WeekStats = array();
                     $WeekStats['total_points'] = 0;
                     $WeekStats['yards'] = 0;
                     $WeekStats['passing_touchdowns'] = 0;
@@ -1385,35 +1481,49 @@ class SnakeDrafts_model extends CI_Model {
                     $WeekStats['total_tackles'] = 0;
                     $WeekStats['interceptions'] = 0;
                     $WeekStats['receptions'] = 0;
+                    $WeekStats['fumbles'] = 0;
+                    $WeekStats['two_point_conversions'] = 0;
+                    $WeekStats['return_touchdowns'] = 0;
+                    $WeekStats['fumbles_returned_for_touchdowns'] = 0;
+                    $WeekStats['total_points_per_game'] = 0;
 
                     if(!empty($Record['Passing'])){
-                        $Passing = json_decode($Record['Passing'],true);
+                        $Records[$key]['Passing'] = $Passing = json_decode($Record['Passing'],true);
                         $WeekStats['yards'] = $Passing['yards'];
+                        $WeekStats['interceptions'] = $Passing['interceptions'];
                         $WeekStats['passing_touchdowns'] = $Passing['passing_touchdowns'];
                     }
                     if(!empty($Record['Rushing'])){
-                        $Rushing = json_decode($Record['Rushing'],true);
+                        $Records[$key]['Rushing'] = $Rushing = json_decode($Record['Rushing'],true);
+                        $WeekStats['fumbles'] += $Rushing['fumbles'];
                         $WeekStats['rushing_yards'] = $Rushing['rushing_yards'];
+                        $WeekStats['yards_per_game'] = $Rushing['yards_per_game'];
                         $WeekStats['rushing_touchdowns'] = $Rushing['rushing_touchdowns'];
                         $WeekStats['fumbles_lost'] += $Rushing['fumbles_lost'];
                     }
                     if(!empty($Record['Receiving'])){
-                        $Receiving = json_decode($Record['Receiving'],true);
-                        $WeekStats['receiving_yards'] =$Receiving['receiving_yards'];
+                        $Records[$key]['Receiving'] = $Receiving = json_decode($Record['Receiving'],true);
+                        $WeekStats['receptions'] = $Receiving['receptions'];
+                        $WeekStats['receiving_yards'] = $Receiving['receiving_yards'];
                         $WeekStats['receiving_touchdowns'] = $Receiving['receiving_touchdowns'];
-                         $WeekStats['fumbles_lost'] += $Receiving['fumbles_lost'];
+                        $WeekStats['fumbles_lost'] += $Receiving['fumbles_lost'];
                     }
                     if(!empty($Record['Scoring'])){
-                        $Scoring = json_decode($Record['Scoring'],true);
-                        $WeekStats['field_goals'] = $Scoring['field_goals'];
+                        $Records[$key]['Scoring'] = $Scoring = json_decode($Record['Scoring'],true);
+                        $WeekStats['return_touchdowns'] = $Scoring['return_touchdowns'];
+                        $WeekStats['two_point_conversions'] = $Scoring['two_point_conversions'];
+                        $WeekStats['field_goals'] += $Scoring['field_goals'];
+                        $WeekStats['total_points_per_game'] = $Scoring['total_points_per_game'];
+                        $WeekStats['total_points'] += $Scoring['total_points'];
                     }
                     if(!empty($Record['Defense'])){
-                        $Defense = json_decode($Record['Defense'],true);
+                        $Records[$key]['Defense'] = $Defense = json_decode($Record['Defense'],true);
+                        $WeekStats['fumbles_returned_for_touchdowns'] = $Defense['fumbles_returned_for_touchdowns'];
                         $WeekStats['total_tackles'] = $Defense['total_tackles'];
                     }
                     if(!empty($Record['WeeklyStats'])){
-                        $WeeklyStats = json_decode($Record['WeeklyStats'],true);
-                        $WeekStats['total_points'] =$WeeklyStats['total_points'];
+                        $Records[$key]['WeeklyStats'] = $WeeklyStats = json_decode($Record['WeeklyStats'],true);
+                        $WeekStats['total_points'] = $WeeklyStats['total_points'];
                     }
 
                     $Records[$key]['PlayerBattingStats'] = $WeekStats;
@@ -2504,7 +2614,7 @@ class SnakeDrafts_model extends CI_Model {
 
             if ($DraftLiveRound <= $CriteriaRounds) {
 
-                if ($Team['PlayerRole'] == "QB" && $PlayerRole !='FLEX') {
+                if ($Team['PlayerRole'] == "QB" && $PlayerRole !='FLEX' && $PlayerRole !='WR/TE') {
                     if (@$PlayerRoles['QB'] < $DraftPlayerSelectionCriteria['QB']) {
                         /** check total player in squad * */
                         if ($Rows < $DraftTeamPlayerLimit) {
@@ -2544,7 +2654,7 @@ class SnakeDrafts_model extends CI_Model {
                     }
                 }
 
-                if ($Team['PlayerRole'] == "RB" && $PlayerRole !='FLEX') {
+                if ($Team['PlayerRole'] == "RB" && $PlayerRole !='FLEX' && $PlayerRole !='WR/TE') {
                     if (@$PlayerRoles['RB'] < $DraftPlayerSelectionCriteria['RB']) {
                         /** check total player in squad * */
                         if ($Rows < $DraftTeamPlayerLimit) {
@@ -2584,7 +2694,7 @@ class SnakeDrafts_model extends CI_Model {
                     }
                 }
 
-                if ($Team['PlayerRole'] == "WR" && $PlayerRole !='FLEX') {
+                if ($Team['PlayerRole'] == "WR" && $PlayerRole !='FLEX' && $PlayerRole !='WR/TE') {
                     if (@$PlayerRoles['WR'] < $DraftPlayerSelectionCriteria['WR']) {
                         /** check total player in squad * */
                         if ($Rows < $DraftTeamPlayerLimit) {
@@ -2624,7 +2734,7 @@ class SnakeDrafts_model extends CI_Model {
                     }
                 }
 
-                if ($Team['PlayerRole'] == "TE" && $PlayerRole !='FLEX') {
+                if ($Team['PlayerRole'] == "TE" && $PlayerRole !='FLEX' && $PlayerRole !='WR/TE') {
                     if (@$PlayerRoles['TE'] < $DraftPlayerSelectionCriteria['TE']) {
                         /** check total player in squad * */
                         if ($Rows < $DraftTeamPlayerLimit) {
@@ -2701,6 +2811,48 @@ class SnakeDrafts_model extends CI_Model {
                     } else {
                         $Return["Status"] = 0;
                         $Return['Message'] = "Minimum Criteria for FLEX is fulfilled. Please select player for another position will you complete the minimum criteria of '".$RoosterSize."' Players";
+                        return $Return;
+                    }
+                }
+
+                if ($PlayerRole == "WR/TE") {
+                    $FLEX = $this->db->query('SELECT PlayerID from `sports_users_team_players` WHERE 
+                            UserTeamID = "' . $UserTeamID . '" AND PlayerSelectTypeRole = "WR/TE" ')->row()->PlayerID;
+                    if (empty($FLEX)) {
+                        /** check total player in squad * */
+                        if ($Rows < $DraftTeamPlayerLimit) {
+                            /** insert user team player squad * */
+                            $InsertData = array(
+                                "UserTeamID" => $UserTeamID,
+                                "PlayerPosition" => "Player",
+                                "PlayerID" => $Team['PlayerID'],
+                                "SeriesID" => $SeriesID,
+                                "DateTime" => date('Y-m-d H:i:s'),
+                                "DraftRound"=> $ContestCriteria['DraftLiveRound'],
+                                 "PlayerSelectTypeRole" =>$PlayerRole
+                            );
+                            $this->db->insert('sports_users_team_players', $InsertData);
+                            /* Add contest to contest table . */
+                            $UpdateData = array_filter(array(
+                                "PlayerStatus" => "Sold",
+                                "DateTime" => date('Y-m-d H:i:s')
+                            ));
+                            $this->db->where('SeriesID', $SeriesID);
+                            $this->db->where('ContestID', $ContestID);
+                            $this->db->where('PlayerID', $Team['PlayerID']);
+                            $this->db->limit(1);
+                            $this->db->update('tbl_auction_player_bid_status', $UpdateData);
+                            $Return["Status"] = 1;
+                            $Return["Player"] = $Team;
+                            return $Return;
+                        } else {
+                            $Return["Status"] = 0;
+                            $Return['Message'] = "Team Players length can't exceed $DraftTeamPlayerLimit";
+                            return $Return;
+                        }
+                    } else {
+                        $Return["Status"] = 0;
+                        $Return['Message'] = "Minimum Criteria for WR/TE is fulfilled. Please select player for another position will you complete the minimum criteria of '".$RoosterSize."' Players";
                         return $Return;
                     }
                 }
@@ -3563,6 +3715,7 @@ class SnakeDrafts_model extends CI_Model {
           $DraftTeamPlayerLimit = (!empty($Series['DraftTeamPlayerLimit'])) ? $Series['DraftTeamPlayerLimit'] : 11; */
         /** get total joined draft users * */
         $JoinedUsers = $this->getJoinedContestsUsers("FirstName,UserID,DraftUserPosition,ProfilePic,AuctionUserStatus,DraftUserLive,UserTeamCode", array('ContestID' => $ContestID, 'SeriesID' => $SeriesID, "OrderBy" => "DraftUserPosition", "Sequence" => "ASC"), TRUE);
+       
         if (!empty($JoinedUsers)) {
             $TotalRecords = $JoinedUsers['Data']['TotalRecords'];
             if ($JoinedUsers['Data']['TotalRecords'] > 0) {
@@ -3795,8 +3948,9 @@ class SnakeDrafts_model extends CI_Model {
                              when "5" then "Completed"
                              END as Status',
                 'SubGameType' => 'CASE C.SubGameType
-                             when "ProFootballRegularSeasonOwners" then "Pro (Regular Season)"
-                             when "ProFootballPlayoffs" then "Pro (Playoffs)"
+                             when "ProFootballRegularSeasonOwners" then "NFL (Regular Season)"
+                             when "ProFootballPlayoffs" then "NFL (Playoffs)"
+                             when "ProFootballPreSeasonOwners" then "NFL (Pre Season)"
                              when "CollegeFootballRegularSeason" then "College (Regular Season)"
                              when "CollegeFootballPower5RegularSeason" then "Power 5 (Regular Season)"
                              END as SubGameType',
@@ -3847,6 +4001,10 @@ class SnakeDrafts_model extends CI_Model {
                 if (isset($Where['Keyword']['ContestStartDateDay'])) {
 
                     $this->db->where("DATE(C.DailyDate)", @$Where['Keyword']['ContestStartDateDay']);
+                }
+                if (isset($Where['Keyword']['MatchStartDate'])) {
+
+                    $this->db->where("DATE(C.DailyDate)", @$Where['Keyword']['MatchStartDate']);
                 }
                 if (isset($Where['Keyword']['LeagueJoinTime'])) {
                     // $time = explode(':', $Where['TimeZone']);
@@ -5153,8 +5311,139 @@ class SnakeDrafts_model extends CI_Model {
      */
 
     function getJoinedDraftAllTeams($ContestID, $SeriesID, $UserID) {
-        $ContestRound = $this->SnakeDrafts_model->getContests('ContestID,DraftLiveRound,DraftTotalRounds', array("LeagueType" => "Draft", "ContestID" => $ContestID, "SeriesID" => $SeriesID));
+        $ContestRound = $this->SnakeDrafts_model->getContests('ContestID,DraftLiveRound,DraftTotalRounds,DraftTotalRounds', array("LeagueType" => "Draft", "ContestID" => $ContestID, "SeriesID" => $SeriesID));
         $DraftTotalRounds = $ContestRound['DraftLiveRound'];
+       // $DraftTotalRounds = $ContestRound['DraftTotalRounds'];
+        $AllTeams = array();
+        $Rounds = array();
+        $AllJoinedUsers = $this->SnakeDrafts_model->getJoinedContestsUsers("FirstName,UserGUID,UserID,UserTeamCode", array('ContestID' => $ContestID, 'SeriesID' => $SeriesID), TRUE);
+        if ($AllJoinedUsers['Data']['TotalRecords'] > 0) {
+            for ($i = 1; $i <= $DraftTotalRounds; $i++) {
+                $Temp = array();
+                foreach ($AllJoinedUsers['Data']['Records'] as $Rows) {
+                    $this->db->select('UT.UserID,UT.UserTeamID,UTP.PlayerID,UTP.DateTime,T.PlayerGUID,
+                        T.PlayerName,T.PlayerPic,T.PlayerRole,UTP.PlayerSelectTypeRole,UTP.DateTime as PlayerDateTime,
+                        (CASE T.PlayerRole
+                             when "QuarterBack" then "QB"
+                             when "RunningBack" then "RB"
+                             when "WideReceiver" then "WR"
+                             when "TightEnd" then "TE"
+                             when "LineBacker" then "DEF"
+                             when "CornerBack" then "DEF"
+                             when "OutsideLinebacker" then "DEF"
+                             when "DefenseEnd" then "DEF"
+                             when "DefenseTackle" then "DEF"
+                             when "Safety" then "DEF"
+                             END ) as PlayerRoleShort');
+                    $this->db->from('sports_users_teams UT, sports_users_team_players UTP, sports_players T');
+                    $this->db->where("UT.UserTeamID", "UTP.UserTeamID", FALSE);
+                    $this->db->where("T.PlayerID", "UTP.PlayerID", FALSE);
+                    $this->db->where("UT.IsAssistant", "No");
+                    $this->db->where("UT.IsPreTeam", "No");
+                    $this->db->where("UT.ContestID", $ContestID);
+                    $this->db->where("UT.SeriesID", $SeriesID);
+                    $this->db->where("UT.UserID", $Rows['UserID']);
+                    $this->db->where("UTP.DraftRound", $i);
+                    $this->db->order_by("UTP.DateTime", "ASC");
+                    $this->db->limit(1);
+                    //$this->db->offset($i - 1);
+                    $Query = $this->db->get();
+                    $PlayersAssistant = $Query->row_array();
+                    if ($Query->num_rows() > 0) {
+                        $PlayersAssistant['UserGUID'] = $Rows['UserGUID'];
+                        $PlayersAssistant['UserName'] = $Rows['FirstName'];
+                        $PlayersAssistant['UserTeamCode'] = $Rows['UserTeamCode'];
+                        $Temp[] = $PlayersAssistant;
+                    } else {
+                        $PlayersAssistant['UserGUID'] = $Rows['UserGUID'];
+                        $PlayersAssistant['UserName'] = $Rows['FirstName'];
+                        $PlayersAssistant['UserTeamCode'] = $Rows['UserTeamCode'];
+                        $date = date('Y-m-d H:i:s');
+                        $PlayersAssistant['PlayerDateTime'] =  date('Y-m-d H:i:s', strtotime($date. ' + 2 days'));
+                        $Temp[] = $PlayersAssistant;
+                    }
+                }
+                if ($i % 2 == 0) {
+                    $Temp = array_reverse($Temp);
+                }
+                // usort($Temp, function($a, $b) {
+                //     return $a['PlayerDateTime'] <=> $b['PlayerDateTime'];
+                // });
+                $AllTeams['Rounds ' . $i] = $Temp;
+            }
+        }
+        return $AllTeams;
+    }
+
+
+    function getJoinedDraftAllTeamsHistory($ContestID, $SeriesID, $UserID) {
+        $ContestRound = $this->SnakeDrafts_model->getContests('ContestID,DraftLiveRound,DraftTotalRounds,DraftTotalRounds', array("LeagueType" => "Draft", "ContestID" => $ContestID, "SeriesID" => $SeriesID));
+        $DraftTotalRounds = $ContestRound['DraftLiveRound'];
+       // $DraftTotalRounds = $ContestRound['DraftTotalRounds'];
+        $AllTeams = array();
+        $Rounds = array();
+        $AllJoinedUsers = $this->SnakeDrafts_model->getJoinedContestsUsers("FirstName,UserGUID,UserID,UserTeamCode", array('ContestID' => $ContestID, 'SeriesID' => $SeriesID), TRUE);
+        if ($AllJoinedUsers['Data']['TotalRecords'] > 0) {
+            for ($i = 1; $i <= $DraftTotalRounds; $i++) {
+                $Temp = array();
+                foreach ($AllJoinedUsers['Data']['Records'] as $Rows) {
+                    $this->db->select('UT.UserID,UT.UserTeamID,UTP.PlayerID,UTP.DateTime,T.PlayerGUID,
+                        T.PlayerName,T.PlayerPic,T.PlayerRole,UTP.PlayerSelectTypeRole,UTP.DateTime as PlayerDateTime,
+                        (CASE T.PlayerRole
+                             when "QuarterBack" then "QB"
+                             when "RunningBack" then "RB"
+                             when "WideReceiver" then "WR"
+                             when "TightEnd" then "TE"
+                             when "LineBacker" then "DEF"
+                             when "CornerBack" then "DEF"
+                             when "OutsideLinebacker" then "DEF"
+                             when "DefenseEnd" then "DEF"
+                             when "DefenseTackle" then "DEF"
+                             when "Safety" then "DEF"
+                             END ) as PlayerRoleShort');
+                    $this->db->from('sports_users_teams UT, sports_users_team_players UTP, sports_players T');
+                    $this->db->where("UT.UserTeamID", "UTP.UserTeamID", FALSE);
+                    $this->db->where("T.PlayerID", "UTP.PlayerID", FALSE);
+                    $this->db->where("UT.IsAssistant", "No");
+                    $this->db->where("UT.IsPreTeam", "No");
+                    $this->db->where("UT.ContestID", $ContestID);
+                    $this->db->where("UT.SeriesID", $SeriesID);
+                    $this->db->where("UT.UserID", $Rows['UserID']);
+                    $this->db->where("UTP.DraftRound", $i);
+                    $this->db->order_by("UTP.DateTime", "ASC");
+                    $this->db->limit(1);
+                    //$this->db->offset($i - 1);
+                    $Query = $this->db->get();
+                    $PlayersAssistant = $Query->row_array();
+                    if ($Query->num_rows() > 0) {
+                        $PlayersAssistant['UserGUID'] = $Rows['UserGUID'];
+                        $PlayersAssistant['UserName'] = $Rows['FirstName'];
+                        $PlayersAssistant['UserTeamCode'] = $Rows['UserTeamCode'];
+                        $Temp[] = $PlayersAssistant;
+                    } else {
+                        $PlayersAssistant['UserGUID'] = $Rows['UserGUID'];
+                        $PlayersAssistant['UserName'] = $Rows['FirstName'];
+                        $PlayersAssistant['UserTeamCode'] = $Rows['UserTeamCode'];
+                        $date = date('Y-m-d H:i:s');
+                        $PlayersAssistant['PlayerDateTime'] =  date('Y-m-d H:i:s', strtotime($date. ' + 2 days'));
+                        $Temp[] = $PlayersAssistant;
+                    }
+                }
+                // if ($i % 2 == 0) {
+                //     $Temp = array_reverse($Temp);
+                // }
+                // usort($Temp, function($a, $b) {
+                //     return $a['PlayerDateTime'] <=> $b['PlayerDateTime'];
+                // });
+                $AllTeams['Rounds ' . $i] = $Temp;
+            }
+        }
+        return $AllTeams;
+    }
+    function getJoinedDraftAllTeamsOLD($ContestID, $SeriesID, $UserID) {
+        $ContestRound = $this->SnakeDrafts_model->getContests('ContestID,DraftLiveRound,DraftTotalRounds,DraftTotalRounds', array("LeagueType" => "Draft", "ContestID" => $ContestID, "SeriesID" => $SeriesID));
+        //$DraftTotalRounds = $ContestRound['DraftLiveRound'];
+        $DraftTotalRounds = $ContestRound['DraftTotalRounds'];
         $AllTeams = array();
         $AllJoinedUsers = $this->SnakeDrafts_model->getJoinedContestsUsers("FirstName,UserGUID,UserID,UserTeamCode", array('ContestID' => $ContestID, 'SeriesID' => $SeriesID), TRUE);
         if ($AllJoinedUsers['Data']['TotalRecords'] > 0) {
@@ -5198,6 +5487,8 @@ class SnakeDrafts_model extends CI_Model {
                         $PlayersAssistant['UserGUID'] = $Rows['UserGUID'];
                         $PlayersAssistant['UserName'] = $Rows['FirstName'];
                         $PlayersAssistant['UserTeamCode'] = $Rows['UserTeamCode'];
+                        $date = date('Y-m-d H:i:s');
+                        $PlayersAssistant['PlayerDateTime'] =  date('Y-m-d H:i:s', strtotime($date. ' + 2 days'));
                         $Temp[] = $PlayersAssistant;
                     }
                 }
@@ -5698,7 +5989,6 @@ class SnakeDrafts_model extends CI_Model {
         $this->db->update('sports_users_teams', 
             array_filter(
                 array(
-                    'IsPreTeam' => @$Input['IsPreTeam'],
                     'UserTeamName' => $Input['UserTeamName'],
                     'UserTeamType' => $Input['UserTeamType']
                 )
@@ -6092,7 +6382,7 @@ class SnakeDrafts_model extends CI_Model {
                 'DraftUserPosition' => 'JC.DraftUserPosition',
                 'DraftUserLive' => 'JC.DraftUserLive',
                 'TotalPointsSeason' => 'JC.TotalPoints TotalPointsSeason',
-                'WeekTotalPoints' => '(SELECT TotalPoints FROM sports_users_teams WHERE sports_users_teams.UserID=JC.UserID AND sports_users_teams.ContestID=JC.ContestID) WeekTotalPoints',
+                'WeekTotalPoints' => '(SELECT TotalPoints FROM sports_users_teams WHERE sports_users_teams.UserID=JC.UserID AND sports_users_teams.ContestID=JC.ContestID AND IsPreTeam="No") WeekTotalPoints',
             );
             if ($Params) {
                 foreach ($Params as $Param) {
@@ -6431,14 +6721,14 @@ class SnakeDrafts_model extends CI_Model {
 
                     /* Send Mail To Users */
 
-                    send_mail(array(
-                        'emailTo' => $Rows['Email'],
-                        'template_id' => 'd-9683d71dcf0546bdb255e4edaffa09ba',
-                        'Subject' => SITE_NAME . " Contest Cancelled",
-                        "Name" => $Rows['FirstName'],
-                        "ContestName" => $Value['ContestName'],
-                        "EmailText" => $Value['LeagueJoinDateTime']
-                    ));
+                    // send_mail(array(
+                    //     'emailTo' => $Rows['Email'],
+                    //     'template_id' => 'd-9683d71dcf0546bdb255e4edaffa09ba',
+                    //     'Subject' => SITE_NAME . " Contest Cancelled",
+                    //     "Name" => $Rows['FirstName'],
+                    //     "ContestName" => $Value['ContestName'],
+                    //     "EmailText" => $Value['LeagueJoinDateTime']
+                    // ));
                 }
             }
         }
@@ -6506,15 +6796,15 @@ class SnakeDrafts_model extends CI_Model {
                     foreach ($JoinedContestsUsers['Data']['Records'] as $Rows) {
 
                         /* Send Mail To Users */
-                        send_mail(array(
-                            'emailTo' => $Rows['Email'],
-                            'template_id' => 'd-6d0d7c5c59704ec5a88a2b1cb70454d3',
-                            'Subject' => SITE_NAME . " Contest Reminder",
-                            "Name" => $Rows['FirstName'],
-                            "ContestName" => $Value['ContestName'],
-                            "EmailText" => $Value['LeagueJoinDateTime'],
-                            "Message" => "This is a friendly reminder about your fantasy league draft on " . SITE_HOST . " We look forward to seeing you in the draft room. If you cannot attend live pre-rank your teams/schools in advance for best results!"
-                        ));
+                        // send_mail(array(
+                        //     'emailTo' => $Rows['Email'],
+                        //     'template_id' => 'd-6d0d7c5c59704ec5a88a2b1cb70454d3',
+                        //     'Subject' => SITE_NAME . " Contest Reminder",
+                        //     "Name" => $Rows['FirstName'],
+                        //     "ContestName" => $Value['ContestName'],
+                        //     "EmailText" => $Value['LeagueJoinDateTime'],
+                        //     "Message" => "This is a friendly reminder about your fantasy league draft on " . SITE_HOST . " We look forward to seeing you in the draft room. If you cannot attend live pre-rank your teams/schools in advance for best results!"
+                        // ));
                     }
                     $this->db->where('ContestID', $Value['ContestID']);
                     $this->db->limit(1);
@@ -9135,20 +9425,30 @@ class SnakeDrafts_model extends CI_Model {
         $UserInvitationCode = $Input['UserInvitationCode'];
         if (!empty($Input['Email'])) {
             /* Send referral Email to User with referral url */
-            send_mail(array(
+            // send_mail(array(
+            //     'emailTo' => $Input['Email'],
+            //     'template_id' => 'd-c51b06b02dff433694abe37a8bf1bea6',
+            //     'Subject' => 'Contest Invitation - ' . SITE_NAME,
+            //     "Name" => $UserData['FirstName'],
+            //     "InviteCode" => $UserInvitationCode,
+            //     "Message" => $ContestData['SubGameType'],
+            //     "EmailText" => "The draft date is on: " . $ContestData['LeagueJoinDateTime'] . " EST. The entry fee is $" . $ContestData['EntryFee'],
+            // ));
+            sendMail(array(
                 'emailTo' => $Input['Email'],
-                'template_id' => 'd-c51b06b02dff433694abe37a8bf1bea6',
-                'Subject' => 'Contest Invitation - ' . SITE_NAME,
-                "Name" => $UserData['FirstName'],
-                "InviteCode" => $UserInvitationCode,
-                "Message" => $ContestData['SubGameType'],
-                "EmailText" => "The draft date is on: " . $ContestData['LeagueJoinDateTime'] . " EST. The entry fee is $" . $ContestData['EntryFee'],
-            ));
+                'emailSubject' => 'Fantasy League Invitation',
+                'emailMessage' => emailTemplate($this->load->view('emailer/invite_contest', array(  
+                        "Name"          => $UserData['FirstName'],
+                        "InviteCode"    => $UserInvitationCode,
+                        "Message"       => $ContestData['SubGameType'],
+                        "EmailText"     => "The draft date is on: " . date('m-d-Y',strtotime($ContestData['LeagueJoinDateTime'])) . ". The entry fee is $" . $ContestData['EntryFee'],), TRUE))
+                    )
+            );
         } else if (!empty(($Input['Phone']))) {
             /* Send referral SMS to User with referral url */
             $this->Utility_model->sendMobileSMS(array(
                 'PhoneNumber' => $Input['Phone'],
-                'Text' => "Play with me on Stat Action Sports. Click " . base_url() . " to login on portal and Use contest code " . $UserInvitationCode . " to join contest."
+                'Text' => "Play with me on Fandom Royale. Click " . base_url() . " to login on portal and Use contest code " . $UserInvitationCode . " to join contest."
             ));
         }
     }
@@ -9379,6 +9679,18 @@ class SnakeDrafts_model extends CI_Model {
             $Return['Status'] = 0;
             $Return['Message'] = "Error";
 
+                        /** check catch team id availabe or not * */
+                        $this->db->select("PlayerID");
+                        $this->db->from('sports_wire_history');
+                        $this->db->where("ContestID", $ContestID);
+                        $this->db->where("PlayerID", $PlayerID);
+                        $this->db->where("Type", "DROP");
+                        $Query = $this->db->get();
+                        if ($Query->num_rows() > 0) {
+                            $Return['Message'] = "This player has already been on a roster";
+                            return $Return;
+                        }
+
             /** check catch team id availabe or not * */
             $this->db->select("PlayerID");
             $this->db->from('tbl_auction_player_bid_status');
@@ -9399,7 +9711,6 @@ class SnakeDrafts_model extends CI_Model {
                 $Contest = $Query->row_array();
                 $RoosterSize = $Contest['RosterSize'];
                 $DraftPlayerSelectionCriteria = json_decode($Contest['DraftPlayerSelectionCriteria'],true);
-
                 $this->db->select("UTP.PlayerID,UTP.PlayerSelectTypeRole PlayerRole");
                 $this->db->from('sports_users_team_players UTP');
                 $this->db->where("UTP.UserTeamID", $UserTeamID);
@@ -9427,6 +9738,10 @@ class SnakeDrafts_model extends CI_Model {
                      }
 
                     if ($PlayerSelectTypeRole == "WR") {
+                        if (isset($DraftPlayerSelectionCriteria['WR/TE']) && empty($PlayerRoles['WR/TE'])) {
+                            $DraftPlayerSelectionCriteria['WR'] += 1;
+                            $PlayerSelectTypeRole = "WR/TE";
+                        }
                         if (@$PlayerRoles['WR'] >= $DraftPlayerSelectionCriteria['WR']) {
                             $Return['Message'] = "Minimum Criteria for WR is fulfilled. Please select player for another position will you complete the minimum criteria of '".$RoosterSize."' Roosters";
                             return $Return;
@@ -9434,6 +9749,10 @@ class SnakeDrafts_model extends CI_Model {
                      }
 
                     if ($PlayerSelectTypeRole == "TE") {
+                        if (isset($DraftPlayerSelectionCriteria['WR/TE']) && (empty($PlayerRoles['TE']) && $PlayerRoles['WR'] == 1)) {
+                            $DraftPlayerSelectionCriteria['TE'] += 1;
+                            $PlayerSelectTypeRole = "WR/TE";
+                        }
                         if (@$PlayerRoles['TE'] >= $DraftPlayerSelectionCriteria['TE']) {
                             $Return['Message'] = "Minimum Criteria for TE is fulfilled. Please select player for another position will you complete the minimum criteria of '".$RoosterSize."' Roosters";
                             return $Return;
@@ -9443,6 +9762,13 @@ class SnakeDrafts_model extends CI_Model {
                     if ($PlayerSelectTypeRole == "FLEX") {
                         if (@$PlayerRoles['FLEX'] >= $DraftPlayerSelectionCriteria['FLEX']) {
                             $Return['Message'] = "Minimum Criteria for FLEX is fulfilled. Please select player for another position will you complete the minimum criteria of '".$RoosterSize."' Roosters";
+                            return $Return;
+                        }
+                     }
+
+                    if ($PlayerSelectTypeRole == "WR/TE") {
+                        if (@$PlayerRoles['WR/TE'] >= $DraftPlayerSelectionCriteria['WR/TE']) {
+                            $Return['Message'] = "Minimum Criteria for WR/TE is fulfilled. Please select player for another position will you complete the minimum criteria of '".$RoosterSize."' Roosters";
                             return $Return;
                         }
                      }

@@ -6556,14 +6556,14 @@ class SnakeDrafts_model extends CI_Model {
 
                     /* Send Mail To Users */
 
-                    send_mail(array(
-                        'emailTo' => $Rows['Email'],
-                        'template_id' => 'd-9683d71dcf0546bdb255e4edaffa09ba',
-                        'Subject' => SITE_NAME . " Contest Cancelled",
-                        "Name" => $Rows['FirstName'],
-                        "ContestName" => $Value['ContestName'],
-                        "EmailText" => $Value['LeagueJoinDateTime']
-                    ));
+                    // send_mail(array(
+                    //     'emailTo' => $Rows['Email'],
+                    //     'template_id' => 'd-9683d71dcf0546bdb255e4edaffa09ba',
+                    //     'Subject' => SITE_NAME . " Contest Cancelled",
+                    //     "Name" => $Rows['FirstName'],
+                    //     "ContestName" => $Value['ContestName'],
+                    //     "EmailText" => $Value['LeagueJoinDateTime']
+                    // ));
                 }
             }
         }
@@ -6631,15 +6631,15 @@ class SnakeDrafts_model extends CI_Model {
                     foreach ($JoinedContestsUsers['Data']['Records'] as $Rows) {
 
                         /* Send Mail To Users */
-                        send_mail(array(
-                            'emailTo' => $Rows['Email'],
-                            'template_id' => 'd-6d0d7c5c59704ec5a88a2b1cb70454d3',
-                            'Subject' => SITE_NAME . " Contest Reminder",
-                            "Name" => $Rows['FirstName'],
-                            "ContestName" => $Value['ContestName'],
-                            "EmailText" => $Value['LeagueJoinDateTime'],
-                            "Message" => "This is a friendly reminder about your fantasy league draft on " . SITE_HOST . " We look forward to seeing you in the draft room. If you cannot attend live pre-rank your teams/schools in advance for best results!"
-                        ));
+                        // send_mail(array(
+                        //     'emailTo' => $Rows['Email'],
+                        //     'template_id' => 'd-6d0d7c5c59704ec5a88a2b1cb70454d3',
+                        //     'Subject' => SITE_NAME . " Contest Reminder",
+                        //     "Name" => $Rows['FirstName'],
+                        //     "ContestName" => $Value['ContestName'],
+                        //     "EmailText" => $Value['LeagueJoinDateTime'],
+                        //     "Message" => "This is a friendly reminder about your fantasy league draft on " . SITE_HOST . " We look forward to seeing you in the draft room. If you cannot attend live pre-rank your teams/schools in advance for best results!"
+                        // ));
                     }
                     $this->db->where('ContestID', $Value['ContestID']);
                     $this->db->limit(1);
@@ -9258,20 +9258,31 @@ class SnakeDrafts_model extends CI_Model {
         $UserInvitationCode = $Input['UserInvitationCode'];
         if (!empty($Input['Email'])) {
             /* Send referral Email to User with referral url */
-            send_mail(array(
+            // send_mail(array(
+            //     'emailTo' => $Input['Email'],
+            //     'template_id' => 'd-c51b06b02dff433694abe37a8bf1bea6',
+            //     'Subject' => 'Contest Invitation - ' . SITE_NAME,
+            //     "Name" => $UserData['FirstName'],
+            //     "InviteCode" => $UserInvitationCode,
+            //     "Message" => $ContestData['SubGameType'],
+            //     "EmailText" => "The draft date is on: " . $ContestData['LeagueJoinDateTime'] . " EST. The entry fee is $" . $ContestData['EntryFee'],
+            // ));
+
+            sendMail(array(
                 'emailTo' => $Input['Email'],
-                'template_id' => 'd-c51b06b02dff433694abe37a8bf1bea6',
-                'Subject' => 'Contest Invitation - ' . SITE_NAME,
-                "Name" => $UserData['FirstName'],
-                "InviteCode" => $UserInvitationCode,
-                "Message" => $ContestData['SubGameType'],
-                "EmailText" => "The draft date is on: " . $ContestData['LeagueJoinDateTime'] . " EST. The entry fee is $" . $ContestData['EntryFee'],
-            ));
+                'emailSubject' => 'Fantasy League Invitation',
+                'emailMessage' => emailTemplate($this->load->view('emailer/invite_contest', array(  
+                        "Name"          => $UserData['FirstName'],
+                        "InviteCode"    => $UserInvitationCode,
+                        "Message"       => $ContestData['SubGameType'],
+                        "EmailText"     => "The draft date is on: " . date('m-d-Y',strtotime($ContestData['LeagueJoinDateTime'])) . ". The entry fee is $" . $ContestData['EntryFee'],), TRUE))
+                    )
+            );
         } else if (!empty(($Input['Phone']))) {
             /* Send referral SMS to User with referral url */
             $this->Utility_model->sendMobileSMS(array(
                 'PhoneNumber' => $Input['Phone'],
-                'Text' => "Play with me on Stat Action Sports. Click " . base_url() . " to login on portal and Use contest code " . $UserInvitationCode . " to join contest."
+                'Text' => "Play with me on Fandom Royale. Click " . base_url() . " to login on portal and Use contest code " . $UserInvitationCode . " to join contest."
             ));
         }
     }

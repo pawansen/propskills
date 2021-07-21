@@ -42,13 +42,13 @@ class Users extends API_Controller_Secure
         if($UsersData){
             if (!empty($this->Post['Email']) && $this->Post['Email'] == 1) {
                 /* Send Email to User */
-                send_mail(array(
-                    'emailTo'       => implode(',', array_column($UsersData['Data']['Records'], 'Email')),
-                    'template_id'   => 'd-a653fd170a47432abd0520f5ce209acf',
-                    'Subject'       => SITE_NAME . "-" . $this->Post['Title'],
-                    'Message'       => $this->Post['EmailMessage']
-                ));
-                $this->Return['Message'] = 'Email broadcasted.';
+                // send_mail(array(
+                //     'emailTo'       => implode(',', array_column($UsersData['Data']['Records'], 'Email')),
+                //     'template_id'   => 'd-a653fd170a47432abd0520f5ce209acf',
+                //     'Subject'       => SITE_NAME . "-" . $this->Post['Title'],
+                //     'Message'       => $this->Post['EmailMessage']
+                // ));
+                $this->Return['Message'] = 'Email broadcasted Disabled.';
 
             }elseif(!empty($this->Post['Notification']) && $this->Post['Notification'] == 3) {
                 foreach ($UsersData['Data']['Records'] as $Value) {
@@ -245,18 +245,18 @@ class Users extends API_Controller_Secure
 			$this->Return['Message']      	=	"An error occurred, please try again later.";  
 		}else{
 			/* Send welcome Email to User with login details */
-			/*sendMail(array(
+			sendMail(array(
 				'emailTo' 		=> $this->Post['Email'],			
 				'emailSubject'	=> "Your Login Credentials - ".SITE_NAME,
 				'emailMessage'	=> emailTemplate($this->load->view('emailer/adduser',array("Name" =>  $this->Post['FirstName'], 'Password' => $this->Post['Password']),TRUE)) 
-			));*/
-			send_mail(array(
-                    'emailTo'       =>  $this->Post['Email'],
-                    'template_id'   =>  'd-18fbdb0526ac43e4b7942fc08d8ebcd3',
-                    'Subject'       =>  SITE_NAME ."- Your Login Credentials",           
-                    "Name"          =>  $this->Post['FirstName'],
-                    "Password"  =>  $this->Post['Password']
-                ));
+			));
+			// send_mail(array(
+   //                  'emailTo'       =>  $this->Post['Email'],
+   //                  'template_id'   =>  'd-18fbdb0526ac43e4b7942fc08d8ebcd3',
+   //                  'Subject'       =>  SITE_NAME ."- Your Login Credentials",           
+   //                  "Name"          =>  $this->Post['FirstName'],
+   //                  "Password"  =>  $this->Post['Password']
+   //              ));
 			return true;
 		}
 	}

@@ -2515,14 +2515,14 @@ class AuctionDrafts_model extends CI_Model {
 
                     /* Send Mail To Users */
 
-                    send_mail(array(
-                        'emailTo' => $Rows['Email'],
-                        'template_id' => 'd-9683d71dcf0546bdb255e4edaffa09ba',
-                        'Subject' => SITE_NAME . " Contest Cancelled",
-                        "Name" => $Rows['FirstName'],
-                        "ContestName" => $Value['ContestName'],
-                        "EmailText" => $Value['LeagueJoinDateTime']
-                    ));
+                    // send_mail(array(
+                    //     'emailTo' => $Rows['Email'],
+                    //     'template_id' => 'd-9683d71dcf0546bdb255e4edaffa09ba',
+                    //     'Subject' => SITE_NAME . " Contest Cancelled",
+                    //     "Name" => $Rows['FirstName'],
+                    //     "ContestName" => $Value['ContestName'],
+                    //     "EmailText" => $Value['LeagueJoinDateTime']
+                    // ));
                 }
             }
         }

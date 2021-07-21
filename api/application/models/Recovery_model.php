@@ -43,19 +43,19 @@ class Recovery_model extends CI_Model
 			}else{
 				/* Send Password Assistance Email to User with Token (If user is not Pending or Email-Confirmed then email send without Token). */
 				$EmailText = "One time password reset code is given below:";
-				/*$SendMail = sendMail(array(
+				$SendMail = sendMail(array(
 					'emailTo' 		=> $UserData['Email'],			
 					'emailSubject'	=> SITE_NAME . " Password Assistance",
 					'emailMessage'	=> emailTemplate($this->load->view('emailer/recovery',array("Name" => $UserData['FullName'], 'Token' => @$Token, 'EmailText' => $EmailText),TRUE))
-				));*/
-				send_mail(array(
-		                    'emailTo'       =>  $UserData['Email'],
-		                    'template_id'   =>  'd-e39c1b2c78d540cb80ca7061974bd5c7',
-		                    'Subject'       =>	SITE_NAME ." Password Assistance",           
-		                    "Name" 			=> 	$UserData['FullName'],
-		                    'Token' 		=> 	@$Token,
-		                    'EmailText'		=> 	$EmailText
-		                ));
+				));
+				// send_mail(array(
+		  //                   'emailTo'       =>  $UserData['Email'],
+		  //                   'template_id'   =>  'd-e39c1b2c78d540cb80ca7061974bd5c7',
+		  //                   'Subject'       =>	SITE_NAME ." Password Assistance",           
+		  //                   "Name" 			=> 	$UserData['FullName'],
+		  //                   'Token' 		=> 	@$Token,
+		  //                   'EmailText'		=> 	$EmailText
+		  //               ));
 			}
 			return $Message;
 		}else{

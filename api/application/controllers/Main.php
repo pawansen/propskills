@@ -8,6 +8,20 @@ class Main extends MAIN_Controller {
         echo "This is a sample page.";
     }
 
+    public function showEmailTemplate() {
+      
+      sendMail(array(
+          'emailTo' => 'gauravsahu.mobiwebtech@gmail.com',
+          'emailSubject' => 'Thank you for registering at ' . SITE_NAME,
+          'emailMessage' => emailTemplate($this->load->view('emailer/signup', array("Name" => 'GAURAV', 'Token' => '456487', 'DeviceTypeID' => '1'), TRUE))
+          )
+      );
+      // $data = ['Name' => 'USER', 'GOOGLE_PLUS_URL'  => 'fake_url', 'Token' => 'Token'];
+      // $this->load->view('emailer/includes/header');
+      // $this->load->view('emailer/signup', $data);
+      // $this->load->view('emailer/includes/footer');
+    }
+
     public function logs() {
         $this->load->library('logviewer');
         $this->load->view('logs', $this->logviewer->get_logs());

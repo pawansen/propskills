@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var app = express();
-var port = 3300;
+var port = 3000;
 var Request = require("request");
 var localStorage = require('localStorage');
 
@@ -14,8 +14,12 @@ var intervalUserTime;
 var NBAintervalUserTime;
 var getDraftLive;
 var NBAgetDraftLive;
-var base_url = 'http://159.65.8.30/propskills/';
-var nba_base_url = 'http://159.65.8.30/propskills/api/nba/';
+// var base_url = 'http://159.65.8.30/propskills/';
+// var nba_base_url = 'http://159.65.8.30/propskills/api/nba/';
+
+var base_url = 'http://localhost/propskills/';
+var nba_base_url = 'http://localhost/propskills/api/nba/';
+
 var cors = require('cors')
 
 app.use(function (request, response, next) {
@@ -267,7 +271,7 @@ io.on('connection', function (socket) {
                           }
                           console.dir(body);
                           console.dir('body1');
-                          console.dir(auctionPlayerStausData.Data.AuctionStatus);
+                          //console.dir(auctionPlayerStausData.Data.AuctionStatus);
 
                           var auctionPlayerStausData = JSON.parse(body);
                           io.in('draft_' + playerBidTimeData.Data[i].ContestGUID).emit('DraftUserChange', { ContestGUID: playerBidTimeData.Data[i].ContestGUID, UserGUID: playerBidTimeData.Data[i].playerBidData.Data.UserGUID, getBidPlayerData: playerBidTimeData.Data[i].playerBidData, PlayerStatus: auctionPlayerStausData, Datetime: auctionPlayerStausData.Data.DraftUserLiveTime, DraftUserTimer: playerBidData.Data.DraftUserTimer });

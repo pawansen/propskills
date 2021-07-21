@@ -24,7 +24,7 @@ function send_mail($emailData = array()) {
                     "TWITTER_URL"           :   "' . TWITTER_URL . '",
                     "LINKEDIN_URL"          :   "' . LINKEDIN_URL . '",
                     "INSTAGRAM_URL"         :   "' . INSTAGRAM_URL . '",
-                    "CompanyName"           :   "Stat Action Sports",
+                    "CompanyName"           :   "Fandom Royale",
                     "Name"                  :   "' . $emailData['Name'] . '",
                     "EmailText"             :   "' . $emailData['EmailText'] . '",
                     "PhoneNumber"           :   "' . $emailData['PhoneNumber'] . '",

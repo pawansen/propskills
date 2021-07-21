@@ -102,18 +102,18 @@ class Users_model extends CI_Model {
                 $this->load->model('Recovery_model');
                 $Token = $this->Recovery_model->generateToken($UserID, 2);
                 /* Send welcome Email to User with Token. */
-                /* sendMail(array(
+                 sendMail(array(
                   'emailTo' => $UpdateArray['EmailForChange'],
                   'emailSubject' => SITE_NAME . ", OTP for change of email address.",
                   'emailMessage' => emailTemplate($this->load->view('emailer/change_email', array("Name" => $UserData['FirstName'], 'Token' => $Token), TRUE))
-                  )); */
-                send_mail(array(
-                    'emailTo' => $UpdateArray['EmailForChange'],
-                    'template_id' => 'd-950bae79c1ce4e50b786fdabf01b6a9a',
-                    'Subject' => SITE_NAME . " OTP for change of email address",
-                    "Name" => $UserData['FirstName'],
-                    'Token' => @$Token
-                ));
+                  )); 
+                // send_mail(array(
+                //     'emailTo' => $UpdateArray['EmailForChange'],
+                //     'template_id' => 'd-950bae79c1ce4e50b786fdabf01b6a9a',
+                //     'Subject' => SITE_NAME . " OTP for change of email address",
+                //     "Name" => $UserData['FirstName'],
+                //     'Token' => @$Token
+                // ));
                 unset($UpdateArray['Email']);
             }
         }
@@ -218,17 +218,17 @@ class Users_model extends CI_Model {
         if (!empty($Input['Password'])) {
             /* Send Password Assistance Email to User with Token (If user is not Pending or Email-Confirmed then email send without Token). */
             $UserData = $this->Users_model->getUsers('FirstName,Email', array('UserID' => $UserID));
-            /* $SendMail = sendMail(array(
+             $SendMail = sendMail(array(
               'emailTo' => $UserData['Email'],
               'emailSubject' => SITE_NAME . " Password Assistance",
               'emailMessage' => emailTemplate($this->load->view('emailer/change_password', array("Name" => $UserData['FirstName']), TRUE))
-              )); */
-            send_mail(array(
-                'emailTo' => $UserData['Email'],
-                'template_id' => 'd-d0080a4391f04875b52adb931b63956a',
-                'Subject' => SITE_NAME . " Password Assistance",
-                "Name" => $UserData['FirstName']
-            ));
+              )); 
+            // send_mail(array(
+            //     'emailTo' => $UserData['Email'],
+            //     'template_id' => 'd-d0080a4391f04875b52adb931b63956a',
+            //     'Subject' => SITE_NAME . " Password Assistance",
+            //     "Name" => $UserData['FirstName']
+            // ));
         }
         return TRUE;
     }
@@ -1882,19 +1882,19 @@ class Users_model extends CI_Model {
         if ($Input['ReferType'] == 'Email' && !empty($Input['Email'])) {
 
             /* Send referral Email to User with referral url */
-            /* sendMail(array(
+             sendMail(array(
               'emailTo' => $Input['Email'],
               'emailSubject' => "Refer & Earn - " . SITE_NAME,
               'emailMessage' => emailTemplate($this->load->view('emailer/refer_earn', array("Name" => $UserData['FirstName'], "ReferralCode" => $UserData['ReferralCode'], 'ReferralURL' => $ReferralURL), TRUE))
-              )); */
-            send_mail(array(
+              )); 
+            /*send_mail(array(
                 'emailTo' => $Input['Email'],
                 'template_id' => 'd-22ba92922e0b4a90b09ed0c80d91e029',
                 'Subject' => SITE_NAME . "- Refer & Earn",
                 "Name" => $UserData['FirstName'],
                 "ReferralCode" => $UserData['ReferralCode'],
                 "ReferralURL" => $ReferralURL
-            ));
+            ));*/
         } else if ($Input['ReferType'] == 'Phone' && !empty($Input['PhoneNumber'])) {
 
             /* Send referral SMS to User with referral url */
@@ -1941,13 +1941,13 @@ class Users_model extends CI_Model {
 
                 $this->Notification_model->addNotification('Withdrawal', 'Withdrawal Request Approved', $UserData->UserID, $UserData->UserID, '', 'Your withdrawal request for ' . DEFAULT_CURRENCY . $UserData->Amount . ' has been approved by admin and will be transferred to your given account details within 3-4 working days.');
                 /* Send welcome Email to User with login details */
-                send_mail(array(
-                    'emailTo' => $UserData->Email,
-                    'template_id' => 'd-1559825ec35d4649ba870a547ea41aac',
-                    'Subject' => 'Withdrawal Request Confirmed - ' . SITE_NAME,
-                    "Name" => $UserData->FirstName,
-                    "Amount" => $UserData->Amount
-                ));
+                // send_mail(array(
+                //     'emailTo' => $UserData->Email,
+                //     'template_id' => 'd-1559825ec35d4649ba870a547ea41aac',
+                //     'Subject' => 'Withdrawal Request Confirmed - ' . SITE_NAME,
+                //     "Name" => $UserData->FirstName,
+                //     "Amount" => $UserData->Amount
+                // ));
             } else if (@$Input['StatusID'] == 3) {
                 /* add withdrawable amount again to account */
                 $this->Notification_model->addNotification('Withdrawal', 'Withdrawal Request Declined', $UserData->UserID, $UserData->UserID, '', 'Your withdrawal request for ' . DEFAULT_CURRENCY . $UserData->Amount . ' has been declined by admin for ' . $Comments);

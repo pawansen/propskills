@@ -61,7 +61,7 @@ class Signup extends API_Controller {
             if (!empty($this->Post['Email'])) {
                 /* Send welcome Email to User with Token. (only if source is Direct) */
                 $Token = ($this->Post['Source'] == 'Direct' ? $this->Recovery_model->generateToken($UserID, 2) : '');
-                /* sendMail(array(
+                 sendMail(array(
                   'emailTo' => $this->Post['Email'],
                   'emailSubject' => "Thank you for registering at " . SITE_NAME,
                   'emailMessage' => emailTemplate($this->load->view('emailer/signup', array(
@@ -69,15 +69,15 @@ class Signup extends API_Controller {
                   'Token' => $Token,
                   'DeviceTypeID' => $this->DeviceTypeID
                   ), TRUE))
-                  )); */
-                send_mail(array(
-                    'emailTo' => $this->Post['Email'],
-                    'template_id' => 'd-6be85e7ae1504e419a88c6bef2bd3ed0',
-                    'Subject' => 'Thank you for registering at ' . SITE_NAME,
-                    "Name" => $this->Post['FirstName'],
-                    'Token' => $Token,
-                    'DeviceTypeID' => $this->DeviceTypeID
-                ));
+                  )); 
+                // send_mail(array(
+                //     'emailTo' => $this->Post['Email'],
+                //     'template_id' => 'd-6be85e7ae1504e419a88c6bef2bd3ed0',
+                //     'Subject' => 'Thank you for registering at ' . SITE_NAME,
+                //     "Name" => $this->Post['FirstName'],
+                //     'Token' => $Token,
+                //     'DeviceTypeID' => $this->DeviceTypeID
+                // ));
             }
 
             /* for update phone number */
@@ -146,7 +146,7 @@ class Signup extends API_Controller {
             $this->Return['Message'] = "You have deactivated your account, please contact the Admin to reactivate.";
         } else {
             /* Re-Send welcome Email to User with Token. */
-            /* sendMail(array(
+             sendMail(array(
               'emailTo' => $this->Post['Keyword'],
               'emailSubject' => "Verify your account " . SITE_NAME,
               'emailMessage' => emailTemplate($this->load->view('emailer/signup', array(
@@ -154,15 +154,15 @@ class Signup extends API_Controller {
               'Token' => $this->Recovery_model->generateToken($UserData['UserID'], 2),
               'DeviceTypeID' => $this->DeviceTypeID
               ), TRUE))
-              )); */
-            send_mail(array(
-                'emailTo' => $this->Post['Keyword'],
-                'template_id' => 'd-6be85e7ae1504e419a88c6bef2bd3ed0',
-                'Subject' => 'Thank you for registering at ' . SITE_NAME,
-                "Name" => $UserData['FirstName'],
-                'Token' => $this->Recovery_model->generateToken($UserData['UserID'], 2),
-                'DeviceTypeID' => $this->DeviceTypeID
-            ));
+              )); 
+            // send_mail(array(
+            //     'emailTo' => $this->Post['Keyword'],
+            //     'template_id' => 'd-6be85e7ae1504e419a88c6bef2bd3ed0',
+            //     'Subject' => 'Thank you for registering at ' . SITE_NAME,
+            //     "Name" => $UserData['FirstName'],
+            //     'Token' => $this->Recovery_model->generateToken($UserData['UserID'], 2),
+            //     'DeviceTypeID' => $this->DeviceTypeID
+            // ));
             $this->Return['Message'] = "Please check your email for instructions.";
         }
     }
@@ -186,21 +186,21 @@ class Signup extends API_Controller {
             /* Send welcome Email to User with Token. */
             $Token = $this->Recovery_model->generateToken($this->SessionUserID, 2);
 
-            /* sendMail(array(
+             sendMail(array(
               'emailTo' => $UserData['Email'],
               'emailSubject' => "Verify your account " . SITE_NAME,
               'emailMessage' => emailTemplate($this->load->view('emailer/signup', array(
               "Name" => $UserData['FirstName'],
               'Token' => $this->Recovery_model->generateToken($this->SessionUserID, 2)
               ), TRUE))
-              )); */
-            send_mail(array(
+              )); 
+            /*send_mail(array(
                 'emailTo' => $UserData['EmailForChange'],
                 'template_id' => 'd-6be85e7ae1504e419a88c6bef2bd3ed0',
                 'Subject' => 'Verify your Email ' . SITE_NAME,
                 "Name" => $UserData['FirstName'],
                 'Token' => $Token
-            ));
+            ));*/
         } else {
             $Token = $this->Recovery_model->generateToken($this->SessionUserID, 3);
             /* Send change phonenumber SMS to User with Token. */
