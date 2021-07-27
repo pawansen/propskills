@@ -10,8 +10,8 @@
 			<span ng-if="data.dataList.length" class="h5">Total records: {{data.totalRecords}}</span>
 		</span>
 		<div class="float-right"><!-- ng-if="filterData.CategoryTypes.length>1" -->
-			<button  class="btn btn-default btn-secondary btn-sm ng-scope" data-toggle="modal" data-target="#filter_model"><img src="asset/img/search.svg"></button>
-			<button class="btn btn-success btn-sm ml-1" ng-click="loadFormAdd();">Add <?php if(!empty($_GET['ParentCategoryGUID'])){echo "Subcategory";}else{echo "Category";}?></button>
+	<!-- 		<button  class="btn btn-default btn-secondary btn-sm ng-scope" data-toggle="modal" data-target="#filter_model"><img src="asset/img/search.svg"></button>
+			<button class="btn btn-success btn-sm ml-1" ng-click="loadFormAdd();">Add <?php //if(!empty($_GET['ParentCategoryGUID'])){echo "Subcategory";}else{echo "Category";}?></button> -->
 		</div>
 	</div>
 	<!-- Top container/ -->
@@ -27,63 +27,27 @@
 			<!-- table heading -->
 			<thead>
 				<tr>
-					<!-- <th style="width:80px;" class="text-center">Picture</th> -->
 					<th style="width: 200px;">Category</th>
-					<th style="width: 200px;">Type</th>
-					<th>Subcategories</th>
-					<th style="width: 100px;" class="text-center">Status</th>
 					<th style="width: 100px;" class="text-center">Action</th>
 				</tr>
 			</thead>
 			<!-- table body -->
 			<tbody id="tabledivbody">
 
+				<tr scope="row" ng-repeat="(key, row) in data.dataList">
 
-
-				<tr scope="row" ng-repeat="(key, row) in data.dataList" id="sectionsid_{{row.MenuOrder}}.{{row.CategoryID}}">
-					<td class="listed sm text-center">
-						<img ng-if="!row.Media.Records[0].MediaThumbURL" ng-src="./asset/img/default-category.png">
-						<img ng-if="row.Media.Records[0].MediaThumbURL" ng-src="{{row.Media.Records[0].MediaThumbURL}}">
-					</td>
-
-					<td>
-						<strong>{{row.CategoryName}}</strong>
-					</td>
-					<td>{{row.CategoryTypeName}}</td>
-
-					<td>
-						<span ng-if="row.SubCategories.Records.length">		
-							<span ng-repeat="m in row.SubCategories.Records">
-								{{m.CategoryName}}
-								{{$last ? '' : ($index==row.SubCategories.Records.length-2) ? ' and ' : ',&nbsp;'}}
-							</span>
-							&nbsp;
-							<a href="./category/?ParentCategoryGUID={{row.CategoryGUID}}" style="font-size: 89%;">[Manage]</a>
-						</span>
-						<span ng-if="!row.SubCategories.Records.length">-</span>
-					</td>
-
-					<td class="text-center"><span ng-class="{Inactive:'text-danger', Active:'text-success'}[row.Status]">{{row.Status}}</span></td> 
+					<td>{{row.Category}}</td>
 
 					<td class="text-center">
 						<div class="dropdown">
 							<button class="btn btn-secondary  btn-sm action" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#8230;</button>
 							<div class="dropdown-menu dropdown-menu-left">
-								<a class="dropdown-item" href="" ng-click="loadFormEdit(key, row.CategoryGUID)">Edit</a>
-								<a class="dropdown-item" href="" ng-click="loadFormDelete(key, row.CategoryGUID)">Delete</a>
+								<a class="dropdown-item" href="" ng-click="loadFormEdit(key, row.GameID)">Edit</a>
+								<!-- <a class="dropdown-item" href="" ng-click="loadFormDelete(key, row.GameID)">Delete</a> -->
 							</div>
 						</div>
 					</td>
 				</tr>
-
-
-
-
-
-
-
-
-
 
 			</tbody>
 		</table>

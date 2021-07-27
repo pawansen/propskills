@@ -108,4 +108,20 @@ class Category extends API_Controller_Secure
 		}
 		$this->Return['Data'] = $Return;
 	}
+
+
+
+	/*
+	Name: 			updateUserInfo
+	Description: 	Use to update user profile info.
+	URL: 			/user/updateProfile/	
+	*/
+	public function editGame_post()
+	{
+		$this->Category_model->editGame($this->Post);
+
+		/* check for media present - associate media with this Post - ends */
+		$this->Return['Message']      	=	"Category updated successfully."; 
+	}
+
 }

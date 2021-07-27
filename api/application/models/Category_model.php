@@ -107,6 +107,24 @@ class Category_model extends CI_Model
 		return TRUE;
 	}
 
+		/*
+	Description: 	Use to update category.
+	*/
+	function editGame($Input=array()){
+		for($i=0;$i<=count($Input['ID']);$i++){
+			$UpdateArray = array(
+				'from'=>$Input['from'][$i],
+				'to'=>$Input['to'][$i]
+			);
+
+		    $this->db->where('ID', $Input['ID'][$i]);
+		    $this->db->where('GameID', $Input['GameID']);
+			$this->db->limit(1);
+			$this->db->update('game_options', $UpdateArray);
+		}
+		return TRUE;
+	}
+
 	/*
 	Description: 	Use to get Cetegories
 	*/
@@ -258,7 +276,66 @@ class Category_model extends CI_Model
 	}
 
 
+	/*
+	Description: 	Use to get Cetegories
+	*/
+	function getGames($Field='', $Where=array(), $multiRecords=FALSE,  $PageNo=1, $PageSize=10){
+		/*Additional fields to select*/
+		$Params = array();
+		if(!empty($Field)){
+			$Params = array_map('trim',explode(',',$Field));
+			$Field = '';
+			$FieldArray = array(
+				'GameID'				=>	'C.GameID',
+				'Category'					=>	'C.Category',
+			);
+			foreach($Params as $Param){
+				$Field .= (!empty($FieldArray[$Param]) ? ','.$FieldArray[$Param] : '');
+			}
+		}
 
+		$this->db->select('C.GameID, C.Category');
+		$this->db->select($Field);
+
+		$this->db->from('games_category C');
+
+
+		if(!empty($Where['GameID'])){
+			$this->db->where("C.GameID",$Where['GameID']);
+		}      
+
+		/* Total records count only if want to get multiple records */
+		if($multiRecords){ 
+			$TempOBJ = clone $this->db;
+			$TempQ = $TempOBJ->get();
+			$Return['Data']['TotalRecords'] = $TempQ->num_rows();
+			$this->db->limit($PageSize, paginationOffset($PageNo, $PageSize)); /*for pagination*/
+		}else{
+			$this->db->limit(1);
+		}
+
+		$this->db->order_by('C.GameID','ASC');
+		$Query = $this->db->get();	
+		if($Query->num_rows()>0){
+			foreach($Query->result_array() as $key =>$Record){
+				        /** to check auction user final team submitted * */
+                        $this->db->select("*");
+                        $this->db->from('game_options');
+                        $this->db->where('GameID',$Record['GameID']);
+                        $Query = $this->db->get();
+                        if ($Query->num_rows() > 0) {
+                            $Record['options'] = $Query->result_array();
+                        }
+				if(!$multiRecords){
+					return $Record;
+				}
+				$Records[] = $Record;
+			}
+			$Return['Data']['Records'] = $Records;
+			return $Return;
+		}
+		return FALSE;		
+	}
 
 }
 

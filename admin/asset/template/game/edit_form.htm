@@ -1,0 +1,71 @@
+<div class="modal-body">
+	<div class="form-area">
+		<form id="edit_form" name="edit_form" autocomplete="off" >
+			<div class="row">
+				<div class="col-md-7">
+					<div class="form-group">
+						<label class="control-label">Category Name</label>
+						<input name="CategoryName" readonly="" type="text" class="form-control" value="{{formData.Category}}"  maxlength="40">
+					</div>
+				</div>
+			</div> 
+			OPTIONS 1
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label">From</label>
+						<input name="from[]" type="text" class="form-control" value="{{formData.options[0]['from']}}"  maxlength="40">
+						<label class="control-label">To</label>
+						<input name="to[]" type="text" class="form-control" value="{{formData.options[0]['to']}}"  maxlength="40">
+						<input name="ID[]" type="hidden" class="form-control" value="{{formData.options[0]['ID']}}"  maxlength="40">
+					</div>
+				</div>
+			</div>
+						OPTIONS 2
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+							<label class="control-label">From</label>
+						<input name="from[]" type="text" class="form-control" value="{{formData.options[1]['from']}}"  maxlength="40">
+						<label class="control-label">To</label>
+						<input name="to[]" type="text" class="form-control" value="{{formData.options[1]['to']}}"  maxlength="40">
+						<input name="ID[]" type="hidden" class="form-control" value="{{formData.options[1]['ID']}}"  maxlength="40">
+					</div>
+				</div>
+			</div>
+						OPTIONS 3
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label">From</label>
+						<input name="from[]" type="text" class="form-control" value="{{formData.options[2]['from']}}"  maxlength="40">
+						<label class="control-label">To</label>
+						<input name="to[]" type="text" class="form-control" value="{{formData.options[2]['to']}}"  maxlength="40">
+						<input name="ID[]" type="hidden" class="form-control" value="{{formData.options[2]['ID']}}"  maxlength="40">
+					</div>
+				</div></div>
+
+		OPTIONS 4
+			<div class="row"  ng-if="formData.options[3]">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label">From</label>
+						<input name="from[]" type="text" class="form-control" value="{{formData.options[3]['from']}}"  maxlength="40">
+						<label class="control-label">To</label>
+						<input name="to[]" type="text" class="form-control" value="{{formData.options[3]['to']}}"  maxlength="40">
+						<input name="ID[]" type="hidden" class="form-control" value="{{formData.options[3]['ID']}}"  maxlength="40">
+					</div>
+				</div>
+			</div>
+			<!-- hidden parameters -->
+			<input type="hidden" name="GameID" value="{{formData.GameID}}">   
+			<!-- hidden parameters /-->
+		</form>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+	<button type="submit" class="btn btn-success btn-sm" ng-disabled="editDataLoading" ng-click="editData()">Save</button>
+</div>
+
+

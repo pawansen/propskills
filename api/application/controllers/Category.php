@@ -73,4 +73,41 @@ class Category extends API_Controller {
         }
     }
 
+        /*
+      Description:  Use to get Get single category.
+      URL:      /api/category/getCategories
+      Input (Sample JSON):
+     */
+
+    public function getGames_post() {
+        /* Validation section */
+        $this->form_validation->set_rules('PageNo', 'PageNo', 'trim|integer');
+        $this->form_validation->set_rules('PageSize', 'PageSize', 'trim|integer');
+        $this->form_validation->validation($this);  /* Run validation */
+        /* Validation - ends */
+
+        $CategoryData = $this->Category_model->getGames('', array(), TRUE, @$this->Post['PageNo'], @$this->Post['PageSize']);
+        if (!empty($CategoryData)) {
+            $this->Return['Data'] = $CategoryData['Data'];
+        }
+    }
+
+        /*
+      Description:  Use to get Get single category.
+      URL:      /api/category/getCategory
+      Input (Sample JSON):
+     */
+
+    public function getGame_post() {
+        /* Validation section */
+        $this->form_validation->set_rules('GameID', 'GameID', 'trim|required');
+        $this->form_validation->validation($this);  /* Run validation */
+        /* Validation - ends */
+
+        $CategoryData = $this->Category_model->getGames('SubCategoryNames', array("GameID" => @$this->Post['GameID']));
+        if (!empty($CategoryData)) {
+            $this->Return['Data'] = $CategoryData;
+        }
+    }
+
 }
