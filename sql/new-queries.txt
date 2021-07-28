@@ -147,3 +147,134 @@ UPDATE `admin_control` SET `ControlName` = 'Public Game Contests' WHERE `admin_c
 UPDATE `admin_control` SET `ControlName` = 'Private Game Contests' WHERE `admin_control`.`ControlID` = 51;
 UPDATE `admin_control` SET `ControlName` = 'Contest Game Templates' WHERE `admin_control`.`ControlID` = 64;
 UPDATE `admin_control` SET `ControlName` = 'Contest Game Temp' WHERE `admin_control`.`ControlID` = 64;
+
+
+
+-- phpMyAdmin SQL Dump
+-- version 4.5.4.1deb2ubuntu2.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jul 28, 2021 at 06:13 PM
+-- Server version: 5.7.28-0ubuntu0.16.04.2
+-- PHP Version: 7.0.33-26+ubuntu16.04.1+deb.sury.org+1
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `playdate`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sports_pre_contest`
+--
+
+CREATE TABLE `sports_pre_contest` (
+  `PreContestID` int(11) NOT NULL,
+  `UserID` int(11) NOT NULL,
+  `GamePlayType` enum('PICK_5','CLASSIC_9','PROP_5','TD_ONLY') NOT NULL,
+  `LeagueType` enum('Dfs','Draft','Auction','') NOT NULL DEFAULT 'Dfs',
+  `GameType` enum('Nfl','Ncaaf') NOT NULL DEFAULT 'Nfl',
+  `SubGameType` enum('ProFootballRegularSeasonOwners','ProFootballPlayoffs','CollegeFootballRegularSeason','CollegeFootballPower5RegularSeason','ProFootballPreSeasonOwners') DEFAULT NULL,
+  `ScoringType` enum('PointLeague','RoundRobin') DEFAULT 'PointLeague',
+  `PlayOff` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `GameTimeLive` smallint(6) DEFAULT '0',
+  `LeagueJoinDateTime` datetime DEFAULT NULL,
+  `AdminPercent` smallint(6) DEFAULT NULL,
+  `ContestFormat` enum('Head to Head','League') NOT NULL,
+  `ContestType` enum('Normal','Reverse','InPlay','Hot','Champion','Practice','More','Mega','Winner Takes All','Only For Beginners','Head to Head') NOT NULL,
+  `SeriesID` int(11) NOT NULL,
+  `MatchID` int(11) DEFAULT NULL,
+  `ContestName` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
+  `WeekStart` smallint(6) DEFAULT NULL,
+  `WeekEnd` smallint(6) DEFAULT NULL,
+  `Privacy` enum('Yes','No') NOT NULL,
+  `IsPaid` enum('Yes','No') NOT NULL,
+  `IsConfirm` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `IsAutoCreate` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `ShowJoinedContest` enum('Yes','No') NOT NULL,
+  `WinningAmount` decimal(8,2) NOT NULL DEFAULT '0.00',
+  `ContestSize` int(11) NOT NULL,
+  `RosterSize` smallint(6) DEFAULT NULL,
+  `PlayedRoster` smallint(6) DEFAULT NULL,
+  `BatchRoster` smallint(6) DEFAULT NULL,
+  `TotalJoinedTeams` int(11) NOT NULL DEFAULT '0',
+  `CashBonusContribution` float(6,2) NOT NULL DEFAULT '0.00',
+  `UserJoinLimit` int(11) NOT NULL DEFAULT '1',
+  `EntryType` enum('Single','Multiple') NOT NULL,
+  `EntryFee` int(11) NOT NULL,
+  `NoOfWinners` int(11) NOT NULL,
+  `CustomizeWinning` text,
+  `ContestDuration` enum('Daily','Weekly','SeasonLong') NOT NULL,
+  `DailyDate` date DEFAULT NULL,
+  `UserInvitationCode` varchar(50) DEFAULT NULL,
+  `IsWinningDistributed` enum('No','Yes') NOT NULL DEFAULT 'No',
+  `MinimumUserJoined` int(11) DEFAULT '0',
+  `AuctionStatusID` int(11) NOT NULL DEFAULT '1',
+  `AuctionUpdateTime` datetime DEFAULT NULL,
+  `AuctionTimeBreakAvailable` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `AuctionIsBreakTimeStatus` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `AuctionBreakDateTime` datetime DEFAULT NULL,
+  `DraftTotalRounds` smallint(6) DEFAULT NULL,
+  `DraftLiveRound` smallint(6) DEFAULT NULL,
+  `DraftUserTeamSubmitted` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `IsRefund` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `IsWinningDistributeAmount` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `IsReminderMailSent` enum('No','Yes') NOT NULL DEFAULT 'No',
+  `IsRandomDraft` enum('No','Yes') NOT NULL DEFAULT 'No',
+  `DraftPlayerSelectionCriteria` varchar(255) DEFAULT NULL,
+  `InvitePermission` enum('ByCreator','ByAnyone') NOT NULL DEFAULT 'ByAnyone',
+  `PrivatePointScoring` longtext,
+  `IsAutoDraft` enum('Yes','No') NOT NULL DEFAULT 'No',
+  `UserPrivateContestFee` float(6,2) NOT NULL DEFAULT '0.00',
+  `StatusID` int(6) NOT NULL DEFAULT '2'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sports_pre_contest`
+--
+
+INSERT INTO `sports_pre_contest` (`PreContestID`, `UserID`, `GamePlayType`, `LeagueType`, `GameType`, `SubGameType`, `ScoringType`, `PlayOff`, `GameTimeLive`, `LeagueJoinDateTime`, `AdminPercent`, `ContestFormat`, `ContestType`, `SeriesID`, `MatchID`, `ContestName`, `WeekStart`, `WeekEnd`, `Privacy`, `IsPaid`, `IsConfirm`, `IsAutoCreate`, `ShowJoinedContest`, `WinningAmount`, `ContestSize`, `RosterSize`, `PlayedRoster`, `BatchRoster`, `TotalJoinedTeams`, `CashBonusContribution`, `UserJoinLimit`, `EntryType`, `EntryFee`, `NoOfWinners`, `CustomizeWinning`, `ContestDuration`, `DailyDate`, `UserInvitationCode`, `IsWinningDistributed`, `MinimumUserJoined`, `AuctionStatusID`, `AuctionUpdateTime`, `AuctionTimeBreakAvailable`, `AuctionIsBreakTimeStatus`, `AuctionBreakDateTime`, `DraftTotalRounds`, `DraftLiveRound`, `DraftUserTeamSubmitted`, `IsRefund`, `IsWinningDistributeAmount`, `IsReminderMailSent`, `IsRandomDraft`, `DraftPlayerSelectionCriteria`, `InvitePermission`, `PrivatePointScoring`, `IsAutoDraft`, `UserPrivateContestFee`, `StatusID`) VALUES
+(1, 125, 'TD_ONLY', 'Draft', 'Nfl', 'ProFootballPreSeasonOwners', 'PointLeague', 'No', 0, '2021-01-01 04:30:00', 10, 'League', 'Normal', 408360, NULL, 'test', NULL, NULL, 'No', 'Yes', 'Yes', 'Yes', 'Yes', '112.50', 5, NULL, NULL, NULL, 0, 0.00, 1, 'Single', 25, 1, '[{"From":1,"To":1,"Percent":"100","WinningAmount":"112.5"}]', 'Daily', '2021-01-01', 'WSwmA3', 'No', 1, 1, '2021-01-01 05:30:00', 'No', 'No', NULL, NULL, 1, 'No', 'No', 'No', 'No', 'No', NULL, 'ByAnyone', NULL, 'No', 0.00, 2),
+(2, 125, 'PROP_5', 'Draft', 'Nfl', 'ProFootballPreSeasonOwners', 'PointLeague', 'No', 0, '1970-01-01 00:00:00', 25, 'League', 'Normal', 408360, NULL, 'week444', 1, 1, 'No', 'Yes', 'Yes', 'No', 'Yes', '750.00', 5, 6, 6, NULL, 0, 0.00, 1, 'Single', 200, 1, '[{"From":1,"To":1,"Percent":"100","WinningAmount":"750.0"}]', 'Weekly', '2021-01-01', 'jaZuL7', 'No', 1, 1, '1970-01-01 01:00:00', 'No', 'No', NULL, 6, 1, 'No', 'No', 'No', 'No', 'No', '{"QB":1,"RB":1,"WR":2,"TE":1,"FLEX":1}', 'ByAnyone', NULL, 'No', 0.00, 3);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `sports_pre_contest`
+--
+ALTER TABLE `sports_pre_contest`
+  ADD PRIMARY KEY (`PreContestID`),
+  ADD UNIQUE KEY `UserInvitationCode` (`UserInvitationCode`),
+  ADD KEY `MatchID` (`MatchID`),
+  ADD KEY `SeriesID` (`SeriesID`),
+  ADD KEY `UserID` (`UserID`),
+  ADD KEY `ContestType` (`ContestType`),
+  ADD KEY `Privacy` (`Privacy`),
+  ADD KEY `IsPaid` (`IsPaid`),
+  ADD KEY `sports_contest_ibfk_8` (`AuctionStatusID`),
+  ADD KEY `GamePlayType` (`GamePlayType`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `sports_pre_contest`
+--
+ALTER TABLE `sports_pre_contest`
+  MODIFY `PreContestID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
