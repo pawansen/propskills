@@ -73,6 +73,7 @@ class AuctionDrafts_model extends CI_Model {
             "PlayOff" => @$Input['PlayOff'],
             "WeekStart" => @$Input['WeekStart'],
             "WeekEnd" => @$Input['WeekStart'],
+            "GamePlayType" => @$Input['GamePlayType'],
             "GameTimeLive" => @$Input['GameTimeLive'],
             "ContestDuration" => @$Input['ContestDuration'],
             "DailyDate" => @$Input['DailyDate'],
@@ -101,8 +102,8 @@ class AuctionDrafts_model extends CI_Model {
                             ));
         }
         $this->db->insert('sports_contest', $InsertData);
-        $PlayerIs = $this->addAuctionPlayer($SeriesID, $EntityID, $Input['WeekStart'],$Input['ContestDuration'],$Input['DailyDate']);
-        if(!$PlayerIs) return false;
+        /*$PlayerIs = $this->addAuctionPlayer($SeriesID, $EntityID, $Input['WeekStart'],$Input['ContestDuration'],$Input['DailyDate']);
+        if(!$PlayerIs) return false;*/
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE) {
             return FALSE;
@@ -968,6 +969,7 @@ class AuctionDrafts_model extends CI_Model {
                 'GameTimeLive' => 'C.GameTimeLive',
                 'AdminPercent' => 'C.AdminPercent',
                 'IsConfirm' => 'C.IsConfirm',
+                "GamePlayType" => 'C.GamePlayType',
                 'IsAutoCreate' => 'C.IsAutoCreate',
                 'ShowJoinedContest' => 'C.ShowJoinedContest',
                 'WinningAmount' => 'C.WinningAmount',
@@ -1029,7 +1031,7 @@ class AuctionDrafts_model extends CI_Model {
                 }
             }
         }
-        $this->db->select('C.ContestGUID,C.ContestName,(SELECT WeekName FROM sports_matches WHERE SeasonType = C.SubGameType AND WeekID=C.WeekStart LIMIT 1) WeekName');
+        $this->db->select('C.ContestGUID,C.ContestName,(SELECT WeekName FROM sports_matches WHERE SeasonType = C.SubGameType AND WeekID=C.WeekStart LIMIT 1) WeekName,C.GamePlayType,C.MatchID');
         if (!empty($Field))
             $this->db->select($Field, FALSE);
         $this->db->from('tbl_entity E, sports_contest C,sports_series S');
@@ -1201,6 +1203,18 @@ class AuctionDrafts_model extends CI_Model {
                     $TotalWinningAmount = $this->getTotalWinningAmount($Record['ContestGUID']);
                     $Records[$key]['TotalWinningAmount'] = ($TotalWinningAmount) ? $TotalWinningAmount : 0;
                     $Records[$key]['NoOfWinners'] = ($Record['NoOfWinners'] == 0 ) ? 1 : $Record['NoOfWinners'];
+                    if(!empty($Record['MatchID'])){
+                        $this->db->select('M.MatchGUID,TL.TeamName AS TeamNameLocal,TV.TeamName AS TeamNameVisitor,TL.TeamNameShort AS TeamNameShortLocal,TV.TeamNameShort AS TeamNameShortVisitor,M.MatchStartDateTime as MatchStartDateTimeUTC');
+                        $this->db->where('MatchID', $Record['MatchID']);
+                        $this->db->from('sports_matches M, sports_teams TL, sports_teams TV');
+                        $this->db->where("M.TeamIDLocal", "TL.TeamID", FALSE);
+                        $this->db->where("M.TeamIDVisitor", "TV.TeamID", FALSE);
+                        $this->db->limit(1);
+                        $MatchDetails = $this->db->get()->row_array();
+                        if (!empty($MatchDetails)) {
+                            $Records[$key]['Match'] = $MatchDetails;
+                        }
+                    }
                 }
 
                 $Return['Data']['Records'] = $Records;
@@ -1212,7 +1226,19 @@ class AuctionDrafts_model extends CI_Model {
                 $Record['TotalAmountReceived'] = ($TotalAmountReceived) ? $TotalAmountReceived : 0;
                 $TotalWinningAmount = $this->getTotalWinningAmount($Record['ContestGUID']);
                 $Record['TotalWinningAmount'] = ($TotalWinningAmount) ? $TotalWinningAmount : 0;
-
+                
+                    if(!empty($Record['MatchID'])){
+                        $this->db->select('M.MatchGUID,TL.TeamName AS TeamNameLocal,TV.TeamName AS TeamNameVisitor,TL.TeamNameShort AS TeamNameShortLocal,TV.TeamNameShort AS TeamNameShortVisitor,M.MatchStartDateTime as MatchStartDateTimeUTC');
+                        $this->db->where('MatchID', $Record['MatchID']);
+                        $this->db->from('sports_matches M, sports_teams TL, sports_teams TV');
+                        $this->db->where("M.TeamIDLocal", "TL.TeamID", FALSE);
+                        $this->db->where("M.TeamIDVisitor", "TV.TeamID", FALSE);
+                        $this->db->limit(1);
+                        $MatchDetails = $this->db->get()->row_array();
+                        if (!empty($MatchDetails)) {
+                            $Record['Match'] = $MatchDetails;
+                        }
+                    }
 
                 return $Record;
             }
@@ -1361,6 +1387,7 @@ class AuctionDrafts_model extends CI_Model {
             "ScoringType" => @$Input['ScoringType'],
             "PlayOff" => @$Input['PlayOff'],
             "WeekStart" => @$Input['WeekStart'],
+            "GamePlayType" => @$Input['GamePlayType'],
             "WeekEnd" => @$Input['WeekEnd'],
             "GameTimeLive" => @$Input['GameTimeLive'],
             "ContestDuration" => @$Input['ContestDuration'],
@@ -1467,7 +1494,7 @@ class AuctionDrafts_model extends CI_Model {
             }
         }
 
-        $this->db->select('C.ContestGUID,C.ContestName');
+        $this->db->select('C.ContestGUID,C.ContestName,C.GamePlayType');
         if (!empty($Field))
             $this->db->select($Field, FALSE);
         $this->db->from('tbl_entity E, sports_contest C, sports_matches M, sports_teams TL, sports_teams TV,sports_series S,sports_contest_join JC');

@@ -49,6 +49,23 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         });
     }
 
+        /*To get matches according to Series*/
+    $scope.getMatches = function (SeriesGUID) {
+        $scope.MatchData = {};
+        //&StatusID=1
+        var data = 'SeriesGUID=' + SeriesGUID + '&Params=MatchNo,MatchStartDateTime,TeamNameLocal,TeamNameVisitor&OrderBy=MatchStartDateTime&Sequence=ASC&Status=Pending';
+        $http.post(API_URL + 'sports/getMatches', data, contentType).then(function (response) {
+            var response = response.data;
+            if (response.ResponseCode == 200 && response.Data) { /* success case */
+                $scope.MatchData = response.Data.Records;
+                $timeout(function () {
+                    $('select.chosen-select1').chosen({ width: '100%', "disable_search_threshold": 8 }).trigger("chosen:updated");
+                    $("select.chosen-select").chosen({ width: '100%', "disable_search_threshold": 8 }).trigger("chosen:updated");
+                }, 3000);
+            }
+        });
+    }
+
     $scope.getCurrentWeek = function (SeriesGUID)
     {
 
@@ -151,24 +168,9 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         
         $timeout(function () {
             $('input[name=LeagueJoinDateTime]').datetimepicker({startDate: new Date(),minView:2,'showTimepicker':false});
+            $('select.chosen-select1').chosen({ width: '100%', "disable_search_threshold": 8 }).trigger("chosen:updated");
+            $("select.chosen-select").chosen({ width: '100%', "disable_search_threshold": 8 }).trigger("chosen:updated");
         }, 600);
-    }
-
-
-    /*To get matches according to Series*/
-    $scope.getMatches = function (SeriesGUID) {
-        $scope.MatchData = {};
-        //&StatusID=1
-        var data = 'SeriesGUID=' + SeriesGUID + '&Params=MatchNo,MatchStartDateTime,TeamNameLocal,TeamNameVisitor&OrderBy=MatchStartDateTime&Sequence=DESC&Status=Pending';
-        $http.post(API_URL + 'sports/getMatches', data, contentType).then(function (response) {
-            var response = response.data;
-            if (response.ResponseCode == 200 && response.Data) { /* success case */
-                $scope.MatchData = response.Data.Records;
-                $timeout(function () {
-                    $("select.chosen-select").chosen({width: '100%', "disable_search_threshold": 8}).trigger("chosen:updated");
-                }, 3000);
-            }
-        });
     }
 
     /*load edit form*/

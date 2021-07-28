@@ -44,6 +44,7 @@
 			<thead>
 				<tr>
                     <th style="width: 100px;">Game Type</th>
+                    <th style="width: 100px;">Game Play Type</th>
 					<th>Contest Name</th>
 					<th style="width: 100px;">Type</th>
 					<th style="width: 70px;">Private/Public</th>

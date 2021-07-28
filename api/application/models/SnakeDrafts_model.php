@@ -57,6 +57,7 @@ class SnakeDrafts_model extends CI_Model {
             "GameType"      => @$Input['GameType'],
             "GameTimeLive"  => @$Input['GameTimeLive'],
             "AdminPercent"  => @$Input['AdminPercent'],
+            "GamePlayType" => @$Input['GamePlayType'],
             "ContestSize"   => (@$Input['ContestFormat'] == 'Head to Head') ? 2 : @$Input['ContestSize'],
             "EntryFee" => (@$Input['IsPaid'] == 'Yes') ? @$Input['EntryFee'] : 0,
             "NoOfWinners" => (@$Input['IsPaid'] == 'Yes') ? @$Input['NoOfWinners'] : 1,
@@ -117,8 +118,8 @@ class SnakeDrafts_model extends CI_Model {
                 $this->Users_model->addToWallet($InsertData, $SessionUserID, 5);
         }
 
-        $PlayerIs = $this->addAuctionPlayer($SeriesID, $EntityID, $Input['WeekStart'],$Input['ContestDuration'],$Input['DailyDate']);
-        if(!$PlayerIs) return false;
+        /*$PlayerIs = $this->addAuctionPlayer($SeriesID, $EntityID, $Input['WeekStart'],$Input['ContestDuration'],$Input['DailyDate']);
+        if(!$PlayerIs) return false;*/
         // $this->addAuctionPlayer($SeriesID, $EntityID);
         // $this->joinPrivateContest($Input, $SessionUserID, $EntityID, $SeriesID);
 
@@ -180,6 +181,7 @@ class SnakeDrafts_model extends CI_Model {
             "LeagueType" => "Draft",
             "ShowJoinedContest" => @$Input['ShowJoinedContest'],
             "WinningAmount" => @$Input['WinningAmount'],
+            "GamePlayType" => @$Input['GamePlayType'],
             "GameType"      => @$Input['GameType'],
             "GameTimeLive"  => @$Input['GameTimeLive'],
             "AdminPercent"  => @$Input['AdminPercent'],
@@ -3966,7 +3968,7 @@ class SnakeDrafts_model extends CI_Model {
                 }
             }
         }
-        $this->db->select('C.ContestGUID,C.ContestName,S.SeriesID,C.ContestID,C.UserID,S.SeriesGUID,(SELECT WeekName FROM sports_matches WHERE SeasonType = C.SubGameType AND WeekID=C.WeekStart LIMIT 1) WeekName');
+        $this->db->select('C.ContestGUID,C.ContestName,S.SeriesID,C.ContestID,C.UserID,S.SeriesGUID,(SELECT WeekName FROM sports_matches WHERE SeasonType = C.SubGameType AND WeekID=C.WeekStart LIMIT 1) WeekName,C.GamePlayType');
         if (!empty($Field))
             $this->db->select($Field, FALSE);
         $this->db->from('tbl_entity E, sports_contest C,sports_series S');
