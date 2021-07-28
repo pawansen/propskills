@@ -1,5 +1,6 @@
 INSERT INTO `admin_modules` (`ModuleID`, `ModuleTitle`, `ModuleName`) VALUES (NULL, 'Game Pro 5 Fantasy', 'game');
 INSERT INTO `admin_control` (`ControlID`, `ControlName`, `ModuleID`, `ParentControlID`, `Sort`) VALUES (NULL, 'Game Pro 5 Fantasy', '45', '36', '8');
+DELETE FROM `admin_user_type_permission` WHERE `admin_user_type_permission`.`UserTypeID` = 1 AND `admin_user_type_permission`.`ModuleID` = 41
 INSERT INTO `admin_user_type_permission` (`UserTypeID`, `ModuleID`) VALUES ('1', '45');
 
 
