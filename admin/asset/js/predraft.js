@@ -119,7 +119,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
     }
 
     /*list append*/
-    $rootScope.Status = 'Running';
+    $rootScope.Status = '';
     $scope.getList = function ()
     {
 
@@ -133,7 +133,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
             return;
         $scope.data.listLoading = true;
         var data = 'SessionKey=' + SessionKey + '&LeagueType=Draft&OrderByToday=Yes' + '&MatchGUID=' + MatchGUID + '&PageNo=' + $scope.data.pageNo + '&PageSize=' + $scope.data.pageSize + '&OrderBy=' + $scope.data.OrderBy + '&Sequence=' + $scope.data.Sequence + '&'+'&Params=SubGameType,AuctionStatus,SeriesName,IsConfirm,MinimumUserJoined,LeagueJoinDateTime,LeagueType,GameType,GameTimeLive,AdminPercent,Privacy,IsPaid,WinningAmount,ContestSize,EntryFee,NoOfWinners,EntryType,TeamNameLocal,TeamNameVisitor,Status,CustomizeWinning,ContestType,MatchStartDateTime,TotalJoined,TotalAmountReceived,TotalWinningAmount,CashBonusContribution,UserJoinLimit&Privacy=No&' + $('#filterForm').serialize() + '&' + $('#filterForm1').serialize()+ "&Status=" + $rootScope.Status;
-        $http.post(API_URL + 'auctionDrafts/getContests', data, contentType).then(function (response) {
+        $http.post(API_URL + 'admin/preContest/getContests', data, contentType).then(function (response) {
             var response = response.data;
             if (response.ResponseCode == 200 && response.Data.Records.length >0 ) { /* success case */
                 $scope.data.totalRecords = response.Data.TotalRecords;
@@ -162,12 +162,12 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
 
     $scope.loadFormAddContest = function (Position, CategoryGUID)
     {
-        window.location.href = BASE_URL + 'auctionDrafts/add';
+        window.location.href = BASE_URL + 'predraft/add';
     }
 
     $scope.loadFormEditContest = function (Position, CategoryGUID)
     {
-        window.location.href = BASE_URL + 'auctionDrafts/edit?ContestGUID=' + CategoryGUID;
+        window.location.href = BASE_URL + 'predraft/edit?ContestGUID=' + CategoryGUID;
     }
 
     $scope.loadDatepicker = function () {
@@ -188,7 +188,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         //$scope.templateURLEdit = PATH_TEMPLATE + module + '/edit_form.htm?' + Math.random();
         var ContestGUID = getQueryStringValue('ContestGUID');
         $scope.data.pageLoading = true;
-        $http.post(API_URL + 'auctionDrafts/getContest', 'SessionKey=' + SessionKey + '&ContestGUID=' + ContestGUID + '&Params=SubGameTypeKey,SubGameType,ContestDuration,DailyDate,LeagueJoinDateTime,PlayOff,WeekStart,ScoringType,WeekEnd,GameType,SeriesName,LeagueJoinDateTime,LeagueType,GameType,GameTimeLive,AdminPercent,Privacy,IsPaid,WinningAmount,ContestSize,EntryFee,NoOfWinners,EntryType,SeriesID,MatchID,SeriesGUID,TeamNameLocal,TeamNameVisitor,SeriesName,CustomizeWinning,ContestType,CashBonusContribution,UserJoinLimit,ContestFormat,IsConfirm,ShowJoinedContest,MinimumUserJoined', contentType).then(function (response) {
+        $http.post(API_URL + 'admin/preContest/getContest', 'SessionKey=' + SessionKey + '&ContestGUID=' + ContestGUID + '&Params=SubGameTypeKey,SubGameType,ContestDuration,DailyDate,LeagueJoinDateTime,PlayOff,WeekStart,ScoringType,WeekEnd,GameType,SeriesName,LeagueJoinDateTime,LeagueType,GameType,GameTimeLive,AdminPercent,Privacy,IsPaid,WinningAmount,ContestSize,EntryFee,NoOfWinners,EntryType,SeriesID,MatchID,SeriesGUID,TeamNameLocal,TeamNameVisitor,SeriesName,CustomizeWinning,ContestType,CashBonusContribution,UserJoinLimit,ContestFormat,IsConfirm,ShowJoinedContest,MinimumUserJoined', contentType).then(function (response) {
             var response = response.data;
             if (response.ResponseCode == 200) { /* success case */
                 $scope.data.pageLoading = false;
@@ -286,13 +286,13 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         }
         var TimeZone = $scope.getTimeZone();
         var data = 'SessionKey=' + SessionKey +'&TimeZone=' + TimeZone + '&Privacy=No&' + $("form[name='add_form']").serialize() + '&CustomizeWinning=' + customWinings;
-        $http.post(API_URL + 'admin/auctionDrafts/add', data, contentType).then(function (response) {
+        $http.post(API_URL + 'admin/preContest/add', data, contentType).then(function (response) {
             var response = response.data;
             if (response.ResponseCode == 200) { /* success case */
                 alertify.success(response.Message);
                 $scope.applyFilter();
                 $timeout(function () {
-                    window.location.href = BASE_URL + "auctionDrafts";
+                    window.location.href = BASE_URL + 'predraft';
                 }, 200);
             } else {
                 $scope.addDataLoading = false;
@@ -329,7 +329,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         inputData.ContestType = $scope.formData.ContestType;
         inputData.IsConfirm = $scope.formData.IsConfirm;
         inputData.ShowJoinedContest = $scope.formData.ShowJoinedContest;
-        inputData.ContestGUID = $scope.formData.ContestGUID;
+        inputData.PreContestID = $scope.formData.PreContestID;
         inputData.NoOfWinners = $scope.custom.NoOfWinners;
         inputData.CustomizeWinning = JSON.stringify($scope.custom.choices);
         inputData.SessionKey = SessionKey;
@@ -346,14 +346,14 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         inputData.ContestDuration = $scope.formData.ContestDuration;
         inputData.DailyDate = $scope.formData.DailyDate;
         inputData.LeagueJoinTime = $scope.LeagueJoinTime;
-
+        inputData.IsAutoCreate = $scope.IsAutoCreate;
 
         var customWinings = [];
         $.each($scope.custom.choices, function (key, value) {
             customWinings.push({'From': value.From, 'To': value.To, 'Percent': value.percent, 'WinningAmount': value.amount});
         });
-        var data = 'SessionKey=' + SessionKey + '&' + '&LeagueJoinTime=' + inputData.LeagueJoinTime + '&SubGameType=' + inputData.SubGameType + '&DailyDate=' + inputData.DailyDate +'&WeekEnd=' + inputData.WeekEnd + '&WeekStart=' + inputData.WeekStart + '&PlayOff=' + inputData.PlayOff + '&ScoringType=' + inputData.ScoringType + '&LeagueJoinDateTime=' + inputData.LeagueJoinDateTime + '&GameType=' + inputData.GameType + '&GameTimeLive=' + inputData.GameTimeLive + '&AdminPercent=' + inputData.AdminPercent + '&ContestName=' + inputData.ContestName + '&IsPaid=' + inputData.IsPaid + '&WinningAmount=' + inputData.WinningAmount + '&CashBonusContribution=' + inputData.CashBonusContribution + '&ContestFormat=' + inputData.ContestFormat + '&EntryFee=' + inputData.EntryFee + '&EntryType=' + inputData.EntryType + '&ContestSize=' + inputData.ContestSize + '&ContestType=' + inputData.ContestType+ '&ContestDuration=' + inputData.ContestDuration + '&IsConfirm=' + inputData.IsConfirm + '&ShowJoinedContest=' + inputData.ShowJoinedContest + '&NoOfWinners=' + inputData.NoOfWinners + '&ContestGUID=' + inputData.ContestGUID + '&MinimumUserJoined=' + inputData.MinimumUserJoined + '&Privacy=' + inputData.Privacy + '&CustomizeWinning=' + JSON.stringify(customWinings);
-        $http.post(API_URL + 'admin/auctionDrafts/edit', data, contentType).then(function (response) {
+        var data = 'SessionKey=' + SessionKey + '&' + '&LeagueJoinTime=' + inputData.LeagueJoinTime + '&IsAutoCreate=' + inputData.IsAutoCreate + '&SubGameType=' + inputData.SubGameType + '&DailyDate=' + inputData.DailyDate +'&WeekEnd=' + inputData.WeekEnd + '&WeekStart=' + inputData.WeekStart + '&PlayOff=' + inputData.PlayOff + '&ScoringType=' + inputData.ScoringType + '&LeagueJoinDateTime=' + inputData.LeagueJoinDateTime + '&GameType=' + inputData.GameType + '&GameTimeLive=' + inputData.GameTimeLive + '&AdminPercent=' + inputData.AdminPercent + '&ContestName=' + inputData.ContestName + '&IsPaid=' + inputData.IsPaid + '&WinningAmount=' + inputData.WinningAmount + '&CashBonusContribution=' + inputData.CashBonusContribution + '&ContestFormat=' + inputData.ContestFormat + '&EntryFee=' + inputData.EntryFee + '&EntryType=' + inputData.EntryType + '&ContestSize=' + inputData.ContestSize + '&ContestType=' + inputData.ContestType+ '&ContestDuration=' + inputData.ContestDuration + '&IsConfirm=' + inputData.IsConfirm + '&ShowJoinedContest=' + inputData.ShowJoinedContest + '&NoOfWinners=' + inputData.NoOfWinners + '&PreContestID=' + inputData.PreContestID + '&MinimumUserJoined=' + inputData.MinimumUserJoined + '&Privacy=' + inputData.Privacy + '&CustomizeWinning=' + JSON.stringify(customWinings);
+        $http.post(API_URL + 'admin/preContest/edit', data, contentType).then(function (response) {
             var response = response.data;
             if (response.ResponseCode == 200) { /* success case */
                 alertify.success(response.Message);
@@ -361,7 +361,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
                 $('.modal-header .close').click();
                 //window.location.reload();
                 $timeout(function () {
-                    window.location.href = BASE_URL + "auctionDrafts";
+                    window.location.href = BASE_URL + 'predraft';;
                 }, 200);
             } else {
                 alertify.error(response.Message);
@@ -817,7 +817,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         $scope.data.Position = Position;
         $scope.templateURLEdit = PATH_TEMPLATE + module + '/updateStatus_form.htm?' + Math.random();
         $scope.data.pageLoading = true;
-        $http.post(API_URL + 'auctionDrafts/getContest', 'SessionKey=' + SessionKey + '&ContestGUID=' + ContestGUID + '&Params=SubGameType,ContestName,ContestType,Status,StatusID', contentType).then(function (response) {
+        $http.post(API_URL + 'admin/preContest/getContest', 'SessionKey=' + SessionKey + '&PreContestID=' + ContestGUID + '&Params=SubGameType,ContestName,ContestType,Status,StatusID', contentType).then(function (response) {
             var response = response.data;
             if (response.ResponseCode == 200) { /* success case */
                 $scope.data.pageLoading = false;
@@ -854,7 +854,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
             }
         });
 
-        $http.post(API_URL + 'auctionDrafts/getContest', 'SessionKey=' + SessionKey + '&ContestGUID=' + ContestGUID + '&Params=Privacy,IsPaid,WinningAmount,ContestSize,EntryFee,NoOfWinners,EntryType,SeriesID,MatchID,SeriesGUID,TeamNameLocal,TeamNameVisitor,SeriesName,CustomizeWinning,ContestType,CashBonusContribution,UserJoinLimit,ContestFormat,IsConfirm,ShowJoinedContest,TotalJoined', contentType).then(function (response) {
+        $http.post(API_URL + 'admin/preContest/getContest', 'SessionKey=' + SessionKey + '&PreContestID=' + ContestGUID + '&Params=Privacy,IsPaid,WinningAmount,ContestSize,EntryFee,NoOfWinners,EntryType,SeriesID,MatchID,SeriesGUID,TeamNameLocal,TeamNameVisitor,SeriesName,CustomizeWinning,ContestType,CashBonusContribution,UserJoinLimit,ContestFormat,IsConfirm,ShowJoinedContest,TotalJoined', contentType).then(function (response) {
             var response = response.data;
             if (response.ResponseCode == 200) { /* success case */
                 $scope.data.pageLoading = false;
@@ -872,19 +872,19 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
     }
 
     /*edit status*/
-    $scope.editStatus = function (Status, contestGUID, Type)
+    $scope.editStatus = function (Status, PreContestID, Type)
     {
 
-        if (Status == 'Cancelled') {
-            var req = 'SessionKey=' + SessionKey + '&ContestGUID=' + contestGUID;
-            $http.post(API_URL + 'admin/auctionDrafts/cancel', req, contentType).then(function (response) {
+
+            var req = 'SessionKey=' + SessionKey + '&PreContestID=' + PreContestID+ '&Status=' + Status;
+            $http.post(API_URL + 'admin/preContest/cancel', req, contentType).then(function (response) {
                 var response = response.data;
                 if (response.ResponseCode == 200) { /* success case */
                     alertify.success(response.Message);
                     $scope.data.dataList[$scope.data.Position] = response.Data;
                     $('.modal-header .close').click();
                     if (Type == 'delete') {
-                        $scope.deleteData(contestGUID);
+                        $scope.deleteData(PreContestID);
                     }else{
                         setTimeout(function () {
                             window.location.reload();
@@ -895,21 +895,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
                 }
                 $scope.editDataLoading = false;
             });
-        } else {
-            $scope.editDataLoading = true;
-            var data = 'SessionKey=' + SessionKey + '&contestGUID=' + contestGUID + '&Status=' + Status;
-            $http.post(API_URL + 'admin/auctionDrafts/changeStatus', data, contentType).then(function (response) {
-                var response = response.data;
-                if (response.ResponseCode == 200) { /* success case */
-                    alertify.success(response.Message);
-                    $scope.data.dataList[$scope.data.Position] = response.Data;
-                    $('.modal-header .close').click();
-                } else {
-                    alertify.error(response.Message);
-                }
-                $scope.editDataLoading = false;
-            });
-        }
+
     }
 
     /* set time*/

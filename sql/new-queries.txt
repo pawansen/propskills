@@ -137,3 +137,13 @@ COMMIT;
 
 
 ALTER TABLE `sports_contest` ADD `GamePlayType` ENUM('PICK_5','CLASSIC_9','PROP_5','TD_ONLY') NOT NULL AFTER `UserID`, ADD INDEX (`GamePlayType`);
+
+INSERT INTO `admin_modules` (`ModuleID`, `ModuleTitle`, `ModuleName`) VALUES (NULL, 'Pre Contest', 'predraft');
+INSERT INTO `admin_control` (`ControlID`, `ControlName`, `ModuleID`, `ParentControlID`, `Sort`) VALUES (NULL, 'Game Contest Templates', '46', '36', '4');
+UPDATE `admin_modules` SET `ModuleTitle` = 'Game Contest Templates' WHERE `admin_modules`.`ModuleID` = 46;
+INSERT INTO `admin_user_type_permission` (`UserTypeID`, `ModuleID`) VALUES ('1', '46');
+UPDATE `admin_modules` SET `ModuleTitle` = 'Private Game Contests' WHERE `admin_modules`.`ModuleID` = 25;
+UPDATE `admin_control` SET `ControlName` = 'Public Game Contests' WHERE `admin_control`.`ControlID` = 50;
+UPDATE `admin_control` SET `ControlName` = 'Private Game Contests' WHERE `admin_control`.`ControlID` = 51;
+UPDATE `admin_control` SET `ControlName` = 'Contest Game Templates' WHERE `admin_control`.`ControlID` = 64;
+UPDATE `admin_control` SET `ControlName` = 'Contest Game Temp' WHERE `admin_control`.`ControlID` = 64;

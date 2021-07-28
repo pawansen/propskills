@@ -87,13 +87,18 @@ class AuctionDrafts extends API_Controller_Secure {
         $TeamSize    = ($this->Post['GameType'] == "Nfl") ? 32 : 130;
         $this->Post['DraftTotalRounds'] = round($TeamSize / $ContestSize);
 
-        $all_matches = count($this->input->post('MatchGUID'));
-        for ($i = 0; $i < $all_matches; $i++) {
-            $this->Post('MatchGUID')[$i];
-            $MatchIDs = $this->Entity_model->getEntity('E.EntityID', array('EntityGUID' => $this->Post('MatchGUID')[$i], 'EntityTypeName' => "Matches"));
-            $MatchID = $MatchIDs['EntityID'];
-            $insert = $this->AuctionDrafts_model->addContest($this->Post, $this->SessionUserID, $MatchID, $this->SeriesID);
+        if(!empty($this->input->post('MatchGUID'))){
+            $all_matches = count($this->input->post('MatchGUID'));
+            for ($i = 0; $i < $all_matches; $i++) {
+                $this->Post('MatchGUID')[$i];
+                $MatchIDs = $this->Entity_model->getEntity('E.EntityID', array('EntityGUID' => $this->Post('MatchGUID')[$i], 'EntityTypeName' => "Matches"));
+                $MatchID = $MatchIDs['EntityID'];
+                $insert = $this->AuctionDrafts_model->addContest($this->Post, $this->SessionUserID, $MatchID, $this->SeriesID);
+            }
+        }else{
+           $insert = $this->AuctionDrafts_model->addContest($this->Post, $this->SessionUserID, @$this->MatchID, $this->SeriesID);
         }
+
 
         if (!$insert) {
             $this->Return['ResponseCode'] = 500;
@@ -227,7 +232,8 @@ class AuctionDrafts extends API_Controller_Secure {
         $this->form_validation->validation($this);  /* Run validation */
 
         /* Get Contests Data */
-        $SportsType = footballGetConfiguration($this->Post['SubGameType']); 
+        // $SportsType = footballGetConfiguration($this->Post['SubGameType']);
+        $SportsType = footballGetConfigurationGames($this->Post['SubGameType']);
         if (!empty($SportsType)) {
             $this->Return['Data'] = $SportsType;
         }

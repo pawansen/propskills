@@ -608,3 +608,36 @@ function GetIndexValues($Array, $field, $value)
     }
     return false;
 }
+
+
+
+/* ------------------------------ */
+/* ------------------------------ */
+if (!function_exists('footballGetConfigurationGames')) {
+
+    function footballGetConfigurationGames($Key) {
+        $Football = array();
+        // $Football['PICK_5'] = array(
+        //     array('Owners' => 5, "RosterSize" => 6, "Start" => 4, "Batch" => 2),
+        //     array('Owners' => 10, "RosterSize" => 5, "Start" => 4, "Batch" => 1),
+        // );
+
+        // $Football['CLASSIC_9'] = array(
+        //     array('Owners' => 5, "RosterSize" => 10, "Start" => 8, "Batch" => 2),
+        //     array('Owners' => 10, "RosterSize" => 10, "Start" => 7, "Batch" => 3),
+        // );
+
+        $Football['PROP_5'] = array(
+            array('Owners' => 5, "RosterSize" => 10, "Start" => 8, "Batch" => 2),
+            array('Owners' => 10, "RosterSize" => 10, "Start" => 7, "Batch" => 3),
+        );
+
+        $Football['TD_ONLY'] = array(
+            array('Owners' => 5, "RosterSize" => 10, "Start" => 8, "Batch" => 2),
+            array('Owners' => 10, "RosterSize" => 10, "Start" => 7, "Batch" => 3),
+        );
+
+        return (isset($Football[$Key])) ? $Football[$Key] : array();
+    }
+
+}

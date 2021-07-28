@@ -1,5 +1,5 @@
 <header class="panel-heading">
-    <h1 class="h4">Contest Game Add</h1>
+    <h1 class="h4">Contest Game Templates Add</h1>
 </header>
 
 <div class="panel-body" ng-controller="PageController"><!-- Body -->
@@ -71,7 +71,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Season</label>
-                        <select id="Series" name="SeriesGUID" ng-model="SeriesGUID" class="form-control chosen-select" ng-change="getCurrentWeek(SeriesGUID);getMatches(SeriesGUID, 'Pending');">
+                        <select id="Series" name="SeriesGUID" ng-model="SeriesGUID" class="form-control chosen-select" ng-change="getCurrentWeek(SeriesGUID);">
                             <option value="">Please Select</option>
                             <option ng-repeat="Series in filterData.SeiresData" value="{{Series.SeriesGUID}}">{{Series.SeriesName}}</option>
                         </select>
@@ -90,7 +90,7 @@
                     </div>
                 </div> 
 
-                <div class="col-md-6" ng-if="ContestDuration == 'Daily'">
+<!--                 <div class="col-md-6" ng-if="ContestDuration == 'Daily'">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Match</label>
                         <select id="MatchGUID" name="MatchGUID[]" class="form-control chosen-select1" multiple="">
@@ -98,7 +98,7 @@
                             <option ng-repeat="match in MatchData" value="{{match.MatchGUID}}">{{match.TeamNameLocal}} Vs {{match.TeamNameVisitor}} ON {{match.MatchStartDateTime}}</option>
                         </select>
                     </div>
-                </div>
+                </div> -->
 <!--                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Scoring Type</label>
