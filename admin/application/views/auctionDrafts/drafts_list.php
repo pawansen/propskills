@@ -1,5 +1,5 @@
 <header class="panel-heading">
-  <h1 class="h4">Snake Draft</h1>
+  <h1 class="h4">Contest Games</h1>
 </header>
 
 <div class="panel-body" ng-controller="PageController"><!-- Body -->
@@ -12,7 +12,7 @@
 		<div class="float-right">
 			<button ng-if="data.dataList.length" class="btn btn-default btn-secondary btn-sm ng-scope" data-toggle="modal" data-target="#filter_model">Filter</button>
 <!--			<button class="btn btn-success btn-sm ml-1" ng-click="loadFormAdd();">Add Contest</button>-->
-            <button class="btn btn-success btn-sm ml-1" ng-click="loadFormAddContest();">Add Contest</button>
+            <button class="btn btn-success btn-sm ml-1" ng-click="loadFormAddContest();">Add Contest Game</button>
 		</div>
 		<div class="float-right">
 			<button class="btn btn-default btn-secondary btn-sm ng-scope" ng-click="reloadPage()">Reset</button>&nbsp;
@@ -38,25 +38,26 @@
 			<!-- table heading -->
 			<thead>
 				<tr>
-<!--           <th style="width: 100px;">Game Type</th> -->
-          <th style="width: 100px;" class="sort" ng-click="applyOrderedList('SubGameType','DESC')">Sports Game Type &nbsp;<span class="sort_deactive"></th>
+		          <th style="width: 300px;">Match</th>
+		          <th style="width: 100px;" class="sort" ng-click="applyOrderedList('SubGameType','DESC')">Game Play Type &nbsp;<span class="sort_deactive"></th>
 <!--          <th style="width: 100px;">Game Type</th>-->
-					<th style="width: 250px;" class="sort" ng-click="applyOrderedList('ContestName','DESC')">Contest Name&nbsp;<span class="sort_deactive"></th>
+					<th style="width: 250px;" class="sort" ng-click="applyOrderedList('ContestName','DESC')">Season&nbsp;<span class="sort_deactive"></th>
+				    <th style="width: 100px;">Sports Game Type</th>
 					<th style="width: 100px;">Is Confirm?</th>
 					<th style="width: 70px;">Is Paid?</th>
 					<th style="width: 70px;" class="sort" ng-click="applyOrderedList('ContestSize','DESC')">Size &nbsp;<span class="sort_deactive"></th>
-					<th style="width: 70px;">Minimum Joined Limit</th>
+				<!-- 	<th style="width: 70px;">Minimum Joined Limit</th> -->
 <!--					<th style="width: 70px;">Privacy</th>-->
 					<th style="width: 70px;" class="text-center sort" ng-click="applyOrderedList('EntryFee','DESC')">Fee&nbsp;<span class="sort_deactive"></th>
       				<th style="width: 70px;" class="text-center">Admin Fee %</th>
 					<!-- <th style="width: 70px;" class="text-center">Entry Type</th> -->
 					<th style="width: 70px;" class="text-center"># Winners</th>
 					<th style="width: 100px;" class="text-center sort" ng-click="applyOrderedList('WinningAmount','DESC')">Winning Amount&nbsp;<span class="sort_deactive"></th>
-					<th style="width: 100px;" class="text-center sort" ng-click="applyOrderedList('LeagueJoinDateTime','DESC')">League Join Date&nbsp;<span class="sort_deactive"></th>
+<!-- 					<th style="width: 100px;" class="text-center sort" ng-click="applyOrderedList('LeagueJoinDateTime','DESC')">Game Date&nbsp;<span class="sort_deactive"></th> -->
 					<th style="width: 100px;" class="text-center">Total Joined</th>
 					<th style="width: 100px;" class="text-center">Amount Received</th>
 					<th style="width: 100px;" class="text-center">Winning Distributed</th>
-					<th style="width: 100px;" class="text-center">Draft Status</th>
+			<!-- 		<th style="width: 100px;" class="text-center">Draft Status</th> -->
 					<th style="width: 100px;" class="text-center">Game Status</th>
 					<th style="width: 100px;" class="text-center">Action</th>
 				</tr>
@@ -70,7 +71,12 @@
 				
 <!--                                         <td ng-if="row.GameType == 'Ncaaf'">College Football</td>
 					<td ng-if="row.GameType == 'Nfl'">Pro Football</td> -->
-                                        
+					<td>
+							<div class="text-success" ng-if="row.Match.TeamNameLocal">({{row.Match.TeamNameShortLocal}} v/s {{row.Match.TeamNameShortVisitor}} ){{row.Match.MatchStartDateTimeUTC}}</div><div ng-if="!row.Match.TeamNameLocal">-</div>
+					</td>  
+                           <td>
+						<p>{{row.GamePlayType}}</p>
+					</td>             
                                         <td>
 						<p>{{row.SubGameType}}</p>
 					</td>
@@ -91,10 +97,10 @@
 					<td>
 						<p>{{row.ContestSize}}</p>
 					</td>
-					<td>
+<!-- 					<td>
 						<p ng-if='row.IsConfirm=="No"'>{{row.MinimumUserJoined}}</p>
 						<p ng-if='row.IsConfirm=="Yes"'>0</p>
-					</td>
+					</td> -->
 					<td>
 						<p>{{row.EntryFee}}</p>
 					</td>
@@ -110,9 +116,9 @@
 					<td>
 						<p>{{row.WinningAmount}}</p>
 					</td>
-					<td>
-						<p>{{row.LeagueJoinDateTime}}</p>
-					</td>
+<!-- 					<td>
+						<p>{{row.Match.MatchStartDateTimeUTC}}</p>
+					</td> -->
 					<td class="text-center">
 						<p>{{row.TotalJoined}}</p>
 					</td>
@@ -123,7 +129,7 @@
 						<p>{{row.TotalWinningAmount}}</p>
 					</td>
 
-					<td class="text-center"><span ng-class="{Pending:'text-danger', Running:'text-info',Cancelled:'text-danger',Completed:'text-success'}[row.AuctionStatus]">{{row.AuctionStatus}}</span></td>
+<!-- 					<td class="text-center"><span ng-class="{Pending:'text-danger', Running:'text-info',Cancelled:'text-danger',Completed:'text-success'}[row.AuctionStatus]">{{row.AuctionStatus}}</span></td> -->
 
 
 					<td class="text-center"><span ng-class="{Pending:'text-danger', Running:'text-success',Cancelled:'text-danger',Completed:'text-success'}[row.Status]">{{row.Status}}</span></td>

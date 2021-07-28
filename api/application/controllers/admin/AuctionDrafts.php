@@ -86,13 +86,28 @@ class AuctionDrafts extends API_Controller_Secure {
         $ContestSize = $this->Post['ContestSize'];
         $TeamSize    = ($this->Post['GameType'] == "Nfl") ? 32 : 130;
         $this->Post['DraftTotalRounds'] = round($TeamSize / $ContestSize);
-        if (!$this->AuctionDrafts_model->addContest($this->Post, $this->SessionUserID, $this->MatchID, $this->SeriesID)) {
+
+        $all_matches = count($this->input->post('MatchGUID'));
+        for ($i = 0; $i < $all_matches; $i++) {
+            $this->Post('MatchGUID')[$i];
+            $MatchIDs = $this->Entity_model->getEntity('E.EntityID', array('EntityGUID' => $this->Post('MatchGUID')[$i], 'EntityTypeName' => "Matches"));
+            $MatchID = $MatchIDs['EntityID'];
+            $insert = $this->AuctionDrafts_model->addContest($this->Post, $this->SessionUserID, $MatchID, $this->SeriesID);
+        }
+
+        if (!$insert) {
             $this->Return['ResponseCode'] = 500;
-            //$this->Return['Message'] = "An error occurred, please try again later.";
-            $this->Return['Message'] = "Players not available.";
+            $this->Return['Message'] = "An error occurred, please try again later.";
         } else {
             $this->Return['Message'] = "Contest created successfully.";
         }
+
+        /*if (!$this->AuctionDrafts_model->addContest($this->Post, $this->SessionUserID, $this->MatchID, $this->SeriesID)) {
+            $this->Return['ResponseCode'] = 500;
+            $this->Return['Message'] = "Players not available.";
+        } else {
+            $this->Return['Message'] = "Contest created successfully.";
+        }*/
     }
 
     /*

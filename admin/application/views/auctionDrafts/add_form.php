@@ -1,5 +1,5 @@
 <header class="panel-heading">
-    <h1 class="h4">Snake Draft Contest Add</h1>
+    <h1 class="h4">Contest Game Add</h1>
 </header>
 
 <div class="panel-body" ng-controller="PageController"><!-- Body -->
@@ -20,6 +20,18 @@
                                     </div>
                                 </div>-->
 
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="filter-col" for="ParentCategory">Game Play Type</label>
+                        <select id="GamePlayType" ng-model="GamePlayType" name="GamePlayType" class="form-control chosen-select">
+                            <option value="" disabled selected="">Please Select</option>
+                            <option value="PICK_5">Pick 5 Fantasy</option>
+                            <option value="CLASSIC_9">Classic 9 Fantasy</option>
+                            <option value="PROP_5">Prop 5 Fantasy</option>
+                            <option value="TD_ONLY">TD Only</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="col-md-3">
                     <div class="form-group">
@@ -59,9 +71,18 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Season</label>
-                        <select id="Series" name="SeriesGUID" ng-model="SeriesGUID" class="form-control chosen-select" ng-change="getCurrentWeek(SeriesGUID)">
+                        <select id="Series" name="SeriesGUID" ng-model="SeriesGUID" class="form-control chosen-select" ng-change="getCurrentWeek(SeriesGUID);getMatches(SeriesGUID, 'Pending');">
                             <option value="">Please Select</option>
                             <option ng-repeat="Series in filterData.SeiresData" value="{{Series.SeriesGUID}}">{{Series.SeriesName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="filter-col" for="ParentCategory">Match</label>
+                        <select id="MatchGUID" name="MatchGUID[]" class="form-control chosen-select1" multiple="">
+                            <option value="">Please Select</option>
+                            <option ng-repeat="match in MatchData" value="{{match.MatchGUID}}">{{match.TeamNameLocal}} Vs {{match.TeamNameVisitor}} ON {{match.MatchStartDateTime}}</option>
                         </select>
                     </div>
                 </div>
@@ -76,7 +97,7 @@
                     </div>
                 </div> -->
 
-                <div class="col-md-3">
+<!--                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Week</label>
                         <select id="IsPaid" ng-model="WeekStart" name="WeekStart" class="form-control" ng-change="getWeekDate(ContestDuration,WeekStart,SeriesGUID)">
@@ -84,10 +105,11 @@
                             <option ng-repeat="(i, Week) in WeekArray" value="{{i}}" ng-if="i >= currentWeek.WeekID">{{Week}}</option>
                         </select>
                     </div>
-                </div>
+                </div> -->
+                <input name="WeekStart" ng-model="WeekStart" type="hidden" value="1">
 
 
-                <div class="col-md-3">
+<!--                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Contest Duration</label>
                         <select id="ContestDuration" ng-model="ContestDuration" name="ContestDuration" class="form-control chosen-select" ng-change="getWeekDate(ContestDuration,WeekStart,SeriesGUID)">
@@ -97,8 +119,10 @@
                         </select>
                         <small>Select this option contest points calculate weekly basic OR days basic.</small>
                     </div>
-                </div>
-                <div class="col-md-3" ng-if="ContestDuration=='Daily'">
+                </div> -->
+                <input name="ContestDuration" ng-model="ContestDuration" type="hidden" value="Daily">
+
+<!--                 <div class="col-md-3" ng-if="ContestDuration=='Daily'">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Day Date</label>
                         <select id="DailyDate" ng-model="DailyDate" name="DailyDate" class="form-control" >
@@ -106,7 +130,8 @@
                             <option ng-repeat="Value in DailyDateResponse" value="{{Value.MatchStartDateTime}}">{{Value.MatchStartDateTime}}</option>
                         </select>
                     </div>
-                </div>
+                </div> -->
+                 <input name="DailyDate" ng-model="DailyDate" type="hidden" value="2021-01-01">
 
 <!--                 <div class="col-md-3">
                     <div class="form-group">
@@ -119,15 +144,16 @@
                 </div> -->
 
                 <input name="ScoringType" ng-model="ScoringType" type="hidden" value="PointLeague">
-                <div class="col-md-3">
+<!--                 <div class="col-md-3">
 
                     <div class="form-group">
                         <label class="control-label">League Join Date </label>
                         <input name="LeagueJoinDateTime" id="LeagueJoinDateTime" readonly="" ng-model="LeagueJoinDateTime" type="text" class="form-control" value="">
                         <small>Set league join date time on which time user can create a team.</small>
                     </div>
-                </div>
-
+                </div> -->
+                <input name="LeagueJoinDateTime" ng-model="LeagueJoinDateTime" type="hidden" value="2021-01-01">
+<!-- 
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">League Join Time?</label>
@@ -142,7 +168,8 @@
 
                         </select>
                     </div>
-                </div>
+                </div> -->
+                <input name="LeagueJoinTime" ng-model="LeagueJoinTime" type="hidden" value="10:00:00">
                 <input name="LeagueType" ng-model="LeagueType" type="hidden" value="Draft">
                 <div class="col-md-3">
                     <div class="form-group">
