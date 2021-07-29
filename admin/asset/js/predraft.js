@@ -51,6 +51,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
 
     $scope.getWeekAll = function (SubGameType,)
     {
+
         $scope.WeekArray = ($scope.SubGameType == "ProFootballPreSeasonOwners" ? {"0":"HOF","1":"PS1","2":"PS2","3":"PS3"} : {"1":"Week 1", "2":"Week 2", "3":"Week 3", "4":"Week 4", "5":"Week 5", "6":"Week 6", "7":"Week 7", "8":"Week 8", "9":"Week 9", "10":"Week 10", "11":"Week 11", "12":"Week 12", "13":"Week 13", "14":"Week 14", "15":"Week 15", "16":"Week 16", "17":"Week 17", "18":"Week 18", "19":"Week 19", "20":"Week 20", "21":"Week 21", "22":"Week 22", "23":"Week 23"});
 
     }
@@ -132,7 +133,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         if ($scope.data.listLoading || $scope.data.noRecords)
             return;
         $scope.data.listLoading = true;
-        var data = 'SessionKey=' + SessionKey + '&LeagueType=Draft&OrderByToday=Yes' + '&MatchGUID=' + MatchGUID + '&PageNo=' + $scope.data.pageNo + '&PageSize=' + $scope.data.pageSize + '&OrderBy=' + $scope.data.OrderBy + '&Sequence=' + $scope.data.Sequence + '&'+'&Params=SubGameType,AuctionStatus,SeriesName,IsConfirm,MinimumUserJoined,LeagueJoinDateTime,LeagueType,GameType,GameTimeLive,AdminPercent,Privacy,IsPaid,WinningAmount,ContestSize,EntryFee,NoOfWinners,EntryType,TeamNameLocal,TeamNameVisitor,Status,CustomizeWinning,ContestType,MatchStartDateTime,TotalJoined,TotalAmountReceived,TotalWinningAmount,CashBonusContribution,UserJoinLimit&Privacy=No&' + $('#filterForm').serialize() + '&' + $('#filterForm1').serialize()+ "&Status=" + $rootScope.Status;
+        var data = 'SessionKey=' + SessionKey + '&LeagueType=Draft&OrderByToday=Yes' + '&MatchGUID=' + MatchGUID + '&PageNo=' + $scope.data.pageNo + '&PageSize=' + $scope.data.pageSize + '&OrderBy=' + $scope.data.OrderBy + '&Sequence=' + $scope.data.Sequence + '&'+'&Params=SubGameType,AuctionStatus,SeriesName,IsConfirm,MinimumUserJoined,LeagueJoinDateTime,LeagueType,GameType,GameTimeLive,AdminPercent,Privacy,IsPaid,WinningAmount,ContestSize,EntryFee,NoOfWinners,EntryType,TeamNameLocal,TeamNameVisitor,Status,CustomizeWinning,ContestType,MatchStartDateTime,TotalJoined,TotalAmountReceived,TotalWinningAmount,CashBonusContribution,UserJoinLimit&Privacy=No&' + $('#filterForm').serialize() + '&' + $('#filterForm1').serialize()+ "";
         $http.post(API_URL + 'admin/preContest/getContests', data, contentType).then(function (response) {
             var response = response.data;
             if (response.ResponseCode == 200 && response.Data.Records.length >0 ) { /* success case */

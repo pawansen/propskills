@@ -20,8 +20,8 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="filter-col" for="ParentCategory">Series</label>
-                        <p class="text-primary">{{formData.SeriesName}}</p>
+                        <label class="filter-col" for="ParentCategory">Sports</label>
+                        <p class="text-primary">{{formData.GameType}}</p>
                     </div>
                 </div>
 
@@ -32,12 +32,12 @@
                     </div>
                 </div> -->
 
-                <div class="col-md-4">
+<!--                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Sports Game Type</label>
                         <p class="text-primary">{{formData.SubGameType}}</p>
                     </div>
-                </div>
+                </div> -->
                 <input name="SubGameType" ng-model="SubGameType" type="hidden">    
 <!--                 <div class="col-md-4">
                     <div class="form-group">

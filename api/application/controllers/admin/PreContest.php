@@ -39,7 +39,7 @@ class PreContest extends API_Controller_Secure {
         $this->form_validation->set_rules('EntryType', 'EntryType', 'trim|required|in_list[Single,Multiple]');
         $this->form_validation->set_rules('UserJoinLimit', 'UserJoinLimit', 'trim' . (!empty($this->Post['EntryType']) && $this->Post['EntryType'] == 'Multiple' ? '|required|integer' : ''));
         $this->form_validation->set_rules('CashBonusContribution', 'CashBonusContribution', 'trim' . (!empty($this->Post['IsPaid']) && $this->Post['IsPaid'] == 'Yes' ? '|required|numeric|regex_match[/^[0-9][0-9]?$|^100$/]' : ''));
-        $this->form_validation->set_rules('SeriesGUID', 'SeriesGUID', 'trim|required|callback_validateEntityGUID[Series,SeriesID]');
+       //$this->form_validation->set_rules('SeriesGUID', 'SeriesGUID', 'trim|required|callback_validateEntityGUID[Series,SeriesID]');
         $this->form_validation->set_rules('CustomizeWinning', 'Customize Winning', 'trim');
         $this->form_validation->set_rules('ScoringType', 'ScoringType', 'trim|required|in_list[PointLeague,RoundRobin]');
         $this->form_validation->set_rules('GameType', 'GameType', 'trim|required|in_list[Nfl,Ncaaf]');
@@ -94,10 +94,10 @@ class PreContest extends API_Controller_Secure {
                 $this->Post('MatchGUID')[$i];
                 $MatchIDs = $this->Entity_model->getEntity('E.EntityID', array('EntityGUID' => $this->Post('MatchGUID')[$i], 'EntityTypeName' => "Matches"));
                 $MatchID = $MatchIDs['EntityID'];
-                $insert = $this->PreContest_model->addContest($this->Post, $this->SessionUserID, $MatchID, $this->SeriesID);
+                $insert = $this->PreContest_model->addContest($this->Post, $this->SessionUserID, $MatchID, @$this->SeriesID);
             }
         }else{
-           $insert = $this->PreContest_model->addContest($this->Post, $this->SessionUserID, @$this->MatchID, $this->SeriesID);
+           $insert = $this->PreContest_model->addContest($this->Post, $this->SessionUserID, @$this->MatchID, @$this->SeriesID);
         }
 
 

@@ -38,11 +38,13 @@
 			<!-- table heading -->
 			<thead>
 				<tr>
+					<th style="width: 100px;">Sports Game</th>
 <!-- 		          <th style="width: 300px;">Match</th> -->
 		          <th style="width: 100px;" class="sort" ng-click="applyOrderedList('SubGameType','DESC')">Game Play Type &nbsp;<span class="sort_deactive"></th>
 <!--          <th style="width: 100px;">Game Type</th>-->
-					<th style="width: 250px;" class="sort" ng-click="applyOrderedList('ContestName','DESC')">Season&nbsp;<span class="sort_deactive"></th>
-				    <th style="width: 100px;">Sports Game Type</th>
+					<th style="width: 100px;" class="sort" ng-click="applyOrderedList('ContestName','DESC')">Season&nbsp;<span class="sort_deactive"></th>
+					
+				    <th style="width: 100px;">Contest Name</th>
 					<th style="width: 100px;">Is Confirm?</th>
 					<th style="width: 70px;">Is Paid?</th>
 					<th style="width: 70px;" class="sort" ng-click="applyOrderedList('ContestSize','DESC')">Size &nbsp;<span class="sort_deactive"></th>
@@ -68,7 +70,9 @@
 
 
 				<tr scope="row" ng-repeat="(key, row) in data.dataList" id="sectionsid_{{row.MenuOrder}}.{{row.CategoryID}}">
-				
+				                                        <td>
+						<p>{{row.GameType}}</p>
+					</td>
 <!--                                         <td ng-if="row.GameType == 'Ncaaf'">College Football</td>
 					<td ng-if="row.GameType == 'Nfl'">Pro Football</td> -->
 <!-- 					<td>
@@ -80,12 +84,10 @@
                                         <td>
 						<p>{{row.SubGameType}}</p>
 					</td>
-<!--                                        <td>
-						<p>{{row.GameType}}</p>
-					</td>-->
+
 					<td>
 						<div class="content float-left"><strong><a href="javascript:void(0)" ng-click="loadContestJoinedUser(key,row.PreContestID)">{{row.ContestName}}</a></strong>
-							<div ng-if="row.SeriesName">({{row.SeriesName}})</div>
+							<!-- <div ng-if="row.SeriesName">({{row.SeriesName}})</div> -->
 						</div>
 					</td>
 					<td>
@@ -102,7 +104,7 @@
 						<p ng-if='row.IsConfirm=="Yes"'>0</p>
 					</td> -->
 					<td>
-						<p>{{row.EntryFee}}</p>
+						<p>${{row.EntryFee}}</p>
 					</td>
                     <td>
 						<p>{{row.AdminPercent > 0 ? row.AdminPercent : 0}}</p>
@@ -114,7 +116,7 @@
 						<p>{{row.NoOfWinners}}</p>
 					</td>
 					<td>
-						<p>{{row.WinningAmount}}</p>
+						<p>${{row.WinningAmount}}</p>
 					</td>
 <!-- 					<td>
 						<p>{{row.Match.MatchStartDateTimeUTC}}</p>
@@ -176,6 +178,18 @@
 					<div class="modal-body">
 						<div class="form-area">
 							<div class="row">
+								<div class="col-md-8">
+									<div class="form-group">
+										<label class="filter-col" for="StatusID">Game Play Type</label>
+					                        <select id="GamePlayType" ng-model="GamePlayType" name="GamePlayType" class="form-control chosen-select" ng-change="getTypeConfiguration(GamePlayType)">
+				                            <option value="" disabled selected="">Please Select</option>
+				                            <option value="PICK_5">Pick 5 Fantasy</option>
+				                            <option value="CLASSIC_9">Classic 9 Fantasy</option>
+				                            <option value="PROP_5">Prop 5 Fantasy</option>
+				                            <option value="TD_ONLY">TD Only</option>
+				                        </select>
+									</div>
+								</div>
 								<div class="col-md-8">
 									<div class="form-group">
 										<label class="filter-col" for="StatusID">Status</label>

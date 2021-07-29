@@ -102,7 +102,7 @@
 						<p ng-if='row.IsConfirm=="Yes"'>0</p>
 					</td> -->
 					<td>
-						<p>{{row.EntryFee}}</p>
+						<p>${{row.EntryFee}}</p>
 					</td>
                     <td>
 						<p>{{row.AdminPercent > 0 ? row.AdminPercent : 0}}</p>
@@ -114,7 +114,7 @@
 						<p>{{row.NoOfWinners}}</p>
 					</td>
 					<td>
-						<p>{{row.WinningAmount}}</p>
+						<p>${{row.WinningAmount}}</p>
 					</td>
 <!-- 					<td>
 						<p>{{row.Match.MatchStartDateTimeUTC}}</p>
@@ -123,10 +123,10 @@
 						<p>{{row.TotalJoined}}</p>
 					</td>
 					<td class="text-center">
-						<p>{{row.TotalAmountReceived}}</p>
+						<p>${{row.TotalAmountReceived}}</p>
 					</td>
 					<td class="text-center">
-						<p>{{row.TotalWinningAmount}}</p>
+						<p>${{row.TotalWinningAmount}}</p>
 					</td>
 
 <!-- 					<td class="text-center"><span ng-class="{Pending:'text-danger', Running:'text-info',Cancelled:'text-danger',Completed:'text-success'}[row.AuctionStatus]">{{row.AuctionStatus}}</span></td> -->

@@ -294,15 +294,6 @@ class PreContest_model extends CI_Model {
                 'EntryType' => 'C.EntryType',
                 'IsWinningDistributed' => 'C.IsWinningDistributed',
                 'UserInvitationCode' => 'C.UserInvitationCode',
-                'SeriesID' => 'S.SeriesID',
-                'SeriesGUID' => 'S.SeriesGUID',
-                'SeriesName' => 'S.SeriesName',
-                'IsJoined' => '(SELECT IF( EXISTS(
-                                SELECT EntryDate FROM sports_contest_join
-                                WHERE sports_contest_join.ContestID =  C.PreContestID AND UserID = ' . @$Where['SessionUserID'] . ' LIMIT 1), "Yes", "No")) AS IsJoined',
-                // 'TotalJoined' => 'C.TotalJoinedTeams AS TotalJoined',
-                'TotalJoined' => '(SELECT COUNT(0) FROM sports_contest_join
-                                WHERE sports_contest_join.ContestID =  C.PreContestID) AS TotalJoined',
                 'StatusID' => 'C.StatusID',
                 'AuctionStatusID' => 'C.AuctionStatusID',
                 'SubGameTypeKey' => 'C.SubGameType SubGameTypeKey',
@@ -332,11 +323,10 @@ class PreContest_model extends CI_Model {
                 }
             }
         }
-        $this->db->select('C.PreContestID,C.ContestName,(SELECT WeekName FROM sports_matches WHERE SeasonType = C.SubGameType AND WeekID=C.WeekStart LIMIT 1) WeekName,C.GamePlayType,C.MatchID');
+        $this->db->select('C.PreContestID,C.ContestName,C.GamePlayType,C.MatchID');
         if (!empty($Field))
             $this->db->select($Field, FALSE);
-        $this->db->from('sports_pre_contest C,sports_series S');
-        $this->db->where("S.SeriesID", "C.SeriesID", FALSE);
+        $this->db->from('sports_pre_contest C');
         if (!empty($Where['Keyword'])) {
             if (is_array(json_decode($Where['Keyword'], true))) {
                 $Where['Keyword'] = json_decode($Where['Keyword'], true);
@@ -406,6 +396,9 @@ class PreContest_model extends CI_Model {
         if (!empty($Where['Privacy']) && $Where['Privacy'] != 'All') {
             $this->db->where("C.Privacy", $Where['Privacy']);
         }
+        if (!empty($Where['GamePlayType'])) {
+            $this->db->where("C.GamePlayType", $Where['GamePlayType']);
+        }
         if (!empty($Where['ContestType'])) {
             $this->db->where("C.ContestType", $Where['ContestType']);
         }
@@ -456,7 +449,6 @@ class PreContest_model extends CI_Model {
             $this->db->order_by($Where['OrderBy'], $Where['Sequence']);
         } else {
             if (!empty($Where['OrderByToday']) && $Where['OrderByToday'] == 'Yes') {
-                $this->db->order_by('DATE(S.SeriesEndDate)="' . date('Y-m-d') . '" ASC', null, FALSE);
                 $this->db->order_by('C.StatusID=2 DESC', null, FALSE);
             } else {
                 $this->db->order_by('C.PreContestID', 'DESC');

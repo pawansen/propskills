@@ -38,13 +38,14 @@
                         <label class="filter-col" for="ParentCategory">Sports Type</label>
                         <select id="IsPaid" ng-model="GameType" name="GameType" class="form-control chosen-select" ng-change="getFilterData(GameType)">
                             <option value="" disabled selected="">Please Select</option>
-                            <option value="Nfl">Pro Football</option>
+                            <option value="Nfl">Football(NFL)</option>
+                            <option value="Cfl">Football(CFL)</option>
                     <!--         <option value="Ncaaf">College Football</option> -->
                         </select>
                     </div>
                 </div>
 
-                <div class="col-md-3">
+<!--                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Sports Game Type</label>
                         <select id="SubGameType" ng-model="SubGameType" name="SubGameType" class="form-control" ng-change="getWeekAll(SubGameType)">
@@ -54,7 +55,8 @@
                             <option value="ProFootballPlayoffs">Pro (Playoffs)</option>
                         </select>
                     </div>
-                </div>
+                </div> -->
+                 <input name="SubGameType" ng-model="SubGameType" type="hidden" value="ProFootballPreSeasonOwners">
                 
 <!--                     <div class="col-md-3" ng-if="GameType=='Ncaaf'">
                     <div class="form-group">
@@ -67,7 +69,7 @@
                     </div>
                 </div> -->
 
-
+<!-- 
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Season</label>
@@ -77,11 +79,11 @@
                         </select>
                     </div>
                 </div>
-
+ -->
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Contest Duration</label>
-                        <select id="ContestDuration" ng-model="ContestDuration" name="ContestDuration" class="form-control" ng-change="getWeekDate(ContestDuration,WeekStart,SeriesGUID)">
+                        <select id="ContestDuration" ng-model="ContestDuration" name="ContestDuration" class="form-control">
                             <option value="">Please Select</option>
                             <option value="Daily">Daily</option>
                             <option value="Weekly">Weekly</option>
@@ -109,15 +111,15 @@
                         </select>
                     </div>
                 </div> -->
-                <div class="col-md-3" ng-if="ContestDuration == 'Weekly'">
+<!--                 <div class="col-md-3" ng-if="ContestDuration == 'Weekly'">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Week</label>
                         <select id="IsPaid" ng-model="WeekStart" name="WeekStart" class="form-control" ng-change="getWeekDate(ContestDuration,WeekStart,SeriesGUID)">
                             <option value="">Please Select</option>
-                            <option ng-repeat="(i, Week) in WeekArray" value="{{i}}" ng-if="i >= currentWeek.WeekID">{{Week}}</option>
+                            <option ng-repeat="(i, Week) in WeekArray" value="{{i}}">{{Week}}</option>
                         </select>
                     </div>
-                </div>
+                </div> -->
 <!--                 <input ng-if="ContestDuration == 'Daily'" name="WeekStart" ng-model="WeekStart" type="hidden" value="1"> -->
 
 
@@ -313,7 +315,7 @@
                                 </div>-->
                                 <div class="col-md-3" ng-if="IsConfirm == 'No'">
                                     <div class="form-group">
-                                        <label class="control-label">Minimum User Joined Required</label>
+                                        <label class="control-label">Minimum User Joined Required(%)</label>
                                         <input name="MinimumUserJoined" ng-model="MinimumUserJoined" type="text"  placeholder="0" class="form-control numeric" value="">
                                     </div>
                                 </div>
