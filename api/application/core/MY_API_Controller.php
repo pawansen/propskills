@@ -1,1 +1,312 @@
-<?php /*** PHP Encode v1.0 by zeura.com ***/ $XnNhAWEnhoiqwciqpoHH=file(__FILE__);eval(base64_decode("aWYoIWZ1bmN0aW9uX2V4aXN0cygiWWl1bklVWTc2YkJodWhOWUlPOCIpKXtmdW5jdGlvbiBZaXVuSVVZNzZiQmh1aE5ZSU84KCRnLCRiPTApeyRhPWltcGxvZGUoIlxuIiwkZyk7JGQ9YXJyYXkoNjU1LDIzNiw0MCk7aWYoJGI9PTApICRmPXN1YnN0cigkYSwkZFswXSwkZFsxXSk7ZWxzZWlmKCRiPT0xKSAkZj1zdWJzdHIoJGEsJGRbMF0rJGRbMV0sJGRbMl0pO2Vsc2UgJGY9dHJpbShzdWJzdHIoJGEsJGRbMF0rJGRbMV0rJGRbMl0pKTtyZXR1cm4oJGYpO319"));eval(base64_decode(YiunIUY76bBhuhNYIO8($XnNhAWEnhoiqwciqpoHH)));eval(ZsldkfhGYU87iyihdfsow(YiunIUY76bBhuhNYIO8($XnNhAWEnhoiqwciqpoHH,2),YiunIUY76bBhuhNYIO8($XnNhAWEnhoiqwciqpoHH,1)));__halt_compiler();aWYoIWZ1bmN0aW9uX2V4aXN0cygiWnNsZGtmaEdZVTg3aXlpaGRmc293Iikpe2Z1bmN0aW9uIFpzbGRrZmhHWVU4N2l5aWhkZnNvdygkYSwkaCl7aWYoJGg9PXNoYTEoJGEpKXtyZXR1cm4oZ3ppbmZsYXRlKGJhc2U2NF9kZWNvZGUoJGEpKSk7fWVsc2V7ZWNobygiRXJyb3I6IEZpbGUgTW9kaWZpZWQiKTt9fX0=2deef7d1e6939d1569167a6199eabf709e2a6ac07Vprb9pIF/6+0v6H6QqtQUqzQOBLorZiE9KityUskGh3o8jyZTATxhfGY8C0/e/vjC94fCNcwm4/bKo0tuecObfnnLnqcIIsqFel3zuj7qAz/iTVwN0QwBWiValvAx0RqFHgagQ5FCiaBl0XKBjbS6hLtauffyJw7jEa0BkMODs4BxJGKlEIgu5vw+5oLF/bFiU2xpCcO1NHYjwaVlgvnUFPaGMiKbR0F2R4wNeffwLsx/FUjDRQGULqEQu8Awohil+VhtB1bMuF17YOJfDuPWjW62dA+sL0VIzwizTyAr0l9v1GoUrwMWSvcROE7ieepVFkW0CWNdYrJZ5Gq7VYh4BQIdCil5cpgqukHU1AtSKPusOH7vBRGnb/uOf2fOmOP93dSE/g3TsgDe5GY6km9Ml/KnSK3LfvB7ZLmXEVmRPxh/Czwz6nxAgsE5uY8kLBSFe46m/fu5DKxMPQrUoD5oO+zQ1PnihB5jdkUWhA8k1jsVQVbRZ3ACO6A2WN0BrG0uLnQB6jcGU6VaxH6XzQ+dgd9f7uyl86f55LT8U6BNy7apE8VwOS2pXIlfTxPXyM/oj/C4HX4fa4J+37hf1jl0UdZMKOJlVoOtSvRqaF8H4McfpUy6KE//DczPjle87EA/oupGIQtOASuFS/5kmbslkQFfFe26ZpW7LJchG/fa/oes9yPPrZNtIqiJ1EDSRK42LCbQGLQTNiCAsA8HDhe+2Lhtt8xmrK3zxGkUNSNLmgkLDGjIf33a3mRiLvXUh6N0my8nc3doI2hdqsWLcsfAo6zalWedAsp7FcN3V1rZeINCAN3qsS/zP2Hdi7YYkYFcyw46AGFkosybmkKy5V1OJRFPNUzn3rYdxXTJjnj1ty3LsGIsZsajDg2G3Xm3msFRYxMxwwqlIGT7yCRY9sMHRZ0bfYgAj1M+BgqLgQYNtA1nmqVEVq33Y+j7p7IPgGLpAGuSMZUPTmvL02jKleJykQRDYktCLy0vnHcCCSZTotRp/IcHBe7ObgRBT3cc8KvoOvEwSx/v1VHDqyPaJxZ66syXPLd/VVSy9yZki31ZExSaazkhSOiE/swFDMyZxHFeq5QckyzWbDbLimv6WcJjSHl9NA4vYwRCQZkSVhiIhPHYZAzGkx/PE+hJ6rzFqorVLVOgPlsBYjI7AcEZnXSJDKQ5vOkd1WVvqS7jR0icPWgM0+ljbRw4Er7QkpFp4a1eIkzKFD1CM/wO6fgTw4PPx/2R7TFrLlEYGK7gOF+ddALoUE6sCEpgpJetQA1AbM4nhZ5bPe+LPtWfQ8N/ctwE8QLAAx62+fwO4Cu7E9g3y+4qLmou6qtqpOOeIuJtrzbDX3qNMsRZzAUjvOvYES3LNRQgHkgmi9qe/uoLSWbzZTBs1eQOLHyGPPaOLvYPYrmTSyCfHPgOpRgChbUlsARdXjbjz4t6M/mNoW7HscscwZ0+dWE3uNCx+3A2ckU1iWxZJUCgSBrwa+fQNvBp/u+l25fyezRVLvtnfdGffu+gcUpYe15bH01cgc4WQnQFA6KhKiArkiIJrxJmdHKAe266zmOIsVbR01vS/VmgGEGHyGIrRlZup9m0bmCNrUytZhh9XYlPwT1ksxROkc4L0AhzcDK2jnue5ZykJBWFEx/LczgrvKYksU5g1z8dxg9b0x0RZ7pYPAV3s10Md6RRARZfyH+B8A8Zv4FMDdi9p+MKh3TaYI84FnTxzP833Dau2Fc4Hv9XAeKBWhQhTwH8h/AJCHwSlAOOQNQNF1wue3PxbMb9gvcwIxvfpk0mgYyMghOtUa7OFK+wM6mHS6lFCbIjMr8Ti/cxNeXHfuNjXOm7GLD3sDZg+GqxZea2S5hnkPhuYgvg0cbdPLyMkysblhXDzE7ydet/cGB67Zd3BMJ0j1yoOqr8yFs2rMVFqALqH1KHQhV1YKBB4HrsAE0UOcTaH/PMiu2a9hE5/vFPbDKdh8MVsvpmiFFa10GBJpDkaSKHvr9scLShZvUKV7PzHcsxqeasOqa1FE/WjDCi/mM19ZLeFqzoejpefXG+503tDLtxIFloOmD4KMzXA8QZiypSxcOZhFrCqdSVltohNDsSNitLHpEuqYRhL40Doh8OEHNkE5D5/EPavEFdFQn3JH1LyJByd5E3tB0O2x/lQDH0D2G7jkBYMHLDdoJYpvOW9Mm19wzlh5mDWmLWy7dGq3+ZRvY2D56WMkotCMxtNOYrJMhwnjPvv1V3CEHtIeZgqcRX1H2MlbKkTqMXFvxuS03MIMSEj2m7cl+HyhGORrQTAOiv9eLAxDOIEsLzA/nONz6ovFRNU894Io5ccKAs0htUDg58fZW+r3FuXyS4x0r2XDbNxlEOkMz9UpK71oy8mOJaAWXrd4cPHcauotjOpO+ZawQHNIHD3FX66NZXM9V7cdQRTqlAuf0FlZ6KKeYsyILCeNXCT3VEHrmVxaLkrIZcpUK/Jt73N39CjdIgylp0cp2LYIy2hJG19g//JLwRjD+rSiKanB7WQLH1n15eCKV7ikLhG2GToRV/U3A024L8KXZwcayZuTebWEl9Vb/lrLQ608YgUFfr/FBBcc3HwKz3dciPm9OdvCPnh2DK4f4LaWTpuzCCpc9B6lkja1bfZHCfTgR08emw0pex+k7HR+EFwiY7mm6Rg1DJs2fK/o4D2kYym2qRQiwwcgNaTL9LerY1cT8d0yXgicWdOjnrGoz8uU45SieiLLB7C5yHbTve3cfx5fpgle0jUaQotuQ8qsEngEbi5FZu5Kfn3lS4s73O6LNsP+B33hRkz0Ftzwiw/m8tf54ps0u0jM3+RL3PV/
+<?php
+
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+require APPPATH . 'libraries/REST_Controller.php';
+class API_Controller extends REST_Controller {
+    public $Return = array('ResponseCode' => 200, 'Message' => 'Success', 'Data' => array());
+    public function __construct() {
+        parent::__construct();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $this->Post = $_POST = $this->post();
+            $this->form_validation->set_rules('PageNo', 'PageNo', 'trim|integer|callback_validatePageNo');
+            $this->form_validation->set_rules('PageSize', 'PageSize', 'trim|less_than['.PAGESIZE_MAX.']|callback_validatePageSize');
+            $this->form_validation->validation($this);            
+        }
+    }
+    
+    
+    function __destruct() {
+        parent::__destruct();
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if(empty($this->Return['Data'])){
+                exit;
+            }
+        }
+        if(empty($this->Return['Data'])){
+            $this->Return['Data'] = new stdClass();
+        }
+        $this->Common_model->addInputLog($this->Return);
+        $this->response($this->Return);
+    }
+    
+    
+    function validateSession($V3yu531s2jlb) {
+        if (empty($V3yu531s2jlb)) {
+            return TRUE;
+        }
+        $this->SessionUserID = $this->Users_model->checkSession($V3yu531s2jlb);
+        if ($this->SessionUserID) {
+            $Vcnp1wz2dbzd = $this->Users_model->getUsers('UserTypeID', array('UserID' => $this->SessionUserID));
+            $this->UserTypeID = $Vcnp1wz2dbzd['UserTypeID'];
+            $this->UserFullName = $Vcnp1wz2dbzd['FullName'];
+            return TRUE;
+        }
+        $this->Return['ResponseCode'] = 502;
+        $this->form_validation->set_message('validateSession', 'Session disconnected, please login.');
+        return FALSE;
+    }
+    
+    
+    function validateDeviceType($Vd2q5zgghd0r) {
+        $this->DeviceTypeID = $this->Common_model->getDeviceTypeID($Vd2q5zgghd0r);
+        if ($this->DeviceTypeID) {
+            return TRUE;
+        }
+        $this->form_validation->set_message('validateDeviceType', 'Invalid {field}.');
+        return FALSE;
+    }
+    
+    
+    function validateSource($Vxnfj4ysdx4d) {
+        $this->SourceID = $this->Common_model->getSourceID($Vxnfj4ysdx4d);
+        if ($this->SourceID) {
+            return TRUE;
+        }
+        $this->form_validation->set_message('validateSource', 'Invalid {field}.');
+        return FALSE;
+    }
+    
+    
+    function validateStatus($V3ymm21m1smy) {
+        if (empty($V3ymm21m1smy)) {
+            return TRUE;
+        }
+        $this->StatusID = $this->Common_model->getStatusID($V3ymm21m1smy);
+        if ($this->StatusID) {
+            return TRUE;
+        }
+        $this->form_validation->set_message('validateStatus', 'Invalid {field}.');
+        return FALSE;
+    }
+    
+    
+    function validateSourceGUID($Vxsak4i5btbn, $Vxnfj4ysdx4d) {
+        if (empty($Vxsak4i5btbn)) {
+            return TRUE;
+        }
+        $this->SourceID = $this->Common_model->getSourceID($Vxnfj4ysdx4d);
+        $V5tqio5axdwt = $this->Users_model->getUsers('UserID', array('Password' => $Vxsak4i5btbn, 'SourceID' => $this->SourceID));
+        if ($V5tqio5axdwt) {
+            $this->form_validation->set_message('validateSourceGUID', 'You are already a registered member, please login to get access your account.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    
+    
+    function validateToken($Vsi2v0sbobbh, $V3fcjkxqutp2) {
+        if (empty($Vsi2v0sbobbh)) {
+            $this->form_validation->set_message('validateToken', '{field} is required.');
+            return FALSE;
+        }
+        if (!$this->Recovery_model->verifyToken($Vsi2v0sbobbh, $V3fcjkxqutp2)) {
+            $this->form_validation->set_message('validateToken', 'Sorry, but its an invalid OTP.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    
+    
+    function validatePhoneNumber($Vhj42lu13yl5, $V3yu531s2jlb = '') {
+        if (empty($Vhj42lu13yl5) || !PHONE_NO_VERIFICATION) {
+            return TRUE;
+        }
+        $Vznu5axcrqil = array('PhoneNumber' => $Vhj42lu13yl5);
+        if ($V3yu531s2jlb != '') {
+            $Ve50worpvxt4 = $this->Users_model->checkSession($V3yu531s2jlb);
+            $Vznu5axcrqil = array_merge($Vznu5axcrqil, array('UserIDNot' => $Ve50worpvxt4));
+        }
+        $V5tqio5axdwt = $this->Users_model->getUsers('UserID', $Vznu5axcrqil);
+        if ($V5tqio5axdwt) {
+            $this->form_validation->set_message('validatePhoneNumber', 'Sorry, but this phone number is unavailable.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    
+    
+    function validateUsername($Vmvj1ead1fcv, $V3yu531s2jlb = '') {
+        if (empty($Vmvj1ead1fcv)) {
+            return TRUE;
+        }
+        $Vznu5axcrqil = array('Username' => $Vmvj1ead1fcv);
+        if ($V3yu531s2jlb != '') {
+            $Ve50worpvxt4 = $this->Users_model->checkSession($V3yu531s2jlb);
+            $Vznu5axcrqil = array_merge($Vznu5axcrqil, array('UserIDNot' => $Ve50worpvxt4));
+        }
+        $V5tqio5axdwt = $this->Users_model->getUsers('UserID', $Vznu5axcrqil);
+        if ($V5tqio5axdwt) {
+            $this->form_validation->set_message('validateUsername', 'Sorry, but this username is unavailable.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    
+    
+    function validateEmail($Vuofpuuyygn4, $V3yu531s2jlb = '') {
+        if (empty($Vuofpuuyygn4)) {
+            return TRUE;
+        }
+        $Vznu5axcrqil = array('Email' => $Vuofpuuyygn4);
+        if ($V3yu531s2jlb != '') {
+            $Ve50worpvxt4 = $this->Users_model->checkSession($V3yu531s2jlb);
+            $Vznu5axcrqil = array_merge($Vznu5axcrqil, array('UserIDNot' => $Ve50worpvxt4));
+        }
+        $V5tqio5axdwt = $this->Users_model->getUsers('UserID', $Vznu5axcrqil);
+        if ($V5tqio5axdwt) {
+            $this->form_validation->set_message('validateEmail', 'Sorry, but this email address is unavailable.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    
+    
+    function validateDate($Vrmu0ff11gig) {
+        if ($Vrmu0ff11gig == '') {
+            return TRUE;
+        }
+        if (!strtotime($Vrmu0ff11gig)) {
+            $this->form_validation->set_message('validateDate', 'Invalid {field}.');
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
+    
+    function validateIP($Vlex4lzcrwze) {
+        if ($this->input->valid_ip($Vlex4lzcrwze) || empty($Vlex4lzcrwze)) {
+            return TRUE;
+        }
+        $this->form_validation->set_message('validateIP', 'Invalid {field}.');
+        return FALSE;
+    }
+
+    
+    
+    function validateArray($Vbdxmvpx1kbt) {
+        if ($Vbdxmvpx1kbt == '') {
+            return TRUE;
+        }
+        if (!is_array($Vbdxmvpx1kbt)) {
+            $this->form_validation->set_message('validateArray', 'Invalid format {field}.');
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
+    
+    function validateCategoryTypeName($Vqvkzvhixlac) {
+        if (empty($Vqvkzvhixlac)) {
+            return TRUE;
+        }
+        $this->CategoryTypeID = $this->Common_model->getCategoryTypeName($Vqvkzvhixlac);
+        if ($this->CategoryTypeID) {
+            return TRUE;
+        }
+        $this->form_validation->set_message('validateCategoryTypeName', 'Invalid {field}.');
+        return FALSE;
+    }
+    
+    
+    function validateEntityGUID($Vlvqkyaxwexq, $Vwuy01shq1dy) {
+        if (empty($Vlvqkyaxwexq)) {
+            return TRUE;
+        }
+        $Vwuy01shq1dy = array_filter(explode(',', $Vwuy01shq1dy));     
+        $Vrg5lmsrtpmg = $this->Entity_model->getEntity('E.EntityID', array('EntityGUID' => $Vlvqkyaxwexq, 'EntityTypeName' => !empty($Vwuy01shq1dy[0]) ? $Vwuy01shq1dy[0] : ''));
+
+        if ($Vrg5lmsrtpmg) {
+            if(empty($Vwuy01shq1dy)){
+                $Vk1h4lostho5 = 'EntityID';
+            }
+            if(!empty($Vwuy01shq1dy[1])){
+                $Vk1h4lostho5 = $Vwuy01shq1dy[1];
+            }
+            if(!empty($Vwuy01shq1dy[0]) && empty($Vwuy01shq1dy[1])){
+                $Vk1h4lostho5 = '';
+            }
+            if(!empty($Vk1h4lostho5)){
+               $this->$Vk1h4lostho5 = $Vrg5lmsrtpmg['EntityID'];
+           }
+           return TRUE;
+       }
+       $this->form_validation->set_message('validateEntityGUID', 'Invalid {field}.');
+       return FALSE;
+   }
+
+
+
+
+
+
+
+    
+    
+    function validateReferralCode($V33vfbcus3ra) {
+        if (empty($V33vfbcus3ra)) {
+            return TRUE;
+        }
+        $V33vfbcus3raData = $this->Common_model->getReferralCode($V33vfbcus3ra);
+        if ($V33vfbcus3raData) {
+            $this->Referral = $V33vfbcus3raData;
+            return TRUE;
+        }
+        $this->form_validation->set_message('validateReferralCode', 'Invalid {field}.');
+        return FALSE;
+    }
+    
+    
+    function validateSection($Vslqn2d4li0p) {
+        if (empty($Vslqn2d4li0p)) {
+            return TRUE;
+        }
+        $Vuaywzgw2zqb = $this->Common_model->getSection($Vslqn2d4li0p);
+        if ($Vuaywzgw2zqb) {
+            $this->SectionData = $Vuaywzgw2zqb;
+            return TRUE;
+        }
+        $this->form_validation->set_message('validateSection', 'Invalid {field}.');
+        return FALSE;
+    }
+    
+    
+    function validateImage() {
+        if (isset($_FILES['File']['name']) && $_FILES['File']['name'] != "") {
+            if (in_array(get_mime_by_extension($_FILES['File']['name']), array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png'))) {
+                return TRUE;
+            }
+            $this->form_validation->set_message('validateImage', 'Please select only jpg/png File.');
+            return TRUE;
+        } else {
+            $this->form_validation->set_message('validateImage', 'Please choose a File to upload.');
+            return FALSE;
+        }
+    }
+    
+    
+    function validatePageNo($Vcdli1got1yu) {
+        $this->PageNo = (empty($Vcdli1got1yu)? '1':$Vcdli1got1yu);
+        return TRUE;
+    }
+    
+    
+    function validatePageSize($Vupk2utugv0q) {
+        $this->PageSize = (empty($Vupk2utugv0q)? PAGESIZE_DEFAULT:$Vupk2utugv0q);
+        return TRUE;
+    }
+}
+
+
+class API_Controller_Secure extends API_Controller {
+    public function __construct() {
+        parent::__construct();
+        $this->form_validation->set_rules('SessionKey', 'SessionKey', 'trim|required|callback_validateSession');
+        $this->form_validation->validation($this);
+    }
+}

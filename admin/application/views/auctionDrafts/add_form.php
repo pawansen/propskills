@@ -71,7 +71,8 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Season</label>
-                        <select id="Series" name="SeriesGUID" ng-model="SeriesGUID" class="form-control chosen-select" ng-change="getCurrentWeek(SeriesGUID);getMatches(SeriesGUID, 'Pending');">
+<!--                         <select id="Series" name="SeriesGUID" ng-model="SeriesGUID" class="form-control chosen-select" ng-change="getCurrentWeek(SeriesGUID);getMatches(SeriesGUID, 'Pending');"> -->
+                             <select id="Series" name="SeriesGUID" ng-model="SeriesGUID" class="form-control chosen-select" ng-change="getCurrentWeek(SeriesGUID);">
                             <option value="">Please Select</option>
                             <option ng-repeat="Series in filterData.SeiresData" value="{{Series.SeriesGUID}}">{{Series.SeriesName}}</option>
                         </select>
@@ -90,7 +91,7 @@
                     </div>
                 </div> 
 
-                <div class="col-md-6" ng-if="ContestDuration == 'Daily'">
+<!--                 <div class="col-md-6" ng-if="ContestDuration == 'Daily'">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Match</label>
                         <select id="MatchGUID" name="MatchGUID[]" class="form-control chosen-select1" multiple="">
@@ -98,7 +99,7 @@
                             <option ng-repeat="match in MatchData" value="{{match.MatchGUID}}">{{match.TeamNameLocal}} Vs {{match.TeamNameVisitor}} ON {{match.MatchStartDateTime}}</option>
                         </select>
                     </div>
-                </div>
+                </div> -->
 <!--                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="filter-col" for="ParentCategory">Scoring Type</label>
@@ -120,19 +121,16 @@
                 </div>
 <!--                 <input ng-if="ContestDuration == 'Daily'" name="WeekStart" ng-model="WeekStart" type="hidden" value="1"> -->
 
-
-
-
-<!--                 <div class="col-md-3" ng-if="ContestDuration=='Daily'">
+                <div class="col-md-3" ng-if="ContestDuration=='Daily'">
                     <div class="form-group">
-                        <label class="filter-col" for="ParentCategory">Day Date</label>
+                        <label class="filter-col" for="ParentCategory">Game Play Day</label>
                         <select id="DailyDate" ng-model="DailyDate" name="DailyDate" class="form-control" >
                             <option value="">Please Select</option>
-                            <option ng-repeat="Value in DailyDateResponse" value="{{Value.MatchStartDateTime}}">{{Value.MatchStartDateTime}}</option>
+                            <option ng-repeat="Value in DailyDateResponse" value="{{Value.MatchStartDateTime}}">{{Value.MatchStartDateTime}} ({{Value.MatchStartDateTime  | date : 'EEE' }})</option>
                         </select>
                     </div>
-                </div> -->
-                 <input name="DailyDate" ng-model="DailyDate" type="hidden" value="2021-01-01">
+                </div>
+                <!--  <input name="DailyDate" ng-model="DailyDate" type="hidden" value="2021-01-01"> -->
 
 <!--                 <div class="col-md-3">
                     <div class="form-group">

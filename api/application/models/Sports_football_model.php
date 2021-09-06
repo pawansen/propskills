@@ -8950,13 +8950,17 @@ class Sports_football_model extends CI_Model {
                                
 
                                     if($PlayerRole == "QuarterBack" && $Category == "Passing"){
-                                        $PlayerUpdates['TotalTouchdowns'] = (string) $xml2->category[$i]->player[$j]['passing_touchdowns'];  
+                                        $PlayerUpdates['TotalTouchdowns'] = (string) $xml2->category[$i]->player[$j]['passing_touchdowns'];
+                                        $PlayerUpdates['Rank'] = (string) $xml2->category[$i]->player[$j]['rank'];   
                                     }else if($PlayerRole == "RunningBack" && $Category == "Rushing"){
-                                        $PlayerUpdates['TotalTouchdowns'] = (string) $xml2->category[$i]->player[$j]['rushing_touchdowns'];  
+                                        $PlayerUpdates['TotalTouchdowns'] = (string) $xml2->category[$i]->player[$j]['rushing_touchdowns'];
+                                        $PlayerUpdates['Rank'] = (string) $xml2->category[$i]->player[$j]['rank'];  
                                     }else if($PlayerRole == "WideReceiver" && $Category == "Receiving"){
-                                        $PlayerUpdates['TotalTouchdowns'] = (string) $xml2->category[$i]->player[$j]['receiving_touchdowns'];  
+                                        $PlayerUpdates['TotalTouchdowns'] = (string) $xml2->category[$i]->player[$j]['receiving_touchdowns']; 
+                                        $PlayerUpdates['Rank'] = (string) $xml2->category[$i]->player[$j]['rank']; 
                                     }else if($PlayerRole == "TightEnd" && $Category == "Receiving"){
-                                        $PlayerUpdates['TotalTouchdowns'] = (string) $xml2->category[$i]->player[$j]['receiving_touchdowns'];  
+                                        $PlayerUpdates['TotalTouchdowns'] = (string) $xml2->category[$i]->player[$j]['receiving_touchdowns']; 
+                                        $PlayerUpdates['Rank'] = (string) $xml2->category[$i]->player[$j]['rank']; 
                                     }
                                 if(!empty($PlayerUpdates)){
                                     $player_id = $xml2->category[$i]->player[$j]['id'];

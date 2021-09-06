@@ -32,7 +32,7 @@ class AuctionDrafts extends API_Controller {
         $this->form_validation->set_rules('EntryType', 'EntryType', 'trim|required|in_list[Single]');
         $this->form_validation->set_rules('UserJoinLimit', 'UserJoinLimit', 'trim' . (!empty($this->Post['EntryType']) && $this->Post['EntryType'] == 'Multiple' ? '|required|integer' : ''));
         $this->form_validation->set_rules('CashBonusContribution', 'CashBonusContribution', 'trim|required|numeric|regex_match[/^[0-9][0-9]?$|^100$/]');
-        $this->form_validation->set_rules('MatchGUID', 'MatchGUID', 'trim|required|callback_validateEntityGUID[Matches,MatchID]');
+        //$this->form_validation->set_rules('MatchGUID', 'MatchGUID', 'trim|required|callback_validateEntityGUID[Matches,MatchID]');
         $this->form_validation->set_rules('SeriesGUID', 'SeriesGUID', 'trim|required|callback_validateEntityGUID[Series,SeriesID]');
         $this->form_validation->set_rules('CustomizeWinning', 'Customize Winning', 'trim');
         if (!empty($this->Post['CustomizeWinning']) && is_array($this->Post['CustomizeWinning'])) {

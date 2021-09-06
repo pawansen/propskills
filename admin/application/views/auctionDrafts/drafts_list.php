@@ -38,7 +38,7 @@
 			<!-- table heading -->
 			<thead>
 				<tr>
-		          <th style="width: 300px;">Match</th>
+		          <th style="width: 300px;">Game Play Day</th>
 		          <th style="width: 100px;" class="sort" ng-click="applyOrderedList('SubGameType','DESC')">Game Play Type &nbsp;<span class="sort_deactive"></th>
 <!--          <th style="width: 100px;">Game Type</th>-->
 					<th style="width: 250px;" class="sort" ng-click="applyOrderedList('ContestName','DESC')">Season&nbsp;<span class="sort_deactive"></th>
@@ -72,7 +72,7 @@
 <!--                                         <td ng-if="row.GameType == 'Ncaaf'">College Football</td>
 					<td ng-if="row.GameType == 'Nfl'">Pro Football</td> -->
 					<td>
-							<div class="text-success" ng-if="row.Match.TeamNameLocal">({{row.Match.TeamNameShortLocal}} v/s {{row.Match.TeamNameShortVisitor}} ){{row.Match.MatchStartDateTimeUTC}}</div><div ng-if="!row.Match.TeamNameLocal">-</div>
+							<div class="text-success">{{row.DailyDate}}({{row.DailyDate | date : 'EEE' }})</div>
 					</td>  
                            <td>
 						<p>{{row.GamePlayType}}</p>

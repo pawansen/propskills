@@ -106,6 +106,25 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
 
     }
 
+    $scope.getWeekDateOld = function (ContestDuration,Week,SeriesGUID)
+    {
+        if(ContestDuration=='Daily'){
+
+             var data = 'SessionKey=' + SessionKey + '&WeekID=' + Week + '&SeriesGUID=' + SeriesGUID;
+
+                $http.post(API_URL + '/snakeDrafts/getWeekDate', data, contentType).then(function (response) {
+                    var response = response.data;
+                    if (response.Data) {
+                        /* success case */
+                        $scope.DailyDateResponse = response.Data;
+                        console.log($scope.DailyDateResponse);
+                    }
+                });
+        }
+
+
+    }
+
     $scope.validateWeek = function (type, Week) {
 
     }
@@ -132,7 +151,7 @@ app.controller('PageController', function ($scope, $http, $timeout, $rootScope) 
         if ($scope.data.listLoading || $scope.data.noRecords)
             return;
         $scope.data.listLoading = true;
-        var data = 'SessionKey=' + SessionKey + '&LeagueType=Draft&OrderByToday=Yes' + '&MatchGUID=' + MatchGUID + '&PageNo=' + $scope.data.pageNo + '&PageSize=' + $scope.data.pageSize + '&OrderBy=' + $scope.data.OrderBy + '&Sequence=' + $scope.data.Sequence + '&'+'&Params=SubGameType,AuctionStatus,SeriesName,IsConfirm,MinimumUserJoined,LeagueJoinDateTime,LeagueType,GameType,GameTimeLive,AdminPercent,Privacy,IsPaid,WinningAmount,ContestSize,EntryFee,NoOfWinners,EntryType,TeamNameLocal,TeamNameVisitor,Status,CustomizeWinning,ContestType,MatchStartDateTime,TotalJoined,TotalAmountReceived,TotalWinningAmount,CashBonusContribution,UserJoinLimit&Privacy=No&' + $('#filterForm').serialize() + '&' + $('#filterForm1').serialize()+ "&Status=" + $rootScope.Status;
+        var data = 'SessionKey=' + SessionKey + '&LeagueType=Draft&OrderByToday=Yes' + '&MatchGUID=' + MatchGUID + '&PageNo=' + $scope.data.pageNo + '&PageSize=' + $scope.data.pageSize + '&OrderBy=' + $scope.data.OrderBy + '&Sequence=' + $scope.data.Sequence + '&'+'&Params=SubGameType,AuctionStatus,SeriesName,DailyDate,IsConfirm,MinimumUserJoined,LeagueJoinDateTime,LeagueType,GameType,GameTimeLive,AdminPercent,Privacy,IsPaid,WinningAmount,ContestSize,EntryFee,NoOfWinners,EntryType,TeamNameLocal,TeamNameVisitor,Status,CustomizeWinning,ContestType,MatchStartDateTime,TotalJoined,TotalAmountReceived,TotalWinningAmount,CashBonusContribution,UserJoinLimit&Privacy=No&' + $('#filterForm').serialize() + '&' + $('#filterForm1').serialize()+ "&Status=" + $rootScope.Status;
         $http.post(API_URL + 'auctionDrafts/getContests', data, contentType).then(function (response) {
             var response = response.data;
             if (response.ResponseCode == 200 && response.Data.Records.length >0 ) { /* success case */

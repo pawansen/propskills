@@ -111,6 +111,19 @@ class Utilities extends API_Controller {
       }
     }
 
+        /*
+    Name:       update
+    Description:  Use to get site config.
+    URL:      /utilities/getSettings/ 
+    */
+    public function getGameType_post()
+    {
+      $ConfigData = $this->Utility_model->getGameType(@$this->Post);
+      if(!empty($ConfigData)){
+        $this->Return['Data'] = $ConfigData['Data'];
+      }
+    }
+
     /*
       Description:    Use to get list of random posts.
       URL:            /api/utilities/getPosts

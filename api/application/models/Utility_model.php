@@ -106,6 +106,28 @@ class Utility_model extends CI_Model {
         return FALSE;
     }
 
+        /*
+      Description: Use to get site config.
+     */
+
+    function getGameType($Where = array()) {
+        $this->db->select('*');
+        $this->db->from('game_type');
+        if (!empty($Where['StatusID'])) {
+            $this->db->where("StatusID", $Where['StatusID']);
+        }
+        $TempOBJ = clone $this->db;
+        $TempQ = $TempOBJ->get();
+        $Return['Data']['TotalRecords'] = $TempQ->num_rows();
+        // $this->db->cache_on();
+        $Query = $this->db->get();
+        if ($Query->num_rows() > 0) {
+            $Return['Data']['Records'] = $Query->result_array();
+            return $Return;
+        }
+        return FALSE;
+    }
+
     /*
       Description: Use to update config.
      */

@@ -149,7 +149,8 @@ define('PAYUMONEY_SALT', '*****');
 
 /** paypal token set * */
 define('PAYPAL_TOKEN_SANDBOX', 'access_token$sandbox$zyxj7qfcjbxpq6d9$1e35a2ec81cd48837040db38c4754fba');
-define('PAYPAL_TOKEN', 'access_token$production$yb9khxtqkwtjb68y$265398d6231f892ae72ddbebbcc8d25b');
+//define('PAYPAL_TOKEN', 'access_token$production$yb9khxtqkwtjb68y$265398d6231f892ae72ddbebbcc8d25b');
+define('PAYPAL_TOKEN', 'AV_yscjWHpmCe1SrMQxvm1ME2cwNcCfHwpdfedOcqmthvfEB-8VeoqQraAlqKdwFIIhkJ1gdor79TbaX');
 
 /* SMS API Details */
 define('SMS_API_URL', 'https://login.bulksmsgateway.in/sendmessage.php');

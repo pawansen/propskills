@@ -318,11 +318,11 @@ class SnakeDrafts extends API_Controller {
     public function getWeekDate_post() {
         $this->form_validation->set_rules('SessionKey', 'SessionKey', 'trim|required|callback_validateSession');
         $this->form_validation->set_rules('SeriesGUID', 'SeriesGUID', 'trim|required|callback_validateEntityGUID[Series,SeriesID]');
-        $this->form_validation->set_rules('WeekID', 'WeekID', 'trim|numeric');
+        $this->form_validation->set_rules('WeekID', 'WeekID', 'trim');
         $this->form_validation->validation($this);  /* Run validation */
 
         /* Get Contests Data */
-        $ContestData = $this->SnakeDrafts_model->getWeekDate($this->SeriesID,$this->Post['WeekID']);
+        $ContestData = $this->SnakeDrafts_model->getWeekDate($this->SeriesID,@$this->Post['WeekID']);
         if (!empty($ContestData)) {
             $this->Return['Data'] = $ContestData;
         }
@@ -379,11 +379,11 @@ class SnakeDrafts extends API_Controller {
         $ContestDetails = $this->SnakeDrafts_model->getContests("GameTimeLive,ContestID,LeagueJoinDateTime,LeagueJoinDateTimeUTC,IsAutoDraft", array("ContestID" => $this->ContestID));
         $LeagueJoinDateTime = $ContestDetails['LeagueJoinDateTimeUTC'];
         $currentDateTime = date('Y-m-d H:i:s');
-        if (strtotime($LeagueJoinDateTime) < strtotime($currentDateTime)) {
+       // if (strtotime($LeagueJoinDateTime) < strtotime($currentDateTime)) {
             /* $this->SnakeDrafts_model->changeContestStatus($this->ContestID); */
-            $this->Return['ResponseCode'] = 500;
-            $this->Return['Message'] = "You can not join the contest because time is over.";
-        } else {
+           // $this->Return['ResponseCode'] = 500;
+           // $this->Return['Message'] = "You can not join the contest because time is over.";
+        //} else {
             $JoinContest = $this->SnakeDrafts_model->joinContest($this->Post, $this->SessionUserID, $this->ContestID, $this->SeriesID, $this->UserTeamID, @$ContestDetails['IsAutoDraft']);
             if (!$JoinContest) {
                 $this->Return['ResponseCode'] = 500;
@@ -392,7 +392,7 @@ class SnakeDrafts extends API_Controller {
                 $this->Return['Data'] = $JoinContest;
                 $this->Return['Message'] = "Contest joined successfully.";
             }
-        }
+       // }
     }
 
             /*
@@ -1860,6 +1860,31 @@ class SnakeDrafts extends API_Controller {
         return TRUE;
 
     }
+
+    /*
+      Description: To get players data
+     */
+
+    public function getGamePlayers_post() {
+        // $this->form_validation->set_rules('SessionKey', 'SessionKey', 'trim|callback_validateSession');
+        $this->form_validation->set_rules('SeriesGUID', 'SeriesGUID', 'trim|required|callback_validateEntityGUID[Series,SeriesID]');
+        $this->form_validation->set_rules('ContestGUID', 'ContestGUID', 'trim|required|callback_validateEntityGUID[Contest,ContestID]');
+        $this->form_validation->set_rules('PlayerGUID', 'PlayerGUID', 'trim|callback_validateEntityGUID[Players,PlayerID]');
+        $this->form_validation->set_rules('UserGUID', 'UserGUID', 'trim|callback_validateEntityGUID[User,UserID]');
+        $this->form_validation->set_rules('Keyword', 'Search Keyword', 'trim');
+        $this->form_validation->set_rules('MySquadPlayer', 'MySquadPlayer', 'trim');
+        $this->form_validation->set_rules('OrderBy', 'OrderBy', 'trim');
+        $this->form_validation->set_rules('Sequence', 'Sequence', 'trim|in_list[ASC,DESC]');
+        $this->form_validation->validation($this);  /* Run validation */
+        /* Get Players Data */
+
+        $ContestDetails = $this->SnakeDrafts_model->getContestDetails($this->ContestID);
+        $PlayersData = $this->SnakeDrafts_model->getGamePlayers(@$this->Post['Params'], array_merge($this->Post, array('SeriesID' => $this->SeriesID, 'ContestID' => @$this->ContestID, 'SessionUserID' => @$this->SessionUserID, 'PlayerID' => @$this->PlayerID, 'UserID' => @$this->UserID,'ContestDetails'=>$ContestDetails)), TRUE, @$this->Post['PageNo'], @$this->Post['PageSize']);
+        if (!empty($PlayersData)) {
+            $this->Return['Data'] = $PlayersData['Data'];
+        }
+    }
+
 }
 
 ?>
