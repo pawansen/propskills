@@ -1885,6 +1885,78 @@ class SnakeDrafts extends API_Controller {
         }
     }
 
+    /*
+      Name:             addUserTeam
+      Description:  Use to create team to system.
+      URL:          /api_admin/contest/addUserTeam/
+     */
+
+    public function addUserTeamGame_post() {
+        /* Validation section */
+        $this->form_validation->set_rules('SessionKey', 'SessionKey', 'trim|required|callback_validateSession');
+        $this->form_validation->set_rules('SeriesGUID', 'SeriesGUID', 'trim|required|callback_validateEntityGUID[Series,SeriesID]');
+        $this->form_validation->set_rules('ContestGUID', 'ContestGUID', 'trim|required|callback_validateEntityGUID[Contest,ContestID]');
+        $this->form_validation->set_rules('PlayerGUID', 'PlayerGUID', 'trim|callback_validateEntityGUID[Players,PlayerID]');
+        $this->form_validation->validation($this);  /* Run validation */
+        /* Validation - ends */
+        $ContestDetails = $this->SnakeDrafts_model->getContestDetails($this->ContestID);
+        $UserTeam = $this->SnakeDrafts_model->addUserTeamGame($this->SessionUserID,$this->PlayerID,$this->SeriesID,$this->ContestID,$ContestDetails);
+        if ($UserTeam['Status'] != 1) {
+            $this->Return['ResponseCode'] = 500;
+            $this->Return['Message'] = $UserTeam['Message'];
+        } else {
+            $this->Return['Data']['UserTeamGUID'] = $UserTeam;
+            $this->Return['Message'] = $UserTeam['Message'];
+        }
+    }
+
+        /*
+      Name:             addUserTeam
+      Description:  Use to create team to system.
+      URL:          /api_admin/contest/addUserTeam/
+     */
+
+    public function dropUserTeamGame_post() {
+        /* Validation section */
+        $this->form_validation->set_rules('SessionKey', 'SessionKey', 'trim|required|callback_validateSession');
+        $this->form_validation->set_rules('SeriesGUID', 'SeriesGUID', 'trim|required|callback_validateEntityGUID[Series,SeriesID]');
+        $this->form_validation->set_rules('ContestGUID', 'ContestGUID', 'trim|required|callback_validateEntityGUID[Contest,ContestID]');
+        $this->form_validation->set_rules('PlayerGUID', 'PlayerGUID', 'trim|callback_validateEntityGUID[Players,PlayerID]');
+        $this->form_validation->set_rules('UserTeamID', 'UserTeamID', 'trim|required');
+        $this->form_validation->validation($this);  /* Run validation */
+        /* Validation - ends */
+        $ContestDetails = $this->SnakeDrafts_model->getContestDetails($this->ContestID);
+        $UserTeam = $this->SnakeDrafts_model->dropUserTeamGame($this->SessionUserID,$this->PlayerID,$this->SeriesID,$this->ContestID,$this->Post['UserTeamID']);
+        if ($UserTeam['Status'] != 1) {
+            $this->Return['ResponseCode'] = 500;
+            $this->Return['Message'] = $UserTeam['Message'];
+        } else {
+            $this->Return['Data']['UserTeamGUID'] = $UserTeam;
+            $this->Return['Message'] = $UserTeam['Message'];
+        }
+    }
+
+        /*
+      Description: To get players data
+     */
+
+    public function getMyteamPlayers_post() {
+        $this->form_validation->set_rules('SessionKey', 'SessionKey', 'trim|required|callback_validateSession');
+        $this->form_validation->set_rules('SeriesGUID', 'SeriesGUID', 'trim|required|callback_validateEntityGUID[Series,SeriesID]');
+        $this->form_validation->set_rules('ContestGUID', 'ContestGUID', 'trim|required|callback_validateEntityGUID[Contest,ContestID]');
+        $this->form_validation->set_rules('UserGUID', 'UserGUID', 'trim|callback_validateEntityGUID[User,UserID]');
+        $this->form_validation->set_rules('UserTeamID', 'UserTeamID', 'trim|required');
+        $this->form_validation->set_rules('Keyword', 'Search Keyword', 'trim');
+        $this->form_validation->set_rules('MySquadPlayer', 'MySquadPlayer', 'trim');
+        $this->form_validation->set_rules('OrderBy', 'OrderBy', 'trim');
+        $this->form_validation->set_rules('Sequence', 'Sequence', 'trim|in_list[ASC,DESC]');
+        $this->form_validation->validation($this);  /* Run validation */
+        /* Get Players Data */
+        $PlayersData = $this->SnakeDrafts_model->getMyteamPlayers(@$this->Post['Params'], array_merge($this->Post, array('SeriesID' => $this->SeriesID, 'ContestID' => @$this->ContestID, 'SessionUserID' => @$this->SessionUserID, 'UserID' => @$this->UserID,'UserTeamID' => @$this->Post['UserTeamID'],"MySquadPlayer"=>"Yes")), TRUE, @$this->Post['PageNo'], @$this->Post['PageSize']);
+        if (!empty($PlayersData)) {
+            $this->Return['Data'] = $PlayersData['Data'];
+        }
+    }
 }
 
 ?>

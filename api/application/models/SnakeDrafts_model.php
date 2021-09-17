@@ -10258,8 +10258,8 @@ class SnakeDrafts_model extends CI_Model {
             if (!empty($Where['SessionUserID'])) {
                 $this->db->where("UT.UserID", @$Where['SessionUserID']);
             }
-            if (!empty($Where['IsAssistant'])) {
-                $this->db->where("UT.IsAssistant", @$Where['IsAssistant']);
+            if (!empty($Where['UserTeamID'])) {
+                $this->db->where("UT.UserTeamID", @$Where['UserTeamID']);
             }
             if (!empty($Where['IsPreTeam'])) {
                 $this->db->where("UT.IsPreTeam", @$Where['IsPreTeam']);
@@ -10307,6 +10307,22 @@ class SnakeDrafts_model extends CI_Model {
                $this->db->where_in("P.PlayerRole", $Role);  
            }
             
+        }
+        if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "QB1") {
+            $this->db->where('Rank >=', 1);
+            $this->db->where('Rank <=', 5);
+        }else  if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "RB1") {
+            $this->db->where('Rank >=', 1);
+            $this->db->where('Rank <=', 5);
+        }else  if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "RB2") {
+            $this->db->where('Rank >=', 6);
+            $this->db->where('Rank <=', 10);
+        }else  if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "WR1") {
+            $this->db->where('Rank >=', 1);
+            $this->db->where('Rank <=', 5);
+        }else  if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "WR2") {
+            $this->db->where('Rank >=', 6);
+            $this->db->where('Rank <=', 10);
         }
 
         if (!empty($Where['SeriesID'])) {
@@ -10538,8 +10554,357 @@ class SnakeDrafts_model extends CI_Model {
         return FALSE;
     }
 
+    function getMyteamPlayers($Field = '', $Where = array(), $multiRecords = FALSE, $PageNo = 1, $PageSize = 15) {
+        $Params = array();
+        if (!empty($Field)) {
+            $Params = array_map('trim', explode(',', $Field));
+            $Field = '';
+            $FieldArray = array(
+                'PlayerID' => 'P.PlayerID',
+                'PlayerSalary' => 'P.PlayerSalary',
+                'PlayerRole' => 'P.PlayerRole PlayerRole',
+                'PlayerPosition' => 'P.Position as PlayerPosition',
+                'PlayerIDLive' => 'P.PlayerIDLive',
+                'PlayerPic' => 'IF(P.PlayerPic IS NULL,CONCAT("' . BASE_URL . '","uploads/PlayerPic/","player.png"),CONCAT("' . BASE_URL . '","uploads/PlayerPic/",P.PlayerPic)) AS PlayerPic',
+                'PlayerCountry' => 'P.PlayerCountry',
+                'PlayerBattingStyle' => 'P.PlayerBattingStyle',
+                'PlayerBowlingStyle' => 'P.PlayerBowlingStyle',
+                'PlayerBattingStats' => 'P.PlayerBattingStats',
+                'PlayerBowlingStats' => 'P.PlayerBowlingStats',
+                'IsInjuries' => 'P.IsInjuries',
+                'LastUpdateDiff' => 'IF(P.LastUpdatedOn IS NULL, 0, TIME_TO_SEC(TIMEDIFF("' . date('Y-m-d H:i:s') . '", P.LastUpdatedOn))) LastUpdateDiff',
+                'TeamID' => 'T.TeamID',
+                'TeamName' => 'T.TeamName',
+                'PlayerRoleShort' => 'CASE P.PlayerRole
+                             when "QuarterBack" then "QB"
+                             when "RunningBack" then "RB"
+                             when "WideReceiver" then "WR"
+                             when "TightEnd" then "TE"
+                             when "LineBacker" then "DEF"
+                             when "CornerBack" then "DEF"
+                             when "OutsideLinebacker" then "DEF"
+                             when "DefenseEnd" then "DEF"
+                             when "DefenseTackle" then "DEF"
+                             when "Safety" then "DEF"
+                             END as PlayerRoleShort',
+            );
+            if ($Params) {
+                foreach ($Params as $Param) {
+                    $Field .= (!empty($FieldArray[$Param]) ? ',' . $FieldArray[$Param] : '');
+                }
+            }
+        }
+        $this->db->select('P.PlayerGUID,P.PlayerName,T.TeamNameShort,P.YardsPerGame,P.Yards,P.TotalTouchdowns,P.WeeklyStats,P.Passing,P.Rushing,P.Receiving,P.Scoring,P.Defense,P.Rank');
+        if (!empty($Field))
+        $this->db->select($Field, FALSE);
+        $this->db->from('tbl_entity E, sports_players P,sports_teams T');
+        $this->db->where("P.PlayerID", "E.EntityID", FALSE);
+        $this->db->where("T.TeamID", "P.TeamID", FALSE);
+        if(isset($Where['ContestDetails'])){
+            if(!empty($Where['ContestDetails'])){
+                $this->db->from('sports_matches M');
+                $this->db->where("M.MatchID", "TP.MatchID", FALSE);
+                if($Where['ContestDetails']['ContestDuration'] == "Daily"){
+                     $this->db->where("DATE(M.MatchStartDateTime)",$Where['ContestDetails']['DailyDate']);
+                }else{
+                     $this->db->where("M.WeekID",$Where['ContestDetails']['WeekStart']);
+                }
+            }
+        }
+    
+        if (!empty($Where['MySquadPlayer']) && $Where['MySquadPlayer'] == "Yes") {
+            $this->db->select("UT.UserTeamGUID,UT.UserTeamName");
+            $this->db->from('sports_users_teams UT, sports_users_team_players UTP');
+            $this->db->where("UTP.PlayerID", "P.PlayerID", FALSE);
+            $this->db->where("UT.UserTeamID", "UTP.UserTeamID", FALSE);
+            if (!empty($Where['SessionUserID'])) {
+                $this->db->where("UT.UserID", @$Where['SessionUserID']);
+            }
+            if (!empty($Where['UserTeamID'])) {
+                $this->db->where("UT.UserTeamID", @$Where['UserTeamID']);
+            }
+            if (!empty($Where['IsPreTeam'])) {
+                $this->db->where("UT.IsPreTeam", @$Where['IsPreTeam']);
+            }
+            if (!empty($Where['BidCredit'])) {
+                $this->db->where("UTP.BidCredit >", @$Where['BidCredit']);
+            }
+            $this->db->where("UT.ContestID", @$Where['ContestID']);
+        }
+        
+        if (!empty($Where['Keyword'])) {
+            $Where['Keyword'] = trim($Where['Keyword']);
+            $this->db->group_start();
+            $this->db->like("P.PlayerName", $Where['Keyword']);
+            $this->db->or_like("P.PlayerRole", $Where['Keyword']);
+            $this->db->or_like("P.PlayerCountry", $Where['Keyword']);
+            $this->db->or_like("P.PlayerBattingStyle", $Where['Keyword']);
+            $this->db->or_like("P.PlayerBowlingStyle", $Where['Keyword']);
+            $this->db->group_end();
+        }
+
+        if (!empty($Where['TeamID'])) {
+            $this->db->where("TP.TeamID", $Where['TeamID']);
+        }
+        if (!empty($Where['PlayerRoleShort'])) {
+            $Role="";
+            if($Where['PlayerRoleShort'] == "QB"){
+               $Role="QuarterBack";
+               $this->db->where("P.PlayerRole", $Role); 
+           }else if($Where['PlayerRoleShort'] == "RB"){
+               $Role="RunningBack"; 
+               $this->db->where("P.PlayerRole", $Role); 
+           }else if($Where['PlayerRoleShort'] == "WR"){
+               $Role="WideReceiver"; 
+               $this->db->where("P.PlayerRole", $Role); 
+           }else if($Where['PlayerRoleShort'] == "TE"){
+               $Role="TightEnd";
+               $this->db->where("P.PlayerRole", $Role);  
+           }else if($Where['PlayerRoleShort'] == "FLEX"){
+               $Role=array('QuarterBack','RunningBack','WideReceiver',
+                     'TightEnd');
+               $this->db->where_in("P.PlayerRole", $Role);  
+           }else if($Where['PlayerRoleShort'] == "WR/TE"){
+               $Role=array('TightEnd','WideReceiver');
+               $this->db->where_in("P.PlayerRole", $Role);  
+           }
+            
+        }
+        if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "QB1") {
+            $this->db->where('Rank >=', 1);
+            $this->db->where('Rank <=', 5);
+        }else  if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "RB1") {
+            $this->db->where('Rank >=', 1);
+            $this->db->where('Rank <=', 5);
+        }else  if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "RB2") {
+            $this->db->where('Rank >=', 6);
+            $this->db->where('Rank <=', 10);
+        }else  if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "WR1") {
+            $this->db->where('Rank >=', 1);
+            $this->db->where('Rank <=', 5);
+        }else  if (!empty($Where['PlayerRoleRank']) && $Where['PlayerRoleRank'] == "WR2") {
+            $this->db->where('Rank >=', 6);
+            $this->db->where('Rank <=', 10);
+        }
+
+        if (!empty($Where['SeriesID'])) {
+           // $this->db->where("TP.SeriesID", $Where['SeriesID']);
+        }
+        if (!empty($Where['IsPlaying'])) {
+            //$this->db->where("TP.IsPlaying", $Where['IsPlaying']);
+        }
+        if (!empty($Where['PlayerID'])) {
+            $this->db->where("P.PlayerID", $Where['PlayerID']);
+        }
+        if (!empty($Where['IsPlayRoster'])) {
+            $this->db->where("P.IsPlayRoster", $Where['IsPlayRoster']);
+        }
+        if (!empty($Where['Rank'])) {
+            $this->db->where("P.Rank >", 0);
+        }
+        if (!empty($Where['IsAdminSalaryUpdated'])) {
+            $this->db->where("P.IsAdminSalaryUpdated", $Where['IsAdminSalaryUpdated']);
+        }
+        if (!empty($Where['StatusID'])) {
+            $this->db->where("E.StatusID", $Where['StatusID']);
+        }
+        if (!empty($Where['CronFilter']) && $Where['CronFilter'] == 'OneDayDiff') {
+            $this->db->having("LastUpdateDiff", 0);
+            $this->db->or_having("LastUpdateDiff >=", 86400); // 1 Day
+        }
+        if (!empty($Where['OrderBy']) && !empty($Where['Sequence'])) {
+            $this->db->order_by($Where['OrderBy'], $Where['Sequence']);
+        } else{
+            $this->db->order_by('P.Rank', 'ASC');
+        }
+
+        if (!empty($Where['RandData'])) {
+            $this->db->order_by($Where['RandData']);
+        } else {
+
+            // $this->db->order_by('P.IsInjuries', 'ASC');
+            //$this->db->order_by('P.PlayerID', 'DESC');
+        }
+        /* Total records count only if want to get multiple records */
+        if ($multiRecords) {
+            $TempOBJ = clone $this->db;
+            $TempQ = $TempOBJ->get();
+            $Return['Data']['TotalRecords'] = $TempQ->num_rows();
+            if ($PageNo != 0) {
+                $this->db->limit($PageSize, paginationOffset($PageNo, $PageSize)); /* for pagination */
+            }
+        } else {
+            $this->db->limit(1);
+        }
+        $this->db->group_by("P.PlayerID");
+        // $this->db->cache_on(); //Turn caching on
+        $Query = $this->db->get();
+        //echo $this->db->last_query();exit;
+        if ($Query->num_rows() > 0) {
+            if ($multiRecords) {
+                $Records = array();
+                foreach ($Query->result_array() as $key => $Record) {
+                    $Records[] = $Record;
+                    $IsAssistant = "";
+                    $AuctionTopPlayerSubmitted = "No";
+                    $UserTeamGUID = "";
+                    $UserTeamName = "";
+
+
+                    $WeekStats = array();
+                    $WeekStats['total_points'] = 0;
+                    $WeekStats['yards'] = 0;
+                    $WeekStats['passing_touchdowns'] = 0;
+                    $WeekStats['rushing_yards'] = 0;
+                    $WeekStats['rushing_touchdowns'] = 0;
+                    $WeekStats['receiving_yards'] = 0;
+                    $WeekStats['receiving_touchdowns'] = 0;
+                    $WeekStats['field_goals'] = 0;
+                    $WeekStats['fumbles_lost'] = 0;
+                    $WeekStats['total_tackles'] = 0;
+                    $WeekStats['interceptions'] = 0;
+                    $WeekStats['receptions'] = 0;
+                    $WeekStats['fumbles'] = 0;
+                    $WeekStats['two_point_conversions'] = 0;
+                    $WeekStats['return_touchdowns'] = 0;
+                    $WeekStats['fumbles_returned_for_touchdowns'] = 0;
+                    $WeekStats['total_points_per_game'] = 0;
+
+                    if(!empty($Record['Passing'])){
+                        $Records[$key]['Passing'] = $Passing = json_decode($Record['Passing'],true);
+                        $WeekStats['yards'] = $Passing['yards'];
+                        $WeekStats['passing_touchdowns'] = $Passing['passing_touchdowns'];
+                        $WeekStats['passing_fumbles'] = @$Passing['fumbles'];
+                        $WeekStats['passing_yards_per_game'] = @$Passing['yards_per_game'];
+                    }
+                    if(!empty($Record['Rushing'])){
+                        $Records[$key]['Rushing'] = $Rushing = json_decode($Record['Rushing'],true);
+                        $WeekStats['rushing_yards'] = $Rushing['rushing_yards'];
+                        $WeekStats['rushing_touchdowns'] = $Rushing['rushing_touchdowns'];
+                        $WeekStats['fumbles_lost'] += $Rushing['fumbles_lost'];
+                        $WeekStats['russing_fumbles'] = @$Rushing['fumbles'];
+                        $WeekStats['russing_yards_per_game'] = @$Rushing['yards_per_game'];
+                    }
+                    if(!empty($Record['Receiving'])){
+                        $Records[$key]['Receiving'] = $Receiving = json_decode($Record['Receiving'],true);
+                        $WeekStats['receiving_yards'] =$Receiving['receiving_yards'];
+                        $WeekStats['receiving_touchdowns'] = $Receiving['receiving_touchdowns'];
+                        $WeekStats['fumbles_lost'] += $Receiving['fumbles_lost'];
+                        $WeekStats['receiving_fumbles'] = @$Receiving['fumbles'];
+                        $WeekStats['receiving_yards_per_game'] = @$Receiving['yards_per_game'];
+                        $WeekStats['receptions'] = @$Receiving['receptions'];
+                    }
+                    if(!empty($Record['Scoring'])){
+                        $Records[$key]['Scoring'] = $Scoring = json_decode($Record['Scoring'],true);
+                        $WeekStats['field_goals'] = $Scoring['field_goals'];
+                        $WeekStats['return_touchdowns'] = $Scoring['return_touchdowns'];
+                        $WeekStats['total_points'] = $Scoring['total_points'];
+                        $WeekStats['two_point_conversions'] = $Scoring['two_point_conversions'];
+                        $WeekStats['total_points_per_game'] = $Scoring['total_points_per_game'];
+                    }
+                    if(!empty($Record['Defense'])){
+                        $Records[$key]['Defense'] = $Defense = json_decode($Record['Defense'],true);
+                        $WeekStats['fumbles_returned_for_touchdowns'] = $Defense['fumbles_returned_for_touchdowns'];
+                        $WeekStats['total_tackles'] = $Defense['total_tackles'];
+                    }
+                    if(!empty($Record['WeeklyStats'])){
+                        $WeeklyStats = json_decode($Record['WeeklyStats'],true);
+                        $WeekStats['total_points'] =$WeeklyStats['total_points'];
+                    }
+
+                    $Records[$key]['PlayerBattingStats'] = $WeekStats;
+
+                    $Records[$key]['dropPlayer'] = "No";
+
+                    /*$Records[$key]['PlayerBattingStats'] = (!empty($Record['WeeklyStats'])) ? json_decode($Record['WeeklyStats']) : $WeekStats;*/
+
+                    $Records[$key]['PointsData'] = (!empty($Record['PointsData'])) ? json_decode($Record['PointsData'], TRUE) : array();
+                    $IsAssistant = @$Record['IsAssistant'];
+                    $UserTeamGUID = $Record['UserTeamGUID'];
+                    $UserTeamName = $Record['UserTeamName'];
+                    $AuctionTopPlayerSubmitted = $Record['AuctionTopPlayerSubmitted'];
+                }
+                if (!empty($Where['MySquadPlayer']) && $Where['MySquadPlayer'] == "Yes") {
+                    $Return['Data']['UserTeamGUID'] = $UserTeamGUID;
+                    $Return['Data']['UserTeamName'] = $UserTeamName;
+                }
+
+                $Return['Data']['Records'] = $Records;
+                return $Return;
+            } else {
+                $Record = $Query->row_array();
+                $WeekStats = array();
+                $WeekStats['total_points'] = 0;
+                $WeekStats['yards'] = 0;
+                $WeekStats['passing_touchdowns'] = 0;
+                $WeekStats['rushing_yards'] = 0;
+                $WeekStats['rushing_touchdowns'] = 0;
+                $WeekStats['receiving_yards'] = 0;
+                $WeekStats['receiving_touchdowns'] = 0;
+                $WeekStats['field_goals'] = 0;
+                $WeekStats['fumbles_lost'] = 0;
+                $WeekStats['total_tackles'] = 0;
+                $WeekStats['interceptions'] = 0;
+                $WeekStats['receptions'] = 0;
+                $WeekStats['fumbles'] = 0;
+                $WeekStats['two_point_conversions'] = 0;
+                $WeekStats['return_touchdowns'] = 0;
+                $WeekStats['fumbles_returned_for_touchdowns'] = 0;
+                $WeekStats['total_points_per_game'] = 0;
+
+                if(!empty($Record['Passing'])){
+                    $Record['Passing'] = $Passing = json_decode($Record['Passing'],true);
+                    $WeekStats['yards'] = $Passing['yards'];
+                    $WeekStats['passing_touchdowns'] = $Passing['passing_touchdowns'];
+                    $WeekStats['passing_fumbles'] = @$Passing['fumbles'];
+                    $WeekStats['passing_yards_per_game'] = @$Passing['yards_per_game'];
+                }
+                if(!empty($Record['Rushing'])){
+                    $Record['Rushing'] = $Rushing = json_decode($Record['Rushing'],true);
+                    $WeekStats['rushing_yards'] = $Rushing['rushing_yards'];
+                    $WeekStats['rushing_touchdowns'] = $Rushing['rushing_touchdowns'];
+                    $WeekStats['fumbles_lost'] += $Rushing['fumbles_lost'];
+                    $WeekStats['russing_fumbles'] = @$Rushing['fumbles'];
+                    $WeekStats['russing_yards_per_game'] = @$Rushing['yards_per_game'];
+                }
+                if(!empty($Record['Receiving'])){
+                    $Record['Receiving'] = $Receiving = json_decode($Record['Receiving'],true);
+                    $WeekStats['receiving_yards'] =$Receiving['receiving_yards'];
+                    $WeekStats['receiving_touchdowns'] = $Receiving['receiving_touchdowns'];
+                    $WeekStats['fumbles_lost'] += $Receiving['fumbles_lost'];
+                    $WeekStats['receiving_fumbles'] = @$Receiving['fumbles'];
+                    $WeekStats['receiving_yards_per_game'] = @$Receiving['yards_per_game'];
+                }
+                if(!empty($Record['Scoring'])){
+                    $Record['Scoring'] = $Scoring = json_decode($Record['Scoring'],true);
+                    $WeekStats['return_touchdowns'] = $Scoring['return_touchdowns'];
+                    $WeekStats['total_points'] = $Scoring['total_points'];
+                    $WeekStats['two_point_conversions'] = $Scoring['two_point_conversions'];
+                    $WeekStats['total_points_per_game'] = $Scoring['total_points_per_game'];
+                    $WeekStats['field_goals'] = $Scoring['field_goals'];
+                }
+                if(!empty($Record['Defense'])){
+                    $Record['Defense'] = $Defense = json_decode($Record['Defense'],true);
+                    $WeekStats['fumbles_returned_for_touchdowns'] = $Defense['fumbles_returned_for_touchdowns'];
+                    $WeekStats['total_tackles'] = $Defense['total_tackles'];
+                }
+                if(!empty($Record['WeeklyStats'])){
+                    $Record['WeeklyStats'] = $WeeklyStats = json_decode($Record['WeeklyStats'],true);
+                    $WeekStats['total_points'] =$WeeklyStats['total_points'];
+                }
+
+                $Record['PlayerBattingStats'] = (!empty($Record['WeeklyStats'])) ? json_decode($Record['WeeklyStats']) : $WeekStats;
+
+
+                $Record['PointsData'] = (!empty($Record['PointsData'])) ? json_decode($Record['PointsData'], TRUE) : array();
+                return $Record;
+            }
+        }
+        return FALSE;
+    }
+
     function getContestDetails($ContestID){
-        $this->db->select("ContestID,ContestDuration,DailyDate,WeekStart,SeriesID");
+        $this->db->select("ContestID,ContestDuration,DailyDate,WeekStart,SeriesID,GamePlayType");
         $this->db->from("sports_contest");
         $this->db->where("ContestID", $ContestID);
         $this->db->limit(1);
@@ -10553,6 +10918,86 @@ class SnakeDrafts_model extends CI_Model {
         $this->db->where("DATE(MatchStartDateTime)", $MatchDate);
         $Query = $this->db->get();
         return $Query->result_array();
+    }
+
+    function addUserTeamGame($UserID,$PlayerID , $SeriesID ,$ContestID, $ContestDetails) {
+
+        /** check is assistant and unsold player * */
+        $Players = $this->db->query('SELECT PlayerRole,Rank from `sports_players` WHERE PlayerID = "' . $PlayerID . '"')->row_array();
+        $UserTeamID = $this->db->query('SELECT T.UserTeamID from `sports_users_teams` T join tbl_users U on U.UserID = T.UserID WHERE T.SeriesID = "' . $SeriesID . '" AND T.UserID = "' . $UserID . '" AND T.ContestID = "' . $ContestID . '"')->row()->UserTeamID;
+        if (empty($UserTeamID)) {
+            $EntityGUID = get_guid();
+            $EntityID = $this->Entity_model->addEntity($EntityGUID, array("EntityTypeID" => 12, "UserID" => $UserID, "StatusID" => 2));
+            /* Add user team to user team table . */
+            $TeamName = $ContestDetails['GamePlayType']." Team 1";
+            $UserTeamID = $EntityID;
+            $InsertData = array(
+                "UserTeamID" => $EntityID,
+                "UserTeamGUID" => $EntityGUID,
+                "UserID" => $UserID,
+                "UserTeamName" => $TeamName,
+                "UserTeamType" => $ContestDetails['GamePlayType'],
+                "IsPreTeam" => "No",
+                "SeriesID" => $SeriesID,
+                "ContestID" => $ContestID,
+                "WeekID" => 0,
+                "IsAssistant" => "No",
+                "AuctionTopPlayerSubmitted" => "Yes"
+            );
+            $this->db->insert('sports_users_teams', $InsertData);
+
+
+            $this->db->where('ContestID', $ContestID);
+            $this->db->where('UserID', $UserID);
+            $this->db->limit(1);
+            $this->db->update('sports_contest_join', array('UserTeamID'=>$UserTeamID));
+
+
+            $InsertData = array(
+                    "UserTeamID" => $UserTeamID,
+                    "PlayerPosition" => "Player",
+                    "PlayerID" => $PlayerID,
+                    "SeriesID" => $SeriesID,
+                    "Rank" => $Players['Rank'],
+                    "Role" => $Players['PlayerRole'],
+                    "DateTime" => date('Y-m-d H:i:s'),
+                );
+            $this->db->insert('sports_users_team_players', $InsertData);
+            return array('Status'=>1,"UserTeamID"=>$UserTeamID,"Message"=>"Successfully added");
+        }else{
+            $UserTeamPlayer = $this->db->query('SELECT T.UserTeamID from `sports_users_team_players` T WHERE T.UserTeamID = "' . $UserTeamID . '" AND T.PlayerID = "' . $PlayerID . '"')->row_array();
+            if(empty($UserTeamPlayer)){
+                $InsertData = array(
+                        "UserTeamID" => $UserTeamID,
+                        "PlayerPosition" => "Player",
+                        "PlayerID" => $PlayerID,
+                        "SeriesID" => $SeriesID,
+                        "Rank" => $Players['Rank'],
+                        "Role" => $Players['PlayerRole'],
+                        "DateTime" => date('Y-m-d H:i:s'),
+                    );
+                $this->db->insert('sports_users_team_players', $InsertData);
+                return array('Status'=>1,"UserTeamID"=>$UserTeamID,"Message"=>"Successfully added");
+            }else{
+                return array('Status'=>0,"UserTeamID"=>$UserTeamID,"Message"=>"Player already added");
+            }
+        }
+        return array('Status'=>1,"UserTeamID"=>$UserTeamID,"Message"=>"Successfully added");
+    }
+
+
+    function dropUserTeamGame($UserID,$PlayerID , $SeriesID ,$ContestID, $UserTeamID) {
+
+        /** check is assistant and unsold player * */
+        $UserTeamID = $this->db->query('SELECT T.UserTeamID from `sports_users_teams` T join tbl_users U on U.UserID = T.UserID WHERE T.SeriesID = "' . $SeriesID . '" AND T.UserID = "' . $UserID . '" AND T.ContestID = "' . $ContestID . '" AND T.UserTeamID = "' . $UserTeamID . '"')->row()->UserTeamID;
+        if (!empty($UserTeamID)) {
+            $this->db->where('PlayerID', $PlayerID);
+            $this->db->where('UserTeamID', $UserTeamID);
+            $this->db->limit(1);
+            $this->db->delete('sports_users_team_players');
+            return array('Status'=>1,"Message"=>"Successfully removed");
+        }
+        return array('Status'=>0,"Message"=>"Invalid user team");
     }
 
 }
