@@ -195,7 +195,7 @@ class Contest_model extends CI_Model {
 
 
 
-        $this->db->select('C.ContestGUID,C.ContestName');
+        $this->db->select('C.ContestGUID,C.ContestName,C.ContestID');
         if (!empty($Field))
             $this->db->select($Field, FALSE);
         $this->db->from('tbl_entity E, sports_contest C, sports_matches M, sports_teams TL, sports_teams TV,sports_series S,sports_set_match_types MT');
@@ -374,8 +374,6 @@ class Contest_model extends CI_Model {
                 $Record['TotalAmountReceived'] = ($TotalAmountReceived) ? $TotalAmountReceived : 0;
                 $TotalWinningAmount = $this->getTotalWinningAmount($Record['ContestGUID']);
                 $Record['TotalWinningAmount'] = ($TotalWinningAmount) ? $TotalWinningAmount : 0;
-
-
                 if (!empty($Where['MatchID'])) {
                     $Record['Statics'] = $this->db->query('SELECT (SELECT COUNT(*) AS `NormalContest` FROM `sports_contest` C, `tbl_entity` E WHERE C.ContestID = E.EntityID AND E.StatusID IN (1,2,5) AND C.MatchID = "' . $Where['MatchID'] . '" AND C.ContestType="Normal" AND C.ContestFormat="League" AND C.ContestSize != (SELECT COUNT(*) from sports_contest_join where sports_contest_join.ContestID = C.ContestID)
                                             )as NormalContest,

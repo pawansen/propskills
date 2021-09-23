@@ -4298,6 +4298,20 @@ class SnakeDrafts_model extends CI_Model {
                         $Record['WeekTeamInfo'] = $Query->result_array();
                     }                   
                 }
+                $Record['UserTeamID'] = '';
+                if (!empty($Where['MyContestTeam']) && $Where['MyContestTeam'] == "Yes") {
+                        $this->db->select('UserTeamID');
+                        $this->db->where('ContestID', $Record['ContestID']);
+                        $this->db->where('UserID', $Where['SessionUserID']);
+                        $this->db->from('sports_users_teams');
+                        $MyPlayers = $this->db->get()->row_array();
+                     
+                        if (!empty($MyPlayers)) {
+                            $Record['UserTeamID'] = $MyPlayers['UserTeamID'];
+                        } else {
+                            $Record['UserTeamID'] = '';
+                        }
+                }
                 return $Record;
             }
         }
@@ -10965,21 +10979,26 @@ class SnakeDrafts_model extends CI_Model {
             $this->db->insert('sports_users_team_players', $InsertData);
             return array('Status'=>1,"UserTeamID"=>$UserTeamID,"Message"=>"Successfully added");
         }else{
-            $UserTeamPlayer = $this->db->query('SELECT T.UserTeamID from `sports_users_team_players` T WHERE T.UserTeamID = "' . $UserTeamID . '" AND T.PlayerID = "' . $PlayerID . '"')->row_array();
-            if(empty($UserTeamPlayer)){
-                $InsertData = array(
-                        "UserTeamID" => $UserTeamID,
-                        "PlayerPosition" => "Player",
-                        "PlayerID" => $PlayerID,
-                        "SeriesID" => $SeriesID,
-                        "Rank" => $Players['Rank'],
-                        "Role" => $Players['PlayerRole'],
-                        "DateTime" => date('Y-m-d H:i:s'),
-                    );
-                $this->db->insert('sports_users_team_players', $InsertData);
-                return array('Status'=>1,"UserTeamID"=>$UserTeamID,"Message"=>"Successfully added");
+            $UserTeamTotalPlayer = $this->db->query('SELECT T.UserTeamID from `sports_users_team_players` T WHERE T.UserTeamID = "' . $UserTeamID . '"')->result_array();
+            if(count($UserTeamTotalPlayer) < 5){
+                $UserTeamPlayer = $this->db->query('SELECT T.UserTeamID from `sports_users_team_players` T WHERE T.UserTeamID = "' . $UserTeamID . '" AND T.PlayerID = "' . $PlayerID . '"')->row_array();
+                if(empty($UserTeamPlayer)){
+                    $InsertData = array(
+                            "UserTeamID" => $UserTeamID,
+                            "PlayerPosition" => "Player",
+                            "PlayerID" => $PlayerID,
+                            "SeriesID" => $SeriesID,
+                            "Rank" => $Players['Rank'],
+                            "Role" => $Players['PlayerRole'],
+                            "DateTime" => date('Y-m-d H:i:s'),
+                        );
+                    $this->db->insert('sports_users_team_players', $InsertData);
+                    return array('Status'=>1,"UserTeamID"=>$UserTeamID,"Message"=>"Successfully added");
+                }else{
+                    return array('Status'=>0,"UserTeamID"=>$UserTeamID,"Message"=>"Player already added");
+                }
             }else{
-                return array('Status'=>0,"UserTeamID"=>$UserTeamID,"Message"=>"Player already added");
+               return array('Status'=>0,"UserTeamID"=>$UserTeamID,"Message"=>"You cannot add more than 5 players."); 
             }
         }
         return array('Status'=>1,"UserTeamID"=>$UserTeamID,"Message"=>"Successfully added");
